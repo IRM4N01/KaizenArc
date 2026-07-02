@@ -1,0 +1,162 @@
+body {
+    font-family: sans-serif;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+#lifts-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 500px;
+}
+
+.lift-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+}
+
+.lift-card h2 {
+    font-size: 14px;
+    color: #888;
+    margin: 0 0 8px 0;
+}
+
+.lift-card p {
+    font-size: 28px;
+    font-weight: 500;
+    margin: 0;
+    color: #333;
+}
+
+.hidden {
+    display: none;
+}
+
+#back-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #555;
+    margin-bottom: 16px;
+    padding: 0;
+}
+
+#detail-name {
+    font-size: 22px;
+    margin: 0 0 4px 0;
+}
+
+#detail-max {
+    color: #888;
+    margin: 0 0 20px 0;
+}
+
+#pct-table {
+    width: 100%;
+    max-width: 500px;
+    border-collapse: collapse;
+}
+
+#pct-table th {
+    text-align: left;
+    font-size: 13px;
+    color: #888;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+#pct-table td {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+}
+
+#bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    background: white;
+    border-top: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.nav-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    font-size: 15px;
+    color: #888;
+    cursor: pointer;
+    padding: 8px 0;
+}
+
+.nav-btn.active {
+    color: #333;
+    font-weight: 500;
+}
+
+.screen {
+    padding-bottom: 80px; /* To ensure content is not hidden behind the bottom nav */
+}
+
+#create-program-btn {
+    margin-top: 16px;
+    padding: 12px 20px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+
+/*New Program Form Styles*/
+
+#new-program-form {
+    margin-top: 20px;
+}
+
+#new-program-form h2 {
+    margin: 0 0 12px 0;
+}
+
+#program-name-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+}
+
+#save-program-btn {
+    width: 100%;
+    padding: 12px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+#cancel-program-btn {
+    width: 100%;
+    padding: 12px;
+    background: none;
+    color: #888;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+

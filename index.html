@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset-"UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Training Arc - Gym Tracker</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <nav id="bottom-nav">
+          <button class="nav-btn active" data-screen="home-screen">Lifts</button>
+          <button class="nav-btn" data-screen="programs-screen">Programs</button>
+        </nav>
+
+        <div id="home-screen" class="screen active">
+          <h1>My Lifts</h1>
+          <div id="lifts-container"></div>
+          <div id="lift-detail" class="hidden">
+            <button id="back-btn">← Back</button>
+            <h2 id="detail-name"></h2>
+            <p id="detail-max"></p>
+
+            <table id="pct-table">
+              <thead>
+                <tr>
+                  <th>Percentage</th>
+                  <th>Weight</th>
+                </tr>
+              </thead>
+              <tbody id="pct-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="programs-screen" class="screen hidden">
+          <h1>My Programs</h1>
+          <p id="no-programs-msg">No programs yet. Create one to get started.</p>
+          <button id="create-program-btn">+ New Program</button>
+
+          <div id="new-program-form" class="hidden">
+            <h2>New Program</h2>
+            <input type="text" id="program-name-input" placeholder="e.g Program Name" />
+            <button id="save-program-btn">Save Program</button>
+            <button id="cancel-program-btn">Cancel</button>
+          </div>
+        </div>
+
+        <script src="app.js"></script>
+    </body>    
+</html>
