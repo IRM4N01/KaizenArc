@@ -51,10 +51,18 @@
 
         <!-- Program detail screen -->
         <div id="program-detail-screen" class="screen hidden">
-          <button id="back-to-programs-btn">← Back to Programs</button>
+          <button id="back-to-programs-btn">← Programs</button>
           <h1 id="program-detail-name"></h1>
           <div id="program-days-list"></div>
           <button id="add-day-btn">+ Add Workout Day</button>
+
+          <div id="new-day-form" class="hidden">
+              <h2>New Workout Day</h2>
+              <input type="text" id="day-name-input" placeholder="e.g. Push Day" />
+              <button id="save-day-btn">Save Day</button>
+              <button id="cancel-day-btn">Cancel</button>
+          </div>
+
         </div>
 
         <script src="app.js"></script>

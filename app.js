@@ -31,7 +31,7 @@ lifts.forEach(lift => {
 
 function showPercentages(lift) {
     //Hide the cards, show the detail panel
-    liftsContainer.classList.add("hiddren");
+    liftsContainer.classList.add("hidden");
     liftDetail.classList.remove("hidden");
 
     //Fill in the lift name and 1RM
@@ -148,20 +148,79 @@ function renderPrograms() {
 }
 
 function openProgram(program) {
-    //Hide programs screen
-    document.getElementById("programs-screen").classList.add("hidden");
+    currentProgram = program;
 
-    //Show program detail screen
+    document.getElementById("programs-screen").classList.add("hidden");
     document.getElementById("program-detail-screen").classList.remove("hidden");
     document.getElementById("program-detail-name").textContent = program.name;
-    document.getElementById("program-days-list").innerHTML = "";
 
-    if (program.days.length === 0) {
-        document.getElementById("program-days-list").innerHTML = "<p>No days yet. Add your first workout day.</p>";
-    }
+    renderDays(program);
 }
 
 document.getElementById("back-to-programs-btn").addEventListener("click", () => {
     document.getElementById("program-detail-screen").classList.add("hidden");
     document.getElementById("programs-screen").classList.remove("hidden");
+});
+
+function renderDays(program) {
+    const list = document.getElementById("program-days-list");
+    list.innerHTML = "";
+
+    if (program.days.length === 0) {
+        list.innerHTML = "<p style='color:#888;'>No days yet. Add your first workout day.</p>";
+        return;
+    }
+
+    program.days.forEach(day => {
+        const card = document.createElement("div");
+        card.classList.add("day-card");
+        card.innerHTML = `
+          <div>
+            <h3>${day.name}</h3>
+            <p>${day.exercises.length} exercises</p>
+          </div>
+          <span>→</span>
+        `;
+        list.appendChild(card);
+    });
+}
+
+let currentProgram = null;
+
+document.getElementById("add-day-btn").addEventListener("click", () => {
+    document.getElementById("new-day-form").classList.remove("hidden");
+    document.getElementById("add-day-btn").classList.add("hidden");
+});
+
+document.getElementById("cancel-day-btn").addEventListener("click", () => {
+    document.getElementById("new-day-form").classList.add("hidden");
+    document.getElementById("add-day-btn").classList.remove("hidden");
+    document.getElementById("day-name-input").value = "";
+});
+
+document.getElementById("save-day-btn").addEventListener("click", () => {
+    const name = document.getElementById("day-name-input").value.trim();
+
+    if (name === "") {
+        alert("Please enter a day name.");
+        return; 
+    }
+
+    const newDay = {
+        id: Date.now(),
+        name: name,
+        exercises: []
+    };
+
+    currentProgram.days.push(newDay);
+
+    //Update localStorage
+    localStorage.setItem("programs", JSON.stringify(programs));
+
+    document.getElementById("new-day-form").classList.add("hidden");
+    document.getElementById("add-day-btn").classList.remove("hidden");
+    document.getElementById("day-name-input").value = "";
+
+    //Re-render the program detail screen
+    openProgram(currentProgram);
 });
