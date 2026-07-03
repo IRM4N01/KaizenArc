@@ -65,6 +65,79 @@
 
         </div>
 
+        <!--Day detail screen-->
+        <div id="day-detail-screen" class="screen hidden">
+          <button id="back-to-program-detail-btn">← Back</button>
+          <h1 id="day-detail-name"></h1>
+
+          <div id="exercises-list"></div>
+
+          <button id="add-exercise-btn">+ Add Exercise</button>
+          
+          <!--Exercise form-->
+          <div id="add-exercise-form" class="hidden">
+              <h2>Add Exercise</h2>
+
+              <label>Is this a compound lift?</label>
+              <div id="exercise-type-toggle">
+                <button class="toggle-btn active" id="compound-btn">Compound</button>
+                <button class="toggle-btn" id="accessory-btn">Accessory</button>"
+              </div>
+
+              <div id="compound-fields">
+                <label>Lift</label>
+                <select id="compound-select">
+                  <option value="bench">Bench Press (1RM: 100kg)</option>
+                  <option value="squat">Squat (1RM: 120kg)</option>
+                  <option value="deadlift">Deadlift (1RM: 150kg)</option>
+                  <option value="ohp">Overhead Press (1RM: 50kg)</option>
+                </select>
+              </div>
+
+              <div id="accessory-fields" class="hidden">
+                <label>Exercise Name</label>
+                <input type="text" id="accessory-name-input" placeholder="e.g. Bicep Curls" />
+              </div>
+
+              <label>Warm up sets</label>
+              <input type="number" id="warmup-sets-input" min="0" max="6" placeholder="0" />
+
+              <div id="warmup-pct-fields"></div>
+
+              <label>Working sets</label>
+              <input type="number" id="working-sets-input" min="0" max="10" placeholder="e.g. 3" />
+
+              <label>Reps per set</label>
+              <input type="number" id="reps-input" min="1" max="30" placeholder="e.g. 5" />
+
+              <div id="working-pct-field">
+                <label>Working intensity</label>
+                <input type="number" id="working-pct-input" min="1" max="100" placeholder="e.g. 80" />
+                <span id="working-weight-display"></span>
+              </div>
+
+              <div id="accessory-weight-field" class="hidden">
+                <label>Weight (kg)</label>
+                <input type="number" id="accessory-weight-input" placeholder="e.g. 20" />
+              </div>
+
+              <button id="save-exercise-btn">Save Exercise</button>
+              <button id="cancel-exercise-btn">Cancel</button>
+
+          </div>
+        </div>
+
+        <!--Workout Screen-->
+        <div id="workout-screen" class="screen hidden">
+          <button id="back-to-program-from-workout-btn">← Back</button>
+          <h1 id="workout-day-name"></h1>
+          <p id="workout-progress"></p>
+
+          <div id="workout-exercises-list"></div>
+
+          <button id="finish-workout-btn">Finish Workout</button>
+        </div>
+
         <script src="app.js"></script>
     </body>    
 </html>

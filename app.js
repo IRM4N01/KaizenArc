@@ -147,6 +147,7 @@ function renderPrograms() {
     }
 }
 
+// Open a program and show its details
 function openProgram(program) {
     currentProgram = program;
 
@@ -162,6 +163,17 @@ document.getElementById("back-to-programs-btn").addEventListener("click", () => 
     document.getElementById("programs-screen").classList.remove("hidden");
 });
 
+function openDay(day) {
+    currentDay = day;
+
+    document.getElementById("program-detail-screen").classList.add("hidden");
+    document.getElementById("day-detail-screen").classList.remove("hidden");
+    document.getElementById("day-detail-name").textContent = day.name;
+
+    renderExercises(day);
+}
+
+// Render the days of a program
 function renderDays(program) {
     const list = document.getElementById("program-days-list");
     list.innerHTML = "";
@@ -175,16 +187,29 @@ function renderDays(program) {
         const card = document.createElement("div");
         card.classList.add("day-card");
         card.innerHTML = `
-          <div>
-            <h3>${day.name}</h3>
-            <p>${day.exercises.length} exercises</p>
-          </div>
-          <span>→</span>
+            <div>
+              <h3>${day.name}</h3>
+              <p>${day.exercises.length} exercises</p>
+            </div>
+            <div class="day-card-btns">
+              <button class="edit-day-btn">Edit</button>
+              <button class="start-day-btn">Start</button>
+            </div>
         `;
+
+        card.querySelector(".edit-day-btn").addEventListener("click", () => {
+            openDay(day);
+        });
+
+        card.querySelector(".start-day-btn").addEventListener("click", () => {
+            startWorkout(day);
+        });
+
         list.appendChild(card);
     });
 }
 
+// Add a new day to the current program
 let currentProgram = null;
 
 document.getElementById("add-day-btn").addEventListener("click", () => {
@@ -223,4 +248,385 @@ document.getElementById("save-day-btn").addEventListener("click", () => {
 
     //Re-render the program detail screen
     openProgram(currentProgram);
+});
+
+// ADD DAY + EXERCISE Functionality
+let currentDay = null;
+let isCompound = true;
+
+//back button + exercise form controls
+document.getElementById("back-to-program-detail-btn").addEventListener("click", () => {
+    document.getElementById("day-detail-screen").classList.add("hidden");
+    document.getElementById("program-detail-screen").classList.remove("hidden");
+    renderDays(currentProgram);
+});
+
+document.getElementById("add-exercise-btn").addEventListener("click", () => {
+    document.getElementById("add-exercise-form").classList.remove("hidden");
+    document.getElementById("add-exercise-btn").classList.add("hidden");
+});
+
+document.getElementById("cancel-exercise-btn").addEventListener("click", () => {
+    resetExerciseForm();
+});
+
+//compound vs accessory toggle
+document.getElementById("compound-btn").addEventListener("click", () => {
+    isCompound = true;
+    document.getElementById("compound-btn").classList.add("active");
+    document.getElementById("accessory-btn").classList.remove("active");
+    document.getElementById("compound-fields").classList.remove("hidden");
+    document.getElementById("accessory-fields").classList.add("hidden");
+    document.getElementById("working-pct-field").classList.remove("hidden");
+    document.getElementById("accessory-weight-field").classList.add("hidden");
+    updateWarmupFields();
+});
+
+document.getElementById("accessory-btn").addEventListener("click", () => {
+    isCompound = false;
+    document.getElementById("accessory-btn").classList.add("active");
+    document.getElementById("compound-btn").classList.remove("active");
+    document.getElementById("compound-fields").classList.add("hidden");
+    document.getElementById("accessory-fields").classList.remove("hidden");
+    document.getElementById("working-pct-field").classList.add("hidden");
+    document.getElementById("accessory-weight-field").classList.remove("hidden");
+    document.getElementById("warmup-pct-fields").innerHTML = "";
+});
+
+//Automatically generated percentage fields (warm up - default based on number of sets)
+function getDefaultWarmupPcts(numSets) {
+    const defaults = {
+        1: [50],
+        2: [50, 65],
+        3: [40, 55, 70],
+        4: [40, 50, 60, 70],
+        5: [35, 45, 55, 65, 75],
+        6: [30, 40, 50, 60, 70, 75]
+    };
+    return defaults[numSets] || [];
+}
+
+function getCurrentLiftMax() {
+    const select = document.getElementById("compound-select").value;
+    const liftMap = {
+        bench: 100,
+        squat: 120,
+        deadlift: 150,
+        ohp: 50
+    };
+    return liftMap[select];
+}
+
+function updateWarmupFields() {
+    if (!isCompound) return;
+
+    const numSets = parseInt(document.getElementById("warmup-sets-input").value) || 0;
+    const container = document.getElementById("warmup-pct-fields");
+    const max = getCurrentLiftMax();
+    const defaults = getDefaultWarmupPcts(numSets);
+
+    container.innerHTML = "";
+
+    for (let i = 0; i < numSets; i++) {
+        const pct = defaults[i] || 50;
+        const weight = Math.round(max * pct / 100 * 4) / 4;
+
+        const row = document.createElement("div");
+        row.classList.add("warmup-pct-row");
+        row.innerHTML = `
+          <label>Set ${i + 1}</label>
+          <input type="number" class="warmup-pct-input" value="${pct}" min="1" max="100" />
+          <span class="warmup-weight-display">${weight}kg</span>
+          `;
+          container.appendChild(row);
+    }
+
+    // Add live update when user tweaks a warmup percentage
+    container.querySelectorAll(".warmup-pct-input").forEach(input => {
+        input.addEventListener("input", () => {
+            const pct = parseFloat(input.value) || 0;
+            const weight = Math.round(max * pct / 100 * 4) / 4;
+            input.nextElementSibling.textContent = weight + "kg";
+        });
+    });
+}
+
+function updateWorkingWeight() {
+    if (!isCompound) return;
+    const pct = parseFloat(document.getElementById("working-pct-input").value) || 0;
+    const max = getCurrentLiftMax();
+    const weight = Math.round(max * pct / 100 * 4) / 4;
+    document.getElementById("working-weight-display").textContent = pct > 0 ? weight + "kg" : "";
+}
+
+document.getElementById("warmup-sets-input").addEventListener("input", updateWarmupFields);
+document.getElementById("working-pct-input").addEventListener("input", updateWorkingWeight);
+document.getElementById("compound-select").addEventListener("change", () => {
+    updateWarmupFields();
+    updateWorkingWeight();
+});
+
+// save exercise and render functions
+function resetExerciseForm() {
+    document.getElementById("add-exercise-form").classList.add("hidden");
+    document.getElementById("add-exercise-btn").classList.remove("hidden");
+    document.getElementById("warmup-sets-input").value = "";
+    document.getElementById("working-sets-input").value = "";
+    document.getElementById("reps-input").value = "";
+    document.getElementById("working-pct-input").value = "";
+    document.getElementById("working-weight-display").textContent = "";
+    document.getElementById("warmup-pct-fields").innerHTML = "";
+    document.getElementById("accessory-name-input").value = "";
+    document.getElementById("accessory-weight-input").value = "";
+    isCompound = true;
+    document.getElementById("compound-btn").classList.add("active");
+    document.getElementById("accessory-btn").classList.remove("active");
+    document.getElementById("compound-fields").classList.remove("hidden");
+    document.getElementById("accessory-fields").classList.add("hidden");
+    document.getElementById("working-pct-field").classList.remove("hidden");
+    document.getElementById("accessory-weight-field").classList.add("hidden");
+}
+
+document.getElementById("save-exercise-btn").addEventListener("click", () => {
+    const workingSets = parseInt(document.getElementById("working-sets-input").value);
+    const reps = parseInt(document.getElementById("reps-input").value);
+
+    if (!workingSets || !reps) {
+        alert("Please fill in sets and reps.");
+        return;
+    }
+
+    let exercise = {};
+
+    if (isCompound) {
+        const liftKey = document.getElementById("compound-select").value;
+        const liftName = document.getElementById("compound-select").options[document.getElementById("compound-select").selectedIndex].text.split(" (")[0];
+        const max = getCurrentLiftMax();
+        const workingPct = parseFloat(document.getElementById("working-pct-input").value);
+
+        if (!workingPct) {
+            alert("Please enter a working percentage.");
+            return;
+        }
+
+        // Collect warmup sets
+        const warmupSets = [];
+        document.querySelectorAll(".warmup-pct-input").forEach(input => {
+            const pct = parseFloat(input.value) || 0;
+            const weight = Math.round(max * pct / 100 * 4) / 4;
+            warmupSets.push({ pct, weight });
+        });
+
+        exercise = {
+            type: "compound",
+            liftKey,
+            name: liftName,
+            warmupSets,
+            workingSets,
+            reps,
+            workingPct,
+            workingWeight: Math.round(max * workingPct / 100 * 4) / 4
+        };
+
+    } else {
+        const name = document.getElementById("accessory-name-input").value.trim();
+        const weight = parseFloat(document.getElementById("accessory-weight-input").value);
+
+        if (!name) {
+            alert("Please enter an exercise name.");
+            return;
+        }
+
+        const warmupSetsCount = parseInt(document.getElementById("warmup-sets-input").value) || 0;
+        
+        exercise = {
+            type: "accessory",
+            name,
+            warmupSets: warmupSetsCount,
+            workingSets,
+            reps,
+            weight: weight || 0
+        };
+    }
+
+    currentDay.exercises.push(exercise);
+    localStorage.setItem("programs", JSON.stringify(programs));
+    resetExerciseForm();
+    renderExercises(currentDay);
+});
+
+function renderExercises(day) {
+    const list = document.getElementById("exercises-list");
+    list.innerHTML = "";
+
+    if (day.exercises.length === 0) {
+        list.innerHTML = "<p style='color:#888;'>No exercises yet. Add your first one.</p>";
+        return;
+    }
+
+    day.exercises.forEach(ex => {
+        const card = document.createElement("div");
+        card.classList.add("exercise-card");
+
+        if (ex.type === "compound") {
+            const warmupLines = ex.warmupSets.map((s, i) =>
+                `<p>Warm up set ${i + 1}: ${s.pct}% → ${s.weight}kg</p>`
+            ).join("");
+            card.innerHTML = `
+                <h3>${ex.name}</h3>
+                ${warmupLines}
+                <p>Working: ${ex.workingSets} sets × ${ex.reps} reps @ ${ex.workingPct}% → ${ex.workingWeight}kg</p>
+            `;
+        } else {
+            card.innerHTML = `
+                <h3>${ex.name}</h3>
+                <p>Warm up sets: ${ex.warmupSets || 0}</p>
+                <p>Working: ${ex.workingSets} sets × ${ex.reps} reps @ ${ex.weight}kg</p>
+            `;
+        }
+
+        list.appendChild(card);
+    });
+}
+
+//Start Button Functionality
+function startWorkout(day) {
+    currentDay = day;
+
+    document.getElementById("program-detail-screen").classList.add("hidden");
+    document.getElementById("workout-screen").classList.remove("hidden");
+    document.getElementById("workout-day-name").textContent = day.name;
+
+    renderWorkout(day);
+}
+
+function renderWorkout(day) {
+    const list = document.getElementById("workout-exercises-list");
+    list.innerHTML = "";
+
+    if (day.exercises.length === 0) {
+        list.innerHTML = "<p style='color:#888;'>No exercises planned for this day.</p>";
+        updateWorkoutProgress(day);
+        return;
+    }
+
+    day.exercises.forEach((ex, exIndex) => {
+        const card = document.createElement("div");
+        card.classList.add("workout-exercise-card");
+
+        let setsHTML = "";
+
+        if (ex.type === "compound") {
+            // Warm up sets
+            ex.warmupSets.forEach((s, i) => {
+                const done = s.done || false;
+                setsHTML += `
+                    <div class="set-row ${done ? "completed" : ""}" data-ex="${exIndex}" data-type="warmup" data-set="${i}">
+                        <span>Warm up ${i + 1} — ${s.pct}% → ${s.weight}kg</span>
+                        <button class="tick-btn ${done ? "done" : ""}" onclick="toggleSet(this, ${exIndex}, 'warmup', ${i})">
+                            ${done ? "✓" : ""}
+                        </button>
+                    </div>
+                `;
+            });
+
+            // Working sets
+            for (let i = 0; i < ex.workingSets; i++) {
+                const done = ex.workingSetsDone ? ex.workingSetsDone[i] : false;
+                setsHTML += `
+                    <div class="set-row ${done ? "completed" : ""}" data-ex="${exIndex}" data-type="working" data-set="${i}">
+                        <span>Working ${i + 1} — ${ex.workingPct}% → ${ex.workingWeight}kg × ${ex.reps} reps</span>
+                        <button class="tick-btn ${done ? "done" : ""}" onclick="toggleSet(this, ${exIndex}, 'working', ${i})">
+                            ${done ? "✓" : ""}
+                        </button>
+                    </div>
+                `;
+            }
+
+        } else {
+            // Warm up sets for accessory
+            for (let i = 0; i < (ex.warmupSets || 0); i++) {
+                const done = ex.warmupDone ? ex.warmupDone[i] : false;
+                setsHTML += `
+                    <div class="set-row ${done ? "completed" : ""}">
+                        <span>Warm up ${i + 1}</span>
+                        <button class="tick-btn ${done ? "done" : ""}" onclick="toggleSet(this, ${exIndex}, 'accessory-warmup', ${i})">
+                            ${done ? "✓" : ""}
+                        </button>
+                    </div>
+                `;
+            }
+
+            // Working sets for accessory
+            for (let i = 0; i < ex.workingSets; i++) {
+                const done = ex.workingSetsDone ? ex.workingSetsDone[i] : false;
+                setsHTML += `
+                    <div class="set-row ${done ? "completed" : ""}">
+                        <span>Set ${i + 1} — ${ex.reps} reps @ ${ex.weight}kg</span>
+                        <button class="tick-btn ${done ? "done" : ""}" onclick="toggleSet(this, ${exIndex}, 'accessory-working', ${i})">
+                            ${done ? "✓" : ""}
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        card.innerHTML = `<h3>${ex.name}</h3>${setsHTML}`;
+        list.appendChild(card);
+    });
+
+    updateWorkoutProgress(day);
+}
+
+function toggleSet(btn, exIndex, type, setIndex) {
+    const ex = currentDay.exercises[exIndex];
+
+    if (type === "warmup") {
+        ex.warmupSets[setIndex].done = !ex.warmupSets[setIndex].done;
+    } else if (type === "working") {
+        if (!ex.workingSetsDone) ex.workingSetsDone = Array(ex.workingSets).fill(false);
+        ex.workingSetsDone[setIndex] = !ex.workingSetsDone[setIndex];
+    } else if (type === "accessory-warmup") {
+        if (!ex.warmupDone) ex.warmupDone = Array(ex.warmupSets).fill(false);
+        ex.warmupDone[setIndex] = !ex.warmupDone[setIndex];
+    } else if (type === "accessory-working") {
+        if (!ex.workingSetsDone) ex.workingSetsDone = Array(ex.workingSets).fill(false);
+        ex.workingSetsDone[setIndex] = !ex.workingSetsDone[setIndex];
+    }
+
+    localStorage.setItem("programs", JSON.stringify(programs));
+    renderWorkout(currentDay);
+}
+
+function updateWorkoutProgress(day) {
+    let total = 0;
+    let done = 0;
+
+    day.exercises.forEach(ex => {
+        if (ex.type === "compound") {
+            total += ex.warmupSets.length + ex.workingSets;
+            done += ex.warmupSets.filter(s => s.done).length;
+            done += ex.workingSetsDone ? ex.workingSetsDone.filter(Boolean).length : 0;
+        } else {
+            total += (ex.warmupSets || 0) + ex.workingSets;
+            done += ex.warmupDone ? ex.warmupDone.filter(Boolean).length : 0;
+            done += ex.workingSetsDone ? ex.workingSetsDone.filter(Boolean).length : 0;
+        }
+    });
+
+    document.getElementById("workout-progress").textContent = `${done} of ${total} sets completed`;
+}
+
+// Back and Finish buttons
+document.getElementById("back-to-program-from-workout-btn").addEventListener("click", () => {
+    document.getElementById("workout-screen").classList.add("hidden");
+    document.getElementById("program-detail-screen").classList.remove("hidden");
+});
+
+document.getElementById("finish-workout-btn").addEventListener("click", () => {
+    const day = currentDay;
+    const total = document.getElementById("workout-progress").textContent;
+    alert(`Workout done! ${total}`);
+    document.getElementById("workout-screen").classList.add("hidden");
+    document.getElementById("program-detail-screen").classList.remove("hidden");
 });

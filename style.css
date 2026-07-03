@@ -254,3 +254,238 @@ body {
     color: #888;
 }
 
+/* Day Detail Screen Styles*/
+#day-detail-screen {
+    padding: 20px;
+}
+
+#add-exercise-btn {
+  width: 100%;
+  padding: 12px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 16px;
+}
+
+#add-exercise-form {
+  margin-top: 20px;
+}
+
+#add-exercise-form h2 {
+  margin: 0 0 16px 0;
+}
+
+#add-exercise-form label {
+  display: block;
+  font-size: 13px;
+  color: #888;
+  margin: 12px 0 4px;
+}
+
+#add-exercise-form input,
+#add-exercise-form select {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+#exercise-type-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #888;
+}
+
+.toggle-btn.active {
+  background: #333;
+  color: white;
+  border-color: #333;
+}
+
+#save-exercise-btn {
+  width: 100%;
+  padding: 12px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+#cancel-exercise-btn {
+  width: 100%;
+  padding: 12px;
+  background: none;
+  color: #888;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.warmup-pct-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.warmup-pct-row label {
+  margin: 0;
+  min-width: 60px;
+  font-size: 13px;
+  color: #888;
+}
+
+.warmup-pct-row input {
+  width: 70px;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.warmup-weight-display {
+  font-size: 14px;
+  color: #333;
+  min-width: 60px;
+}
+
+#working-weight-display {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-top: 6px;
+}
+
+.exercise-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+}
+
+.exercise-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+}
+
+.exercise-card p {
+  margin: 0 0 4px 0;
+  font-size: 13px;
+  color: #888;
+}
+
+/*Edit vs Start buttons for training day*/
+.day-card-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-day-btn {
+  padding: 8px 16px;
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #555;
+}
+
+.start-day-btn {
+  padding: 8px 16px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/*Workout Screen Style*/
+#finish-workout-btn {
+  width: 100%;
+  padding: 12px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 16px;
+}
+
+.workout-exercise-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+}
+
+.workout-exercise-card h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+}
+
+.set-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 0.5px solid #eee;
+  font-size: 14px;
+  color: #555;
+}
+
+.set-row:last-child {
+  border-bottom: none;
+}
+
+.set-row.completed {
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.tick-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid #ddd;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tick-btn.done {
+  background: #333;
+  border-color: #333;
+  color: white;
+}
+
+#workout-progress {
+  font-size: 13px;
+  color: #888;
+  margin: 4px 0 16px;
+}
