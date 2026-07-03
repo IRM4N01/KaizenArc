@@ -74,7 +74,8 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
 });
 
 // Program data - will be saved to localStorage
-let programs = [];
+let programs = JSON.parse(localStorage.getItem("programs")) || [];
+renderPrograms();
 
 // Show the new program form
 document.getElementById("create-program-btn").addEventListener("click", () => {
@@ -89,7 +90,7 @@ document.getElementById("cancel-program-btn").addEventListener("click", () => {
     document.getElementById("program-name-input").value = "";
 });
 
-// Save button creates the program
+// SAVE BUTTON - Creates a new program and adds it to the programs array
 document.getElementById("save-program-btn").addEventListener("click", () => {
     const name = document.getElementById("program-name-input").value.trim();
 
@@ -105,9 +106,62 @@ document.getElementById("save-program-btn").addEventListener("click", () => {
     };
 
     programs.push(newProgram);
-    console.log("Program so far:", programs);
+    localStorage.setItem("programs", JSON.stringify(programs));
 
     document.getElementById("new-program-form").classList.add("hidden");
     document.getElementById("create-program-btn").classList.remove("hidden");
     document.getElementById("program-name-input").value = "";
+    renderPrograms();
+});
+
+//Display newly added program
+function renderPrograms() {
+    const container = document.getElementById("programs-screen");
+    const noMsg = document.getElementById("no-programs-msg");
+
+    //Remove any previously rendered program cards
+    document.querySelectorAll(".program-card").forEach(card => card.remove());
+
+    if (programs.length === 0) {
+        noMsg.classList.remove("hidden");
+    } else {
+        noMsg.classList.add("hidden");
+
+        programs.forEach(program => {
+            const card = document.createElement("div");
+            card.classList.add("program-card");
+            card.innerHTML = `
+              <div>
+                <h3>${program.name}</h3>
+                <p>${program.days.length} workout days</p>
+              </div>
+              <span>→</span>
+            `;
+
+            card.addEventListener("click", () => {
+                openProgram(program);
+            });
+
+            container.insertBefore(card, document.getElementById("new-program-form"));
+        });
+    }
+}
+
+function openProgram(program) {
+    //Hide programs screen
+    document.getElementById("programs-screen").classList.add("hidden");
+
+    //Show program detail screen
+    document.getElementById("program-detail-screen").classList.remove("hidden");
+    document.getElementById("program-detail-name").textContent = program.name;
+    document.getElementById("program-days-list").innerHTML = "";
+
+    if (program.days.length === 0) {
+        document.getElementById("program-days-list").innerHTML = "<p>No days yet. Add your first workout day.</p>";
+    }
+}
+
+document.getElementById("back-to-programs-btn").addEventListener("click", () => {
+    document.getElementById("program-detail-screen").classList.add("hidden");
+    document.getElementById("programs-screen").classList.remove("hidden");
 });

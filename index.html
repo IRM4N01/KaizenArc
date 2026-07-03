@@ -8,11 +8,13 @@
     </head>
 
     <body>
+      <!--Main content area-->
         <nav id="bottom-nav">
           <button class="nav-btn active" data-screen="home-screen">Lifts</button>
           <button class="nav-btn" data-screen="programs-screen">Programs</button>
         </nav>
 
+        <!--Screens-->
         <div id="home-screen" class="screen active">
           <h1>My Lifts</h1>
           <div id="lifts-container"></div>
@@ -33,6 +35,7 @@
           </div>
         </div>
 
+        <!-- Programs screen -->
         <div id="programs-screen" class="screen hidden">
           <h1>My Programs</h1>
           <p id="no-programs-msg">No programs yet. Create one to get started.</p>
@@ -44,6 +47,14 @@
             <button id="save-program-btn">Save Program</button>
             <button id="cancel-program-btn">Cancel</button>
           </div>
+        </div>
+
+        <!-- Program detail screen -->
+        <div id="program-detail-screen" class="screen hidden">
+          <button id="back-to-programs-btn">← Back to Programs</button>
+          <h1 id="program-detail-name"></h1>
+          <div id="program-days-list"></div>
+          <button id="add-day-btn">+ Add Workout Day</button>
         </div>
 
         <script src="app.js"></script>
