@@ -1,10 +1,17 @@
 // ======= DATA =========
-const lifts = [
-    { name: "Bench Press", max: 100, percentages: [95, 92.5, 90, 87.5, 85, 82.5, 80, 77.5, 75, 72.5, 70, 67.5, 60, 55, 50, 45, 40] },
-    { name: "Squat", max: 120, percentages: [95, 92.5, 90, 87.5, 85, 82.5, 80, 77.5, 75, 72.5, 70, 65, 60, 55, 50, 30] },
-    { name: "Deadlift", max: 150, percentages: [95, 92.5, 90, 87.5, 85, 82.5, 80, 77.5, 75, 70, 67.5, 65, 60, 55, 50, 30] },
-    { name: "Overhead Press", max: 50, percentages: [82.5, 80, 75, 72.5, 70, 60, 55, 50] }
+const defaultLlifts = [
+    { key: "bench", name: "Bench Press", max: 100, percentages: [95, 92.5, 90, 87.5, 85, 82.5, 80, 77.5, 75, 72.5, 70, 67.5, 60, 55, 50, 45, 40] },
+    { key: "squat", name: "Squat", max: 120, percentages: [95, 92.5, 90, 87.5, 85, 82.5, 80, 77.5, 75, 72.5, 70, 65, 60, 55, 50, 30] },
+    { key: "deadlift", name: "Deadlift", max: 150, percentages: [95, 92.5, 90, 87.5, 85, 82.5, 80, 77.5, 75, 70, 67.5, 65, 60, 55, 50, 30] },
+    { key: "ohp", name: "Overhead Press", max: 50, percentages: [82.5, 80, 75, 72.5, 70, 60, 55, 50] }
 ];
+
+// Load saved 1RMs from localStorage or use defaults
+const savedMaxes = JSON.parse(localStorage.getItem("liftMaxes")) || {};
+const lifts = defaultLlifts.map(lift => ({
+    ...lift,
+    max: savedMaxes[lift.key] !== undefined? savedMaxes[lift.key] : lift.max
+})) ;
 
 // ============ STATE ============
 let programs = JSON.parse(localStorage.getItem("programs")) || [];
@@ -23,20 +30,25 @@ document.getElementById("back-btn").addEventListener("click", () => {
 });
 
 //loop through each lift and create card for it
-lifts.forEach(lift => {
-    const card = document.createElement("div");
-    card.classList.add("lift-card");
-    card.innerHTML = `
-      <h2>${lift.name}</h2>
-      <p>${lift.max}kg</p>
-    `;
+function renderLiftCards() {
+    liftsContainer.innerHTML = "";
+    lifts.forEach(lift => {
+        const card = document.createElement("div");
+        card.classList.add("lift-card");
+        card.innerHTML = `
+          <h2>${lift.name}</h2>
+          <p>${lift.max}kg</p>
+        `;
 
-     card.addEventListener("click", () => {
-        showPercentages(lift);
-    });
+        card.addEventListener("click", () => {
+            showPercentages(lift);
+        });
 
-    liftsContainer.appendChild(card);
-}); 
+        liftsContainer.appendChild(card);
+    }); 
+};
+
+renderLiftCards();
 
 function showPercentages(lift) {
     //Hide the cards, show the detail panel
@@ -59,7 +71,20 @@ function showPercentages(lift) {
           <td>${weight}kg</td>
         `;
         pctBody.appendChild(row);
-    })
+    });
+
+    // Show update 1RM form
+    document.getElementById("update-max-form").classList.remove("hidden");
+    document.getElementById("new-max-input").value = "";
+    document.getElementById("update-max-btn").onclick = () => {
+        const newMax = parseFloat(document.getElementById("new-max-input").value);
+        if (!newMax || newMax <= 0) {
+            alert("Please enter a valid weight.");
+            return;
+        }
+        updateLiftMax(lift.key, newMax);
+        showPercentages(lift);
+    };
 }
 
 // Bottom navigation
@@ -359,13 +384,8 @@ function getDefaultWarmupPcts(numSets) {
 
 function getCurrentLiftMax() {
     const select = document.getElementById("compound-select").value;
-    const liftMap = {
-        bench: 100,
-        squat: 120,
-        deadlift: 150,
-        ohp: 50
-    };
-    return liftMap[select];
+    const lift = lifts.find(l => l.key === select);
+    return lift ? lift.max : 0;
 }
 
 function updateWarmupFields() {
@@ -774,3 +794,19 @@ document.getElementById("finish-workout-btn").addEventListener("click", () => {
     document.getElementById("workout-screen").classList.add("hidden");
     document.getElementById("program-detail-screen").classList.remove("hidden");
 });
+
+function updateLiftMax(liftKey, newMax) {
+    //Update the lift in the lifts array
+    const lift = lifts.find(l => l.key === liftKey);
+    if(!lift) return;
+
+    lift.max = newMax;
+
+    //Save to localStorage
+    const savedMaxes = JSON.parse(localStorage.getItem("liftMaxes")) || {};
+    savedMaxes[liftKey] = newMax;
+    localStorage.setItem("liftMaxes", JSON.stringify(savedMaxes));
+
+    //Update the lift cards on screen
+    renderLiftCards();
+}
