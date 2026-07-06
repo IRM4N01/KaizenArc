@@ -1,3 +1,4 @@
+// ======= DATA =========
 const lifts = [
     { name: "Bench Press", max: 100, percentages: [95, 92.5, 90, 87.5, 85, 82.5, 80, 77.5, 75, 72.5, 70, 67.5, 60, 55, 50, 45, 40] },
     { name: "Squat", max: 120, percentages: [95, 92.5, 90, 87.5, 85, 82.5, 80, 77.5, 75, 72.5, 70, 65, 60, 55, 50, 30] },
@@ -5,6 +6,14 @@ const lifts = [
     { name: "Overhead Press", max: 50, percentages: [82.5, 80, 75, 72.5, 70, 60, 55, 50] }
 ];
 
+// ============ STATE ============
+let programs = JSON.parse(localStorage.getItem("programs")) || [];
+let currentProgram = null;
+let currentDay = null;
+let isCompound = true;
+let editingExerciseIndex = null;
+
+// ============ DOM REFERENCES ============
 const liftsContainer = document.getElementById("lifts-container");
 const liftDetail = document.getElementById("lift-detail");
 
@@ -73,8 +82,7 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
     });
 });
 
-// Program data - will be saved to localStorage
-let programs = JSON.parse(localStorage.getItem("programs")) || [];
+
 renderPrograms();
 
 // Show the new program form
@@ -183,19 +191,51 @@ function renderDays(program) {
         return;
     }
 
-    program.days.forEach(day => {
+    program.days.forEach((day, dayIndex) => {
         const card = document.createElement("div");
         card.classList.add("day-card");
         card.innerHTML = `
-            <div>
-              <h3>${day.name}</h3>
+            <div style="flex:1;">
+              <div class="day-name-display">
+                <h3>${day.name}</h3>
+                <button class="edit-name-btn">✏️</button>
+              </div>
+              <div class="day-name-edit hidden">
+                <input type="text" class="day-name-input" value="${day.name}" />
+                <button class="save-name-btn">Save</button>
+                <button class="cancel-name-btn">Cancel</button>
+              </div>
               <p>${day.exercises.length} exercises</p>
             </div>
             <div class="day-card-btns">
               <button class="edit-day-btn">Edit</button>
               <button class="start-day-btn">Start</button>
+              <button class="delete-day-btn">Delete</button>
             </div>
         `;
+
+        card.querySelector(".edit-name-btn").addEventListener("click", () => {
+            card.querySelector(".day-name-display").classList.add("hidden");
+            card.querySelector(".day-name-edit").classList.remove("hidden");
+            card.querySelector(".day-name-input").focus();
+        });
+
+        card.querySelector(".cancel-name-btn").addEventListener("click", () => {
+            card.querySelector(".day-name-edit").classList.add("hidden");
+            card.querySelector(".day-name-display").classList.remove("hidden");
+            card.querySelector(".day-name-input").value = day.name;
+        });
+
+        card.querySelector(".save-name-btn").addEventListener("click", () => {
+            const newName = card.querySelector(".day-name-input").value.trim();
+            if (newName === "") {
+                alert("Please enter a day name.");
+                return;
+            }
+            day.name = newName;
+            localStorage.setItem("programs", JSON.stringify(programs));
+            renderDays(currentProgram);
+        })
 
         card.querySelector(".edit-day-btn").addEventListener("click", () => {
             openDay(day);
@@ -205,12 +245,25 @@ function renderDays(program) {
             startWorkout(day);
         });
 
+        card.querySelector(".delete-day-btn").addEventListener("click", () => {
+            deleteDay(dayIndex);
+        });
+
         list.appendChild(card);
     });
 }
 
+// Delete Day Function
+function deleteDay(dayIndex) {
+    const confirm = window.confirm("Are you sure you want to delete and all its exercises?");
+    if (!confirm) return;
+
+    currentProgram.days.splice(dayIndex, 1);
+    localStorage.setItem("programs", JSON.stringify(programs));
+    renderDays(currentProgram);
+}
+
 // Add a new day to the current program
-let currentProgram = null;
 
 document.getElementById("add-day-btn").addEventListener("click", () => {
     document.getElementById("new-day-form").classList.remove("hidden");
@@ -250,9 +303,7 @@ document.getElementById("save-day-btn").addEventListener("click", () => {
     openProgram(currentProgram);
 });
 
-// ADD DAY + EXERCISE Functionality
-let currentDay = null;
-let isCompound = true;
+
 
 //back button + exercise form controls
 document.getElementById("back-to-program-detail-btn").addEventListener("click", () => {
@@ -368,6 +419,7 @@ document.getElementById("compound-select").addEventListener("change", () => {
 
 // save exercise and render functions
 function resetExerciseForm() {
+    editingExerciseIndex = null;
     document.getElementById("add-exercise-form").classList.add("hidden");
     document.getElementById("add-exercise-btn").classList.remove("hidden");
     document.getElementById("warmup-sets-input").value = "";
@@ -449,7 +501,13 @@ document.getElementById("save-exercise-btn").addEventListener("click", () => {
         };
     }
 
-    currentDay.exercises.push(exercise);
+    if (editingExerciseIndex !== null) {
+        currentDay.exercises[editingExerciseIndex] = exercise;
+        editingExerciseIndex = null;
+    } else {
+        currentDay.exercises.push(exercise);
+    }
+
     localStorage.setItem("programs", JSON.stringify(programs));
     resetExerciseForm();
     renderExercises(currentDay);
@@ -464,7 +522,7 @@ function renderExercises(day) {
         return;
     }
 
-    day.exercises.forEach(ex => {
+    day.exercises.forEach((ex, exIndex) => {
         const card = document.createElement("div");
         card.classList.add("exercise-card");
 
@@ -473,20 +531,106 @@ function renderExercises(day) {
                 `<p>Warm up set ${i + 1}: ${s.pct}% → ${s.weight}kg</p>`
             ).join("");
             card.innerHTML = `
-                <h3>${ex.name}</h3>
+                <div class="exercise-card-header">
+                  <h3>${ex.name}</h3>
+                  <div class="exercise-card-btns">
+                    <button class="edit-exercise-btn">Edit</button>
+                    <button class="delete-exercise-btn">Delete</button>
+                  </div>
+                </div>
                 ${warmupLines}
                 <p>Working: ${ex.workingSets} sets × ${ex.reps} reps @ ${ex.workingPct}% → ${ex.workingWeight}kg</p>
             `;
         } else {
             card.innerHTML = `
+              <div class="exercise-card-header">
                 <h3>${ex.name}</h3>
-                <p>Warm up sets: ${ex.warmupSets || 0}</p>
-                <p>Working: ${ex.workingSets} sets × ${ex.reps} reps @ ${ex.weight}kg</p>
+                <div class="exercise-card-btns">
+                  <button class="edit-exercise-btn">Edit</button>
+                  <button class="delete-exercise-btn">Delete</button>
+                </div>
+              </div>
+              <p>Warm up sets: ${ex.warmupSets || 0}</p>
+              <p>Working: ${ex.workingSets} sets × ${ex.reps} reps @ ${ex.weight}kg</p>
             `;
         }
 
+        card.querySelector(".delete-exercise-btn").addEventListener("click", () => {
+            deleteExercise(exIndex);
+        });
+
+        card.querySelector(".edit-exercise-btn").addEventListener("click", () => {
+            editExercise(exIndex);
+        });
+
         list.appendChild(card);
     });
+}
+
+function deleteExercise(exIndex) {
+    const confirm = window.confirm("Are you sure you want to delete this exercise?");
+    if (!confirm) return;
+
+    currentDay.exercises.splice(exIndex, 1);
+    localStorage.setItem("programs", JSON.stringify(programs));
+    renderExercises(currentDay);
+}
+
+function editExercise(exIndex) {
+    const ex = currentDay.exercises[exIndex];
+    editingExercisesIndex = exIndex;
+
+     // Show the form
+    document.getElementById("add-exercise-form").classList.remove("hidden");
+    document.getElementById("add-exercise-btn").classList.add("hidden");
+
+     if (ex.type === "compound") {
+        // Set compound mode
+        isCompound = true;
+        document.getElementById("compound-btn").classList.add("active");
+        document.getElementById("accessory-btn").classList.remove("active");
+        document.getElementById("compound-fields").classList.remove("hidden");
+        document.getElementById("accessory-fields").classList.add("hidden");
+        document.getElementById("working-pct-field").classList.remove("hidden");
+        document.getElementById("accessory-weight-field").classList.add("hidden");
+
+        // Pre-fill compound fields
+        document.getElementById("compound-select").value = ex.liftKey;
+        document.getElementById("warmup-sets-input").value = ex.warmupSets.length;
+        document.getElementById("working-sets-input").value = ex.workingSets;
+        document.getElementById("reps-input").value = ex.reps;
+        document.getElementById("working-pct-input").value = ex.workingPct;
+        document.getElementById("working-weight-display").textContent = ex.workingWeight + "kg";
+        
+        //Rebuild warmup fields with existing values
+        updateWarmupFields();
+
+        //Override the default percentages with the saved ones
+        const warmupInputs = document.querySelector(".warmup-pct-input");
+        ex.warmupSets.forEach((s, i) => {
+            if (warmupInputs[i]) {
+                warmupInputs[i].value = s.pct;
+                warmupInputs[i].nextElementSibling.textContent = s.weight + "kg";
+            }
+        });
+
+     } else {
+        // set accessory mode
+        isCompound = false;
+        document.getElementById("accessory-btn").classList.add("active");
+        document.getElementById("compound-btn").classList.remove("active");
+        document.getElementById("compound-fields").classList.add("hidden");
+        document.getElementById("accessory-fields").classList.remove("hidden");
+        document.getElementById("working-pct-field").classList.add("hidden");
+        document.getElementById("accessory-weight-field").classList.remove("hidden");
+
+        //Pre-fill accessory fields
+        document.getElementById("accessory-name-input").value = ex.name;
+        document.getElementById("warmup-sets-input").value = ex.warmupSets || 0;
+        document.getElementById("working-sets-input").value = ex.workingSets;
+        document.getElementById("reps-input").value = ex.reps;
+        document.getElementById("accessory-weight-input").value = ex.weight;
+     }
 }
 
 //Start Button Functionality

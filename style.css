@@ -32,7 +32,7 @@ body {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 #back-btn {
@@ -196,7 +196,7 @@ body {
 }
 
 #new-day-form h2 {
-    margin 0 0 12px 0;
+    margin: 0 0 12px 0;
 }
 
 #day-name-input {
@@ -488,4 +488,107 @@ body {
   font-size: 13px;
   color: #888;
   margin: 4px 0 16px;
+}
+
+/*Delete day button styles*/
+.delete-day-btn {
+  padding: 8px 16px;
+  background: none;
+  border: 1px solid #ffcccc;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #cc0000;
+}
+
+/*Day name editting styles*/
+.day-name-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.day-name-display h3 {
+    margin: 0;
+}
+
+.edit-name-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    color: #888;
+}
+
+.day-name-edit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.day-name-input {
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 200px;
+}
+
+.save-name-btn {
+    padding: 6px 12px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.cancel-name-btn {
+    padding: 6px 12px;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #888;
+}
+
+/*Edit exercise card styles*/
+.exercise-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.exercise-card-header h3 {
+    margin: 0;
+}
+
+.exercise-card-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-exercise-btn {
+    padding: 6px 12px;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #555;
+}
+
+.delete-exercise-btn {
+    padding: 6px 12px;
+    background: none;
+    border: 1px solid #ffcccc;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #cc0000;
 }
