@@ -623,3 +623,26 @@ body {
     font-size: 15px;
     cursor: pointer;
 }
+
+/*Completed/Rest Badge Style*/
+.badge-done {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #e6f4ea;
+    color: #2d7a3a;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.badge-rest {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #f0f0f0;
+    color: #888;
+    font-weight: 500;
+    margin-top: 4px;
+}

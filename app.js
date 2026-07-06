@@ -16,9 +16,11 @@ const lifts = defaultLlifts.map(lift => ({
 // ============ STATE ============
 let programs = JSON.parse(localStorage.getItem("programs")) || [];
 let currentProgram = null;
+let currentWeek = null;
 let currentDay = null;
 let isCompound = true;
 let editingExerciseIndex = null;
+let isDayWorkout = true;
 
 // ============ DOM REFERENCES ============
 const liftsContainer = document.getElementById("lifts-container");
@@ -126,16 +128,31 @@ document.getElementById("cancel-program-btn").addEventListener("click", () => {
 // SAVE BUTTON - Creates a new program and adds it to the programs array
 document.getElementById("save-program-btn").addEventListener("click", () => {
     const name = document.getElementById("program-name-input").value.trim();
+    const startDate = document.getElementById("program-start-date").value;
+    const numWeeks = parseInt(document.getElementById("program-weeks-input").value);
+    const startWeight = parseFloat(document.getElementById("program-start-weight").value);
 
-    if (name === "") {
-        alert("Please enter a program name.");
-        return;
+    if (!name) { alert("Please enter a program name."); return; }
+    if (!startDate) { alert("Please enter a start date."); return; }
+    if (!numWeeks || numWeeks < 1) { alert("Please enter the number of weeks."); return; }
+
+    // Auto generate weeks
+    const weeks = [];
+    for (let i = 1; i <= numWeeks; i++) {
+        weeks.push({
+            id: Date.now() + i,
+            name: `Week ${i}`,
+            days: []
+        });
     }
 
     const newProgram = {
         id: Date.now(),
-        name: name,
-        days: []
+        name,
+        startDate,
+        startWeight: startWeight || null,
+        endWeight: null,
+        weeks
     };
 
     programs.push(newProgram);
@@ -144,6 +161,10 @@ document.getElementById("save-program-btn").addEventListener("click", () => {
     document.getElementById("new-program-form").classList.add("hidden");
     document.getElementById("create-program-btn").classList.remove("hidden");
     document.getElementById("program-name-input").value = "";
+    document.getElementById("program-start-date").value = "";
+    document.getElementById("program-weeks-input").value = "";
+    document.getElementById("program-start-weight").value = "";
+
     renderPrograms();
 });
 
@@ -152,7 +173,6 @@ function renderPrograms() {
     const container = document.getElementById("programs-screen");
     const noMsg = document.getElementById("no-programs-msg");
 
-    //Remove any previously rendered program cards
     document.querySelectorAll(".program-card").forEach(card => card.remove());
 
     if (programs.length === 0) {
@@ -160,16 +180,28 @@ function renderPrograms() {
     } else {
         noMsg.classList.add("hidden");
 
-        programs.forEach(program => {
+        programs.forEach((program, programIndex) => {
             const card = document.createElement("div");
             card.classList.add("program-card");
             card.innerHTML = `
-              <div>
-                <h3>${program.name}</h3>
-                <p>${program.days.length} workout days</p>
-              </div>
-              <span>→</span>
+                <div>
+                    <h3>${program.name}</h3>
+                    <p>${program.weeks.length} weeks · Started ${program.startDate}</p>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <span>→</span>
+                    <button class="delete-program-btn" style="padding:6px 12px; background:none; border:1px solid #ffcccc; border-radius:8px; font-size:13px; cursor:pointer; color:#cc0000;">Delete</button>
+                </div>
             `;
+
+            card.querySelector(".delete-program-btn").addEventListener("click", (e) => {
+                e.stopPropagation();
+                const confirm = window.confirm("Are you sure you want to delete this program?");
+                if (!confirm) return;
+                programs.splice(programIndex, 1);
+                localStorage.setItem("programs", JSON.stringify(programs));
+                renderPrograms();
+            });
 
             card.addEventListener("click", () => {
                 openProgram(program);
@@ -177,7 +209,7 @@ function renderPrograms() {
 
             container.insertBefore(card, document.getElementById("new-program-form"));
         });
-    }
+    } 
 }
 
 // Open a program and show its details
@@ -188,7 +220,101 @@ function openProgram(program) {
     document.getElementById("program-detail-screen").classList.remove("hidden");
     document.getElementById("program-detail-name").textContent = program.name;
 
-    renderDays(program);
+    // Show program info
+    const info = document.getElementById("program-detail-info");
+    info.innerHTML = `
+        <p style="color:#888; font-size:13px;">Started: ${program.startDate} · ${program.weeks.length} weeks · Start weight: ${program.startWeight || "—"}kg</p>
+    `;
+
+    renderWeeks(program);
+}
+
+function renderWeeks(program) {
+    const list = document.getElementById("weeks-list");
+    list.innerHTML = "";
+
+    program.weeks.forEach((week, weekIndex) => {
+        const completedDays = week.days.filter(d => d.completed && d.type === "workout").length;
+        const totalWorkoutDays = week.days.filter(d => d.type === "workout").length;
+        const totalRestDays = week.days.filter(d => d.type === "rest").length;
+        const card = document.createElement("div");
+        card.classList.add("program-card");
+        card.innerHTML = `
+            <div>
+                <h3>${week.name}</h3>
+                <p>${totalWorkoutDays} workouts · ${totalRestDays} rest · ${completedDays} completed</p>
+            </div>
+            <span>→</span>
+        `;
+
+        card.addEventListener("click", () => {
+            openWeek(week);
+        });
+
+        list.appendChild(card);
+    });
+}
+
+function openWeek(week) {
+    currentWeek = week;
+
+    document.getElementById("program-detail-screen").classList.add("hidden");
+    document.getElementById("week-detail-screen").classList.remove("hidden");
+    document.getElementById("week-detail-name").textContent = week.name;
+
+    renderDays(week);
+}
+
+function renderDays(week) {
+    const list = document.getElementById("days-list");
+    list.innerHTML = "";
+
+    if (week.days.length === 0) {
+        list.innerHTML = "<p style='color:#888;'>No days yet. Add your first day.</p>";
+        return;
+    }
+
+    week.days.forEach((day, dayIndex) => {
+        const card = document.createElement("div");
+        card.classList.add("day-card");
+
+        const isRest = day.type === "rest";
+        const completedBadge = day.completed ? `<span class="badge-done">✓ Done ${day.completedDate || ""}</span>` : "";
+        const restBadge = isRest ? `<span class="badge-rest">Rest</span>` : "";
+
+        card.innerHTML = `
+            <div style="flex:1;">
+              <h3>${day.date || "No date"} ${day.notes ? "— " + day.notes : ""}</h3>
+              <p>${isRest ? "" : day.exercises.length + " exercises"}</p>
+                 ${completedBadge}${restBadge}
+            </div>
+            <div class="day-card-btns">
+              ${!isRest ? `<button class="start-day-btn">${day.completed ? "Redo" : "Start"}</button>` : ""}
+              <button class="delete-day-btn">Delete</button>
+            </div>
+        `;
+
+        if (!isRest) {
+            card.addEventListener("click", (e) => {
+                if (e.target.classList.contains("start-day-btn") || e.target.classList.contains("delete-day-btn")) return;
+                openDay(day);
+            });
+
+            card.querySelector(".start-day-btn").addEventListener("click", () => {
+                startWorkout(day);
+            });
+        }
+
+        card.querySelector(".delete-day-btn").addEventListener("click", () => {
+            const confirm = window.confirm("Delete this day?");
+            if (!confirm) return;
+            currentWeek.days.splice(dayIndex, 1);
+            localStorage.setItem("programs", JSON.stringify(programs));
+            renderDays(currentWeek);
+        });
+
+        list.appendChild(card);
+    });
 }
 
 document.getElementById("back-to-programs-btn").addEventListener("click", () => {
@@ -196,86 +322,19 @@ document.getElementById("back-to-programs-btn").addEventListener("click", () => 
     document.getElementById("programs-screen").classList.remove("hidden");
 });
 
+document.getElementById("back-to-program-from-week-btn").addEventListener("click", () => {
+    document.getElementById("week-detail-screen").classList.add("hidden");
+    document.getElementById("program-detail-screen").classList.remove("hidden");
+});
+
 function openDay(day) {
     currentDay = day;
 
-    document.getElementById("program-detail-screen").classList.add("hidden");
-    document.getElementById("day-detail-screen").classList.remove("hidden");
-    document.getElementById("day-detail-name").textContent = day.name;
+    document.getElementById("week-detail-screen").classList.add("hidden");
+    document.getElementById("exercise-detail-screen").classList.remove("hidden");
+    document.getElementById("exercise-detail-name").textContent = day.date + (day.notes ? " - " + day.notes : "");
 
     renderExercises(day);
-}
-
-// Render the days of a program
-function renderDays(program) {
-    const list = document.getElementById("program-days-list");
-    list.innerHTML = "";
-
-    if (program.days.length === 0) {
-        list.innerHTML = "<p style='color:#888;'>No days yet. Add your first workout day.</p>";
-        return;
-    }
-
-    program.days.forEach((day, dayIndex) => {
-        const card = document.createElement("div");
-        card.classList.add("day-card");
-        card.innerHTML = `
-            <div style="flex:1;">
-              <div class="day-name-display">
-                <h3>${day.name}</h3>
-                <button class="edit-name-btn">✏️</button>
-              </div>
-              <div class="day-name-edit hidden">
-                <input type="text" class="day-name-input" value="${day.name}" />
-                <button class="save-name-btn">Save</button>
-                <button class="cancel-name-btn">Cancel</button>
-              </div>
-              <p>${day.exercises.length} exercises</p>
-            </div>
-            <div class="day-card-btns">
-              <button class="edit-day-btn">Edit</button>
-              <button class="start-day-btn">Start</button>
-              <button class="delete-day-btn">Delete</button>
-            </div>
-        `;
-
-        card.querySelector(".edit-name-btn").addEventListener("click", () => {
-            card.querySelector(".day-name-display").classList.add("hidden");
-            card.querySelector(".day-name-edit").classList.remove("hidden");
-            card.querySelector(".day-name-input").focus();
-        });
-
-        card.querySelector(".cancel-name-btn").addEventListener("click", () => {
-            card.querySelector(".day-name-edit").classList.add("hidden");
-            card.querySelector(".day-name-display").classList.remove("hidden");
-            card.querySelector(".day-name-input").value = day.name;
-        });
-
-        card.querySelector(".save-name-btn").addEventListener("click", () => {
-            const newName = card.querySelector(".day-name-input").value.trim();
-            if (newName === "") {
-                alert("Please enter a day name.");
-                return;
-            }
-            day.name = newName;
-            localStorage.setItem("programs", JSON.stringify(programs));
-            renderDays(currentProgram);
-        })
-
-        card.querySelector(".edit-day-btn").addEventListener("click", () => {
-            openDay(day);
-        });
-
-        card.querySelector(".start-day-btn").addEventListener("click", () => {
-            startWorkout(day);
-        });
-
-        card.querySelector(".delete-day-btn").addEventListener("click", () => {
-            deleteDay(dayIndex);
-        });
-
-        list.appendChild(card);
-    });
 }
 
 // Delete Day Function
@@ -298,43 +357,59 @@ document.getElementById("add-day-btn").addEventListener("click", () => {
 document.getElementById("cancel-day-btn").addEventListener("click", () => {
     document.getElementById("new-day-form").classList.add("hidden");
     document.getElementById("add-day-btn").classList.remove("hidden");
-    document.getElementById("day-name-input").value = "";
+    document.getElementById("day-date-input").value = "";
+    document.getElementById("day-notes-input").value = "";
+});
+
+document.getElementById("workout-type-btn").addEventListener("click", () => {
+    isDayWorkout = true;
+    document.getElementById("workout-type-btn").classList.add("active");
+    document.getElementById("rest-type-btn").classList.remove("active");
+});
+
+document.getElementById("rest-type-btn").addEventListener("click", () => {
+    isDayWorkout = false;
+    document.getElementById("rest-type-btn").classList.add("active");
+    document.getElementById("workout-type-btn").classList.remove("active");
 });
 
 document.getElementById("save-day-btn").addEventListener("click", () => {
-    const name = document.getElementById("day-name-input").value.trim();
+    const date = document.getElementById("day-date-input").value;
+    const notes = document.getElementById("day-notes-input").value.trim();
 
-    if (name === "") {
-        alert("Please enter a day name.");
-        return; 
-    }
+    if (!date) { alert("Please enter a date."); return; }
 
     const newDay = {
         id: Date.now(),
-        name: name,
-        exercises: []
+        type: isDayWorkout ? "workout" : "rest",
+        date,
+        notes,
+        exercises: [],
+        completed: false,
+        completedDate: null
     };
 
-    currentProgram.days.push(newDay);
-
-    //Update localStorage
+    currentWeek.days.push(newDay);
     localStorage.setItem("programs", JSON.stringify(programs));
 
     document.getElementById("new-day-form").classList.add("hidden");
     document.getElementById("add-day-btn").classList.remove("hidden");
-    document.getElementById("day-name-input").value = "";
+    document.getElementById("day-date-input").value = "";
+    document.getElementById("day-notes-input").value = "";
+    isDayWorkout = true;
+    document.getElementById("workout-type-btn").classList.add("active");
+    document.getElementById("rest-type-btn").classList.remove("active");
 
-    //Re-render the program detail screen
-    openProgram(currentProgram);
+    renderDays(currentWeek);
 });
 
 
 
 //back button + exercise form controls
-document.getElementById("back-to-program-detail-btn").addEventListener("click", () => {
-    document.getElementById("day-detail-screen").classList.add("hidden");
-    document.getElementById("program-detail-screen").classList.remove("hidden");
-    renderDays(currentProgram);
+document.getElementById("back-to-week-btn").addEventListener("click", () => {
+    document.getElementById("exercise-detail-screen").classList.add("hidden");
+    document.getElementById("week-detail-screen").classList.remove("hidden");
+    renderDays(currentWeek);
 });
 
 document.getElementById("add-exercise-btn").addEventListener("click", () => {
@@ -598,7 +673,7 @@ function deleteExercise(exIndex) {
 
 function editExercise(exIndex) {
     const ex = currentDay.exercises[exIndex];
-    editingExercisesIndex = exIndex;
+    editingExerciseIndex = exIndex;
 
      // Show the form
     document.getElementById("add-exercise-form").classList.remove("hidden");
@@ -626,7 +701,7 @@ function editExercise(exIndex) {
         updateWarmupFields();
 
         //Override the default percentages with the saved ones
-        const warmupInputs = document.querySelector(".warmup-pct-input");
+        const warmupInputs = document.querySelectorAll(".warmup-pct-input");
         ex.warmupSets.forEach((s, i) => {
             if (warmupInputs[i]) {
                 warmupInputs[i].value = s.pct;
@@ -657,9 +732,9 @@ function editExercise(exIndex) {
 function startWorkout(day) {
     currentDay = day;
 
-    document.getElementById("program-detail-screen").classList.add("hidden");
+    document.getElementById("week-detail-screen").classList.add("hidden");
     document.getElementById("workout-screen").classList.remove("hidden");
-    document.getElementById("workout-day-name").textContent = day.name;
+    document.getElementById("workout-day-name").textContent = day.date + (day.notes ? " — " + day.notes : "");
 
     renderWorkout(day);
 }
@@ -784,15 +859,23 @@ function updateWorkoutProgress(day) {
 // Back and Finish buttons
 document.getElementById("back-to-program-from-workout-btn").addEventListener("click", () => {
     document.getElementById("workout-screen").classList.add("hidden");
-    document.getElementById("program-detail-screen").classList.remove("hidden");
+    document.getElementById("week-detail-screen").classList.remove("hidden");
 });
 
 document.getElementById("finish-workout-btn").addEventListener("click", () => {
-    const day = currentDay;
     const total = document.getElementById("workout-progress").textContent;
+
+    // Mark day as completed with today's date
+    currentDay.completed = true;
+    currentDay.completedDate = new Date().toLocaleDateString("en-AU");
+
+    localStorage.setItem("programs", JSON.stringify(programs));
+
     alert(`Workout done! ${total}`);
     document.getElementById("workout-screen").classList.add("hidden");
-    document.getElementById("program-detail-screen").classList.remove("hidden");
+    document.getElementById("week-detail-screen").classList.remove("hidden");
+
+    renderDays(currentWeek);
 });
 
 function updateLiftMax(liftKey, newMax) {
