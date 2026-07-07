@@ -218,13 +218,47 @@ function openProgram(program) {
 
     document.getElementById("programs-screen").classList.add("hidden");
     document.getElementById("program-detail-screen").classList.remove("hidden");
-    document.getElementById("program-detail-name").textContent = program.name;
+    
+    const nameEl = document.getElementById("program-detail-name");
+    nameEl.innerHTML = `
+        <span id="program-name-display">${program.name} <button id="edit-program-name-btn">✏️</button></span>
+        <span id="program-name-edit" class="hidden">
+            <input type="text" id="program-name-edit-input" value="${program.name}" style="width:200px; padding:6px 10px; font-size:15px; border:1px solid #ddd; border-radius:8px;" />
+            <button id="save-program-name-btn">Save</button>
+            <button id="cancel-program-name-btn">Cancel</button>
+        </span>
+    `;
 
     // Show program info
     const info = document.getElementById("program-detail-info");
     info.innerHTML = `
         <p style="color:#888; font-size:13px;">Started: ${program.startDate} · ${program.weeks.length} weeks · Start weight: ${program.startWeight || "—"}kg</p>
     `;
+
+    // Edit name button
+    document.getElementById("edit-program-name-btn").addEventListener("click", () => {
+        document.getElementById("program-name-display").classList.add("hidden");
+        document.getElementById("program-name-edit").classList.remove("hidden");
+        document.getElementById("program-name-edit-input").focus();
+    });
+
+    // Cancel button
+    document.getElementById("cancel-program-name-btn").addEventListener("click", () => {
+        document.getElementById("program-name-edit").classList.add("hidden");
+        document.getElementById("program-name-display").classList.remove("hidden");
+    });
+
+    // Save button
+    document.getElementById("save-program-name-btn").addEventListener("click", () => {
+        const newName = document.getElementById("program-name-edit-input").value.trim();
+        if (newName === "") {
+            alert("Please enter a program name.");
+            return;
+        }
+        program.name = newName;
+        localStorage.setItem("programs", JSON.stringify(programs));
+        openProgram(program);
+    });
 
     renderWeeks(program);
 }
@@ -413,6 +447,7 @@ document.getElementById("back-to-week-btn").addEventListener("click", () => {
 });
 
 document.getElementById("add-exercise-btn").addEventListener("click", () => {
+    populateCompoundSelect();
     document.getElementById("add-exercise-form").classList.remove("hidden");
     document.getElementById("add-exercise-btn").classList.add("hidden");
 });
@@ -672,6 +707,7 @@ function deleteExercise(exIndex) {
 }
 
 function editExercise(exIndex) {
+    populateCompoundSelect();
     const ex = currentDay.exercises[exIndex];
     editingExerciseIndex = exIndex;
 
@@ -892,4 +928,15 @@ function updateLiftMax(liftKey, newMax) {
 
     //Update the lift cards on screen
     renderLiftCards();
+}
+
+function populateCompoundSelect() {
+    const select = document.getElementById("compound-select");
+    select.innerHTML = "";
+    lifts.forEach(lift => {
+        const option = document.createElement("option");
+        option.value = lift.key;
+        option.textContent = `${lift.name} (1RM: ${lift.max}kg)`;
+        select.appendChild(option);
+    });
 }
