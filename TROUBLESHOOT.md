@@ -1,5 +1,13 @@
 # Troubleshoot — App Not Updating After Push
 
+## Step 0 — Hard refresh the browser (desktop)
+Before anything else, try a hard refresh on your laptop browser:
+- **Windows:** `Ctrl + Shift + R`
+- **Mac:** `Cmd + Shift + R`
+
+This forces the browser to ignore the cache and download the latest files.
+If this fixes it, no further steps needed.
+
 ## Step 1 — Check GitHub first
 Go to your repo on GitHub and click `style.css`.
 Does it show the new code?

@@ -146,26 +146,45 @@ document.getElementById("save-program-btn").addEventListener("click", () => {
         });
     }
 
-    const newProgram = {
-        id: Date.now(),
-        name,
-        startDate,
-        startWeight: startWeight || null,
-        endWeight: null,
-        weeks
+    //Helper function to save the program
+    const saveProgram = (coverImage) => {
+        const newProgram = {
+            id: Date.now(),
+            name,
+            startDate,
+            startWeight: startWeight || null,
+            endWeight: null,
+            coverImage: coverImage || null,
+            weeks
+         };
+
+        programs.push(newProgram);
+        localStorage.setItem("programs", JSON.stringify(programs));
+
+        document.getElementById("new-program-form").classList.add("hidden");
+        document.getElementById("create-program-btn").classList.remove("hidden");
+        document.getElementById("program-name-input").value = "";
+        document.getElementById("program-start-date").value = "";
+        document.getElementById("program-weeks-input").value = "";
+        document.getElementById("program-start-weight").value = "";
+        document.getElementById("program-image-preview").classList.add("hidden");
+
+        renderPrograms();
     };
 
-    programs.push(newProgram);
-    localStorage.setItem("programs", JSON.stringify(programs));
+    //Check if an image was selected
+    const imageInput = document.getElementById("program-image-input");
+    const file = imageInput.file[0];
 
-    document.getElementById("new-program-form").classList.add("hidden");
-    document.getElementById("create-program-btn").classList.remove("hidden");
-    document.getElementById("program-name-input").value = "";
-    document.getElementById("program-start-date").value = "";
-    document.getElementById("program-weeks-input").value = "";
-    document.getElementById("program-start-weight").value = "";
-
-    renderPrograms();
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            saveProgram(event.target.result);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        saveProgram(null);
+    }
 });
 
 //Display newly added program
@@ -947,6 +966,18 @@ if ("serviceWorker" in navigator) {
             .then(reg => console.log("Service worker registered"))
             .catch(err => console.log("Service worker error:", err));
     });
-
-    
 }
+
+document.getElementById("program-image-input").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        const preview = document.getElementById("Program-image-preview");
+        const img = document.getElementById("preview-img");
+        img.src = event.target.result;
+        preview.classList.remove("hidden");
+    };
+    reader.readAsDataURL(file);
+});
