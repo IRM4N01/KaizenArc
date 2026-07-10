@@ -1,4 +1,4 @@
-const CACHE_NAME = "training-arc-v3";
+const CACHE_NAME = "training-arc-v4";
 const ASSETS = [
     "/TrainingArc/",
     "/TrainingArc/index.html",

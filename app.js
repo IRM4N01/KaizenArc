@@ -259,9 +259,141 @@ function openProgram(program) {
     // Show program info
     const info = document.getElementById("program-detail-info");
     info.innerHTML = `
-        ${program.coverImage ? `<img src="${program.coverImage}" alt="${program.name}" class="program-cover" style="margin-bottom:16px; object-position: center ${program.coverPosition || '50%'}" />` : ""}
+       ${program.coverImage ? `
+        <div style="position:relative; margin-bottom:12px;">
+            <img class="program-cover" src="${program.coverImage}" alt="${program.name}" style="object-position: center ${program.coverPosition || '50%'}" />
+            <div style="display:flex; gap:8px; margin-top:8px;">
+                <label for="change-cover-input" style="flex:1; padding:8px; background:none; border:1px solid var(--border-color); border-radius:8px; font-size:13px; color:var(--text-secondary); cursor:pointer; text-align:center; margin:0;">Change image</label>
+                <input type="file" id="change-cover-input" accept="image/*" style="display:none;" />
+                <button id="remove-cover-btn" style="flex:1; padding:8px; background:none; border:1px solid rgba(192,57,43,0.4); border-radius:8px; font-size:13px; color:var(--accent-red); cursor:pointer;">Remove image</button>
+            </div>
+        </div>
+    ` : `
+        <div style="margin-bottom:12px;">
+            <label for="change-cover-input" style="display:block; padding:10px; background:none; border:1px solid var(--border-color); border-radius:8px; font-size:13px; color:var(--text-secondary); cursor:pointer; text-align:center; margin:0;">+ Add cover image</label>
+            <input type="file" id="change-cover-input" accept="image/*" style="display:none;" />
+        </div>
+    `}
         <p style="color:var(--text-secondary); font-size:13px;">Started: ${program.startDate} · ${program.weeks.length} weeks · Start weight: ${program.startWeight || "—"}kg</p>
     `;
+
+    // Change or add cover image
+        document.getElementById("change-cover-input").addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                // Show drag preview instead of saving immediately
+                const dragPreview = document.createElement("div");
+                dragPreview.id = "change-cover-preview";
+                dragPreview.style.cssText = "margin-top:12px; border-radius:10px; overflow:hidden; border:1px solid var(--border-color);";
+                dragPreview.innerHTML = `
+                <div id="change-drag-container" style="width:100%; height:180px; overflow:hidden; position:relative; cursor:grab; border-radius:10px;">
+                    <img id="change-preview-img" src="${event.target.result}" draggable="false" style="width:100%; position:absolute; left:0; top:0; user-select:none; pointer-events:none;" />
+                </div>
+                <p style="font-size:13px; color:var(--text-secondary); margin-top:8px;">Drag to reposition</p>
+                <button id="confirm-change-btn" style="width:100%; padding:12px; background:var(--accent-red); color:var(--text-primary); border:none; border-radius:10px; font-size:15px; font-weight:500; margin-top:8px; cursor:pointer;">Save new image</button>
+                <button id="cancel-change-btn" style="width:100%; padding:12px; background:none; color:var(--text-secondary); border:1px solid var(--border-color); border-radius:10px; font-size:15px; margin-top:8px; cursor:pointer;">Cancel</button>
+                `;
+
+                // Insert preview after info section
+                const info = document.getElementById("program-detail-info");
+                const existing = document.getElementById("change-cover-preview");
+                if (existing) existing.remove();
+                info.insertAdjacentElement("afterend", dragPreview);
+
+                // Setup drag for change preview
+                let changeDragStartY = 0;
+                let changeDragStartOffset = 0;
+                let changeCurrentOffset = 0;
+                let changeImgHeight = 0;
+                const changeContainerHeight = 180;
+
+                const changeImg = document.getElementById("change-preview-img");
+                const changeContainer = document.getElementById("change-drag-container");
+
+                changeImg.onload = () => {
+                    const containerWidth = changeContainer.offsetWidth;
+                    const aspectRatio = changeImg.naturalHeight / changeImg.naturalWidth;
+                    changeImgHeight = containerWidth * aspectRatio;
+                    changeImg.style.height = changeImgHeight + "px";
+                    changeCurrentOffset = -(changeImgHeight - changeContainerHeight) / 2;
+                    changeImg.style.top = changeCurrentOffset + "px";
+                };
+
+                const updateChangeOffset = (newOffset) => {
+                    const maxOffset = 0;
+                    const minOffset = -(changeImgHeight - changeContainerHeight);
+                    changeCurrentOffset = Math.max(minOffset, Math.min(maxOffset, newOffset));
+                    changeImg.style.top = changeCurrentOffset + "px";
+                };
+
+                // Mouse drag
+                changeContainer.addEventListener("mousedown", (e) => {
+                    changeDragStartY = e.clientY;
+                    changeDragStartOffset = changeCurrentOffset;
+                    changeContainer.style.cursor = "grabbing";
+
+                    const onMouseMove = (e) => updateChangeOffset(changeDragStartOffset + (e.clientY - changeDragStartY));
+                    const onMouseUp = () => {
+                        changeContainer.style.cursor = "grab";
+                        document.removeEventListener("mousemove", onMouseMove);
+                        document.removeEventListener("mouseup", onMouseUp);
+                    };
+                    document.addEventListener("mousemove", onMouseMove);
+                    document.addEventListener("mouseup", onMouseUp);
+                });
+
+                // Touch drag
+                changeContainer.addEventListener("touchstart", (e) => {
+                    changeDragStartY = e.touches[0].clientY;
+                    changeDragStartOffset = changeCurrentOffset;
+
+                    const onTouchMove = (e) => {
+                        e.preventDefault();
+                        updateChangeOffset(changeDragStartOffset + (e.touches[0].clientY - changeDragStartY));
+                    };
+                    const onTouchEnd = () => {
+                        changeContainer.removeEventListener("touchmove", onTouchMove);
+                        changeContainer.removeEventListener("touchend", onTouchEnd);
+                    };
+                    changeContainer.addEventListener("touchmove", onTouchMove, { passive: false });
+                    changeContainer.addEventListener("touchend", onTouchEnd);
+                });
+
+                // Save new image
+                document.getElementById("confirm-change-btn").addEventListener("click", () => {
+                    const range = changeImgHeight - changeContainerHeight;
+                    const position = range > 0 ? ((-changeCurrentOffset / range) * 100).toFixed(1) + "%" : "50%";
+                    program.coverImage = event.target.result;
+                    program.coverPosition = position;
+                    localStorage.setItem("programs", JSON.stringify(programs));
+                    document.getElementById("change-cover-preview").remove();
+                    renderPrograms();
+                    openProgram(program);
+                });
+
+                // Cancel
+                document.getElementById("cancel-change-btn").addEventListener("click", () => {
+                    document.getElementById("change-cover-preview").remove();
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Remove cover image
+        if (document.getElementById("remove-cover-btn")) {
+            document.getElementById("remove-cover-btn").addEventListener("click", () => {
+                const confirm = window.confirm("Remove the cover image?");
+                if (!confirm) return;
+                program.coverImage = null;
+                program.coverPosition = null;
+                localStorage.setItem("programs", JSON.stringify(programs));
+                renderPrograms();
+                openProgram(program);
+            });
+        }
 
     // Edit name button
     document.getElementById("edit-program-name-btn").addEventListener("click", () => {
@@ -407,6 +539,18 @@ function openDay(day) {
     document.getElementById("week-detail-screen").classList.add("hidden");
     document.getElementById("exercise-detail-screen").classList.remove("hidden");
     document.getElementById("exercise-detail-name").textContent = day.date + (day.notes ? " - " + day.notes : "");
+
+    // Show program cover image if it exists
+    const existingCover = document.getElementById("day-cover-image");
+    if (existingCover) existingCover.remove();
+
+    if (currentProgram.coverImage) {
+        const coverEl = document.createElement("div");
+        coverEl.id = "day-cover-image";
+        coverEl.innerHTML = `<img src="${currentProgram.coverImage}" alt="${currentProgram.name}" class="program-cover" style="margin-bottom:16px; object-position: center ${currentProgram.coverPosition || '50%'}" />`;
+        const dayName = document.getElementById("exercise-detail-name");
+        dayName.insertAdjacentElement("afterend", coverEl);
+    }
 
     renderExercises(day);
 }
