@@ -21,6 +21,7 @@ let currentDay = null;
 let isCompound = true;
 let editingExerciseIndex = null;
 let isDayWorkout = true;
+let programImagePosition = "center";
 
 // ============ DOM REFERENCES ============
 const liftsContainer = document.getElementById("lifts-container");
@@ -155,8 +156,11 @@ document.getElementById("save-program-btn").addEventListener("click", () => {
             startWeight: startWeight || null,
             endWeight: null,
             coverImage: coverImage || null,
+            coverPosition: programImagePosition,
             weeks
-         };
+        };
+
+        document.getElementById("image-position-selector").classList.add("hidden");
 
         programs.push(newProgram);
         localStorage.setItem("programs", JSON.stringify(programs));
@@ -174,7 +178,7 @@ document.getElementById("save-program-btn").addEventListener("click", () => {
 
     //Check if an image was selected
     const imageInput = document.getElementById("program-image-input");
-    const file = imageInput.file[0];
+    const file = imageInput.files[0];
 
     if (file) {
         const reader = new FileReader();
@@ -203,13 +207,16 @@ function renderPrograms() {
             const card = document.createElement("div");
             card.classList.add("program-card");
             card.innerHTML = `
-                <div>
-                    <h3>${program.name}</h3>
-                    <p>${program.weeks.length} weeks · Started ${program.startDate}</p>
-                </div>
-                <div style="display:flex; gap:8px; align-items:center;">
-                    <span>→</span>
-                    <button class="delete-program-btn" style="padding:6px 12px; background:none; border:1px solid #ffcccc; border-radius:8px; font-size:13px; cursor:pointer; color:#cc0000;">Delete</button>
+                ${program.coverImage ? `<img class="program-cover" src="${program.coverImage}" alt="${program.name}" style="object-position: center ${program.coverPosition || '50%'}" />` : ""}
+                <div class="program-card-content" style="display:flex; justify-content:space-between; align-items:center; padding: 16px 20px;">
+                    <div>
+                        <h3>${program.name}</h3>
+                        <p>${program.weeks.length} weeks · Started ${program.startDate}</p>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <span>→</span>
+                        <button class="delete-program-btn" style="padding:6px 12px; background:none; border:1px solid rgba(192,57,43,0.4); border-radius:8px; font-size:13px; cursor:pointer; color:var(--accent-red);">Delete</button>
+                    </div>
                 </div>
             `;
 
@@ -237,6 +244,7 @@ function openProgram(program) {
 
     document.getElementById("programs-screen").classList.add("hidden");
     document.getElementById("program-detail-screen").classList.remove("hidden");
+    document.getElementById("program-detail-name").textContent = "";
     
     const nameEl = document.getElementById("program-detail-name");
     nameEl.innerHTML = `
@@ -251,7 +259,8 @@ function openProgram(program) {
     // Show program info
     const info = document.getElementById("program-detail-info");
     info.innerHTML = `
-        <p style="color:#888; font-size:13px;">Started: ${program.startDate} · ${program.weeks.length} weeks · Start weight: ${program.startWeight || "—"}kg</p>
+        ${program.coverImage ? `<img src="${program.coverImage}" alt="${program.name}" class="program-cover" style="margin-bottom:16px; object-position: center ${program.coverPosition || '50%'}" />` : ""}
+        <p style="color:var(--text-secondary); font-size:13px;">Started: ${program.startDate} · ${program.weeks.length} weeks · Start weight: ${program.startWeight || "—"}kg</p>
     `;
 
     // Edit name button
@@ -314,6 +323,18 @@ function openWeek(week) {
     document.getElementById("program-detail-screen").classList.add("hidden");
     document.getElementById("week-detail-screen").classList.remove("hidden");
     document.getElementById("week-detail-name").textContent = week.name;
+
+    const existingCover = document.getElementById("week-cover-image");
+    if (existingCover) existingCover.remove();
+
+    if (currentProgram.coverImage) {
+        const coverEl = document.createElement("div");
+        coverEl.id = "week-cover-image";
+        coverEl.innerHTML = `<img src="${currentProgram.coverImage}" alt="${currentProgram.name}" class="program-cover" style="margin-bottom:16px; object-position: center ${currentProgram.coverPosition || '50%'}" />`;
+        
+        const weekName = document.getElementById("week-detail-name");
+        weekName.insertAdjacentElement("afterend", coverEl);
+    }
 
     renderDays(week);
 }
@@ -968,16 +989,95 @@ if ("serviceWorker" in navigator) {
     });
 }
 
+let dragStartY = 0;
+let dragStartOffset = 0;
+let currentOffset = 0;
+let imgNaturalHeight = 0;
+let containerHeight = 180;
+
 document.getElementById("program-image-input").addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (event) => {
-        const preview = document.getElementById("Program-image-preview");
+        const preview = document.getElementById("program-image-preview");
         const img = document.getElementById("preview-img");
+
         img.src = event.target.result;
+        img.onload = () => {
+            const container = document.getElementById("drag-container");
+            const containerWidth = container.offsetWidth;
+            const aspectRatio = img.naturalHeight / img.naturalWidth;
+            imgNaturalHeight = containerWidth * aspectRatio;
+            img.style.width = "100%";
+            img.style.height = imgNaturalHeight + "px";
+            currentOffset = -(imgNaturalHeight - containerHeight) / 2;
+            img.style.top = currentOffset + "px";
+        };
+
         preview.classList.remove("hidden");
+        document.getElementById("image-position-selector").classList.remove("hidden");
+        setupDrag();  
     };
     reader.readAsDataURL(file);
 });
+
+function setupDrag() {
+     const container = document.getElementById("drag-container");
+    const img = document.getElementById("preview-img");
+
+    // Mouse events
+    container.addEventListener("mousedown", (e) => {
+        dragStartY = e.clientY;
+        dragStartOffset = currentOffset;
+        container.classList.add("dragging");
+
+        const onMouseMove = (e) => {
+            const delta = e.clientY - dragStartY;
+            updateOffset(dragStartOffset + delta, img);
+        };
+
+        const onMouseUp = () => {
+            container.classList.remove("dragging");
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
+        };
+
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
+    });
+
+    // Touch events for mobile
+    container.addEventListener("touchstart", (e) => {
+        dragStartY = e.touches[0].clientY;
+        dragStartOffset = currentOffset;
+
+        const onTouchMove = (e) => {
+            e.preventDefault();
+            const delta = e.touches[0].clientY - dragStartY;
+            updateOffset(dragStartOffset + delta, img);
+        };
+
+        const onTouchEnd = () => {
+            container.removeEventListener("touchmove", onTouchMove);
+            container.removeEventListener("touchend", onTouchEnd);
+        };
+
+        container.addEventListener("touchmove", onTouchMove, { passive: false });
+        container.addEventListener("touchend", onTouchEnd);
+    });
+}
+
+function updateOffset(newOffset, img) {
+    const maxOffset = 0;
+    const minOffset = -(imgNaturalHeight - containerHeight);
+    currentOffset = Math.max(minOffset, Math.min(maxOffset, newOffset));
+    img.style.top = currentOffset + "px";
+
+    // Store as a percentage for saving
+    const range = imgNaturalHeight - containerHeight;
+    programImagePosition = range > 0 ? ((-currentOffset / range) * 100).toFixed(1) + "%" : "50%";
+}
+
+
