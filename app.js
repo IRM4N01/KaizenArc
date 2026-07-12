@@ -1,3 +1,46 @@
+// ====== SPLASH SCREEN ======
+function initSplash() {
+    const userName = localStorage.getItem("userName");
+
+    if (!userName) {
+        // First time - show name entry
+        document.getElementById("splash-screen").style.display = "none";
+        document.getElementById("name-entry-screen").classList.remove("hidden");
+
+        document.getElementById("save-name-btn").addEventListener("click", () => {
+            const name = document.getElementById("user-name-input").value.trim();
+            if (!name) { alert("Please enter your name!"); return; }
+            localStorage.setItem("userName", name);
+            document.getElementById("name-entry-screen").classList.add("hidden");
+            showSplash(name);
+        });
+
+        // Allow pressing enter to submit
+        document.getElementById("user-name-input").addEventListener("keydown", (e) => {
+            if (e.key === "Enter") document.getElementById("save-name-btn").click();
+        });
+
+    } else {
+        showSplash(userName);
+    }
+}
+
+function showSplash(name) {
+    const splash = document.getElementById("splash-screen");
+    splash.style.display = "flex";
+    document.getElementById("splash-welcome").textContent = `Welcome back, ${name}`;
+
+    setTimeout(() => {
+        splash.classList.add("fade-out");
+        setTimeout(() => {
+            splash.style.display = "none";
+        }, 600);
+    }, 2000);
+}
+
+initSplash();
+
+
 // ======= DATA =========
 const defaultLlifts = [
     { key: "bench", name: "Bench Press", max: 100, percentages: [95, 92.5, 90, 87.5, 85, 82.5, 80, 77.5, 75, 72.5, 70, 67.5, 60, 55, 50, 45, 40] },

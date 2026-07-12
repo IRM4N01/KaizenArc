@@ -16,6 +16,27 @@
     </head>
 
     <body>
+      <!--Splash/Welcome screen-->
+      <div id="splash-screen">
+        <div id="splash-content">
+          <img src="icons/icon-512.png" alt="Training Arc" id="splash-logo" />
+          <h1 id="splash-welcome">Welcome back</h1>
+          <p id="splash-tagline">Get ready to train</p>
+        </div>
+      </div>
+
+      <!--Name Entry (first time only)-->
+      <div id="name-entry-screen" class="hidden">
+        <div id="name-entry-content">
+          <img src="icons/icon-512.png" alt="Training Arc" id="name-entry-logo" />
+          <h1>Welcome to Training Arc</h1>
+          <p>What should we call you?</p>
+          <input type="text" id="user-name-input" placeholder="Enter your name" />
+          <button id="save-name-btn">Let's go</button>
+        </div>
+      </div>
+
+
       <!--Main content area-->
         <nav id="bottom-nav">
           <button class="nav-btn active" data-screen="home-screen">Lifts</button>
