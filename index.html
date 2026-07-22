@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset-"UTF-8">
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Training Arc - Gym Tracker</title>
 
@@ -10,7 +10,7 @@
         <link rel="icon" type="image/png" href="icons/icon-192.png">
 
         <meta name="theme-color" content="#333333">
-        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="apple-mobile-web-app-title" content="Training Arc">
     </head>
@@ -112,6 +112,23 @@
           <button id="back-to-programs-btn">← Programs</button>
           <h1 id="program-detail-name"></h1>
           <div id="program-detail-info"></div>
+
+          <div id="edit-program-details-form" class="hidden">
+            <h2>Edit Program Details</h2>
+            <label>Program name</label>
+            <input type="text" id="edit-program-name" />
+            <label>Start date</label>
+            <input type="date" id="edit-program-start-date" />
+            <label>Number of weeks</label>
+            <input type="number" id="edit-program-weeks" min="1" max="52" />
+            <label>Starting bodyweight (kg)</label>
+            <input type="number" id="edit-program-start-weight" placeholder="e.g. 82.5" />
+            <label>Ending bodyweight (kg)</label>
+            <input type="number" id="edit-program-end-weight" placeholder="e.g. 85" />
+            <button id="save-program-details-btn">Save Changes</button>
+            <button id="cancel-program-details-btn">Cancel</button>
+          </div>
+
           <div id="weeks-list"></div>
         </div>
 
@@ -211,6 +228,6 @@
           <button id="finish-workout-btn">Finish Workout</button>
         </div>
 
-        <script src="app.js"></script>
+        <script type="module" src="js/app.js"></script>
     </body>    
 </html>
