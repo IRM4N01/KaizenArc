@@ -1,10 +1,10 @@
-# Training Arc 🏋️
+# Kaizen Arc 🏋️
 
 A personal gym tracking progressive web app (PWA) built with HTML, CSS, and vanilla JavaScript.
 
 ## About
 
-Training Arc was built to replace the notes app as a way to plan and track structured lifting programs. It lets you manage your 1RM personal bests, plan training programs week by week, and follow along during workout sessions — all from your phone home screen like a native app.
+Kaizen Arc was built to replace the notes app as a way to plan and track structured lifting programs. It lets you manage your 1RM personal bests, plan training programs week by week, and follow along during workout sessions — all from your phone home screen like a native app.
 
 ## Features
 
@@ -60,7 +60,7 @@ Training Arc was built to replace the notes app as a way to plan and track struc
 4. Training Arc will appear on your home screen like a native app
 
 ## Live App
-[https://irmanwibawa.github.io/TrainingArc](https://irmanwibawa.github.io/TrainingArc)
+[https://irmanwibawa.github.io/KaizenArc](https://irmanwibawa.github.io/KaizenArc)
 
 ## Troubleshooting
 See `TROUBLESHOOT.md` for a step-by-step guide if the app doesn't update after a push.

@@ -30,3 +30,12 @@ function startApp() {
 }
 
 initSplash(startApp);
+
+// ======= SERVICE WORKER =======
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/KaizenArc/service-worker.js")
+            .then(reg => console.log("Service worker registered"))
+            .catch(err => console.log("Service worker error:", err));
+    });
+}

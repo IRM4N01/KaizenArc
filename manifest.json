@@ -2,7 +2,7 @@
     "name": "Kaizen Arc",
     "short_name": "Kaizen Arc",
     "description": "Personal gym tracking app",
-    "start_url": "/TrainingArc/",
+    "start_url": "/KaizenArc/",
     "display": "standalone",
     "background_color": "#0a0a0a",
     "theme_color": "#0a0a0a",
