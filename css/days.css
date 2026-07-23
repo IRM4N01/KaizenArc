@@ -1,0 +1,225 @@
+/* ======= DAYS =======
+   Day cards, badges, day form
+*/
+
+#back-to-program-from-week-btn,
+#back-to-week-btn {
+    background: none;
+    border: none;
+    color: var(--accent-gold);
+    font-size: 14px;
+    padding: 0;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+#add-day-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent-red);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 16px;
+    transition: background 0.2s;
+}
+
+#add-day-btn:hover {
+    background: var(--accent-red-hover);
+}
+
+#save-day-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent-red);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 16px;
+    transition: background 0.2s;
+}
+
+#save-day-btn:hover {
+    background: var(--accent-red-hover);
+}
+
+#cancel-day-btn {
+    width: 100%;
+    padding: 13px;
+    background: none;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 15px;
+    margin-top: 8px;
+}
+
+#cancel-day-btn:hover {
+    border-color: var(--text-secondary);
+}
+
+.day-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.day-card h3 {
+    margin: 0 0 4px 0;
+}
+
+.day-card-btns {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.start-day-btn {
+    padding: 8px 16px;
+    background: var(--accent-red);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.start-day-btn:hover {
+    background: var(--accent-red-hover);
+}
+
+.delete-day-btn {
+    padding: 8px 14px;
+    background: none;
+    border: 1px solid rgba(192, 57, 43, 0.4);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--accent-red);
+}
+
+.delete-day-btn:hover {
+    background: rgba(192, 57, 43, 0.1);
+}
+
+.edit-day-btn {
+    padding: 8px 14px;
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.edit-day-btn:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+/* Day name editing */
+.day-name-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.day-name-display h3 {
+    margin: 0;
+}
+
+.edit-name-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    color: var(--text-secondary);
+}
+
+.day-name-edit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.day-name-input {
+    width: 200px;
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+.save-name-btn {
+    padding: 6px 12px;
+    background: var(--accent-red);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.cancel-name-btn {
+    padding: 6px 12px;
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+/* Toggle buttons */
+.toggle-btn {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: none;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.toggle-btn.active {
+    background: var(--accent-gold);
+    color: var(--text-on-gold);
+    border-color: var(--accent-gold);
+    font-weight: 500;
+}
+
+#day-type-toggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+/* Badges */
+.badge-done {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(201, 168, 76, 0.15);
+    color: var(--accent-gold);
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.badge-rest {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(138, 157, 181, 0.15);
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-top: 4px;
+}

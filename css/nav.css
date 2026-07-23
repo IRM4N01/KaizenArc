@@ -1,0 +1,31 @@
+/* ======= NAVIGATION =======
+   Bottom navigation bar
+*/
+
+#bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    padding: 10px 0;
+    z-index: 100;
+}
+
+.nav-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px 0;
+    font-family: inherit;
+}
+
+.nav-btn.active {
+    color: var(--accent-gold);
+    font-weight: 500;
+}

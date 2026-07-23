@@ -1,0 +1,214 @@
+/* ======= PROGRAMS =======
+   Program cards, forms, cover image
+*/
+
+#create-program-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent-red);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 16px;
+    transition: background 0.2s;
+}
+
+#create-program-btn:hover {
+    background: var(--accent-red-hover);
+}
+
+#cancel-program-btn {
+    width: 100%;
+    padding: 13px;
+    background: none;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 15px;
+    margin-top: 8px;
+}
+
+#cancel-program-btn:hover {
+    border-color: var(--text-secondary);
+}
+
+#save-program-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent-red);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 16px;
+    transition: background 0.2s;
+}
+
+#save-program-btn:hover {
+    background: var(--accent-red-hover);
+}
+
+#back-to-programs-btn {
+    background: none;
+    border: none;
+    color: var(--accent-gold);
+    font-size: 14px;
+    padding: 0;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+.program-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-card);
+    border-radius: 12px;
+    margin-top: 12px;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    transition: border-color 0.2s;
+    overflow: hidden;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.program-card:hover {
+    border-color: var(--accent-gold);
+}
+
+.program-card h3 {
+    margin: 0 0 4px 0;
+}
+
+.program-card p {
+    margin: 0;
+}
+
+.program-cover {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+
+.program-card-content {
+    padding: 16px 20px;
+}
+
+/* Program detail */
+#edit-program-details-form {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+}
+
+#save-program-details-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent-red);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 16px;
+    transition: background 0.2s;
+}
+
+#save-program-details-btn:hover {
+    background: var(--accent-red-hover);
+}
+
+#cancel-program-details-btn {
+    width: 100%;
+    padding: 13px;
+    background: none;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 15px;
+    margin-top: 8px;
+}
+
+#save-program-name-btn {
+    padding: 6px 14px;
+    background: var(--accent-red);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+#cancel-program-name-btn {
+    padding: 6px 12px;
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+#edit-program-name-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    color: var(--text-secondary);
+    vertical-align: middle;
+}
+
+/* Cover image drag */
+#program-image-input {
+    padding: 8px 0;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+#program-image-preview {
+    margin-top: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+#drag-container {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+    border-radius: 10px;
+}
+
+#drag-container.dragging {
+    cursor: grabbing;
+}
+
+#preview-img {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Week cards */
+#weeks-list .program-card {
+    flex-direction: row;
+    align-items: center;
+    padding: 16px 20px;
+}

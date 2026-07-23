@@ -1,0 +1,106 @@
+/* ======= LIFTS =======
+   Lift cards, percentage table, 1RM update form
+*/
+
+#lifts-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    max-width: 500px;
+    margin-top: 16px;
+}
+
+.lift-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    transition: border-color 0.2s;
+}
+
+.lift-card:hover {
+    border-color: var(--accent-gold);
+}
+
+.lift-card h2 {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 8px 0;
+    font-weight: 400;
+}
+
+.lift-card p {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--accent-gold);
+    margin: 0;
+}
+
+#pct-table {
+    width: 100%;
+    max-width: 500px;
+    border-collapse: collapse;
+}
+
+#pct-table th {
+    text-align: left;
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#pct-table td {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+#pct-table td:last-child {
+    color: var(--accent-gold);
+    font-weight: 500;
+}
+
+#update-max-form {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+#update-max-form h3 {
+    margin: 0 0 12px 0;
+}
+
+#new-max-input {
+    width: 150px;
+    margin-right: 8px;
+}
+
+#update-max-btn {
+    width: auto;
+    padding: 10px 20px;
+    margin-top: 0;
+    display: inline-block;
+    background: var(--accent-red);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+#update-max-btn:hover {
+    background: var(--accent-red-hover);
+}
+
+#back-btn {
+    background: none;
+    border: none;
+    color: var(--accent-gold);
+    font-size: 14px;
+    padding: 0;
+    margin-bottom: 16px;
+    display: inline-block;
+}

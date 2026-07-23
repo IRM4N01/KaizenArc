@@ -1,0 +1,88 @@
+/* ======= WORKOUT TRACKER =======
+   Workout screen, set rows, tick buttons, progress
+*/
+
+#back-to-program-from-workout-btn {
+    background: none;
+    border: none;
+    color: var(--accent-gold);
+    font-size: 14px;
+    padding: 0;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+#finish-workout-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent-red);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 16px;
+    transition: background 0.2s;
+}
+
+#finish-workout-btn:hover {
+    background: var(--accent-red-hover);
+}
+
+#workout-progress {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 4px 0 16px;
+}
+
+.workout-exercise-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.workout-exercise-card h3 {
+    margin: 0 0 12px 0;
+}
+
+.set-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-color);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.set-row:last-child {
+    border-bottom: none;
+}
+
+.set-row.completed {
+    color: var(--text-secondary);
+    text-decoration: line-through;
+}
+
+.tick-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-color);
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--text-primary);
+}
+
+.tick-btn.done {
+    background: var(--accent-gold);
+    border-color: var(--accent-gold);
+    color: var(--text-on-gold);
+}
