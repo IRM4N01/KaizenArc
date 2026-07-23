@@ -16,7 +16,7 @@
 #add-day-btn {
     width: 100%;
     padding: 13px;
-    background: var(--accent-red);
+    background: var(--accent-gold);
     color: var(--text-primary);
     border: none;
     border-radius: 10px;
@@ -33,7 +33,7 @@
 #save-day-btn {
     width: 100%;
     padding: 13px;
-    background: var(--accent-red);
+    background: var(--accent-gold);
     color: var(--text-primary);
     border: none;
     border-radius: 10px;
@@ -85,7 +85,7 @@
 
 .start-day-btn {
     padding: 8px 16px;
-    background: var(--accent-red);
+    background: var(--accent-gold);
     color: var(--text-primary);
     border: none;
     border-radius: 8px;
@@ -159,7 +159,7 @@
 
 .save-name-btn {
     padding: 6px 12px;
-    background: var(--accent-red);
+    background: var(--accent-gold);
     color: var(--text-primary);
     border: none;
     border-radius: 8px;
