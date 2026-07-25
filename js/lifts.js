@@ -1,5 +1,5 @@
 // ======= LIFTS =======
-import { getLiftMaxes, saveLiftMaxes } from './storage.js';
+import { getLiftMaxes, saveLiftMaxes, getPersonalRecords, savePersonalRecords } from './storage.js';
 
 const defaultLifts = [
     { key: "bench", name: "Bench Press", max: 100, percentages: [95, 92.5, 90, 87.5, 85, 82.5, 80, 77.5, 75, 72.5, 70, 67.5, 60, 55, 50, 45, 40] },
@@ -79,6 +79,48 @@ function showPercentages(lift) {
         updateLiftMax(lift.key, newMax);
         showPercentages(lift);
     };
+
+    // Show personal record history
+    const records = getPersonalRecords();
+    const liftRecords = records[lift.key] || [];
+
+    const existingHistory = document.getElementById("pr-history");
+    if (existingHistory) existingHistory.remove();
+
+    const prHistory = document.createElement("div");
+    prHistory.id = "pr-history";
+
+    if (liftRecords.length === 0) {
+        prHistory.innerHTML = `
+            <h3 style="margin: 24px 0 12px;">Personal Record History</h3>
+            <p style="color:var(--text-secondary);">No records yet — update your 1RM to start tracking.</p>
+        `;
+    } else {
+        const rows = liftRecords.slice().reverse().map((r, i) => `
+            <tr>
+                <td>${r.date}</td>
+                <td style="color:var(--accent-gold); font-weight:500;">${r.max}kg</td>
+                ${i === 0 ? `<td style="color:var(--accent-gold); font-size:12px;">Current</td>` : "<td></td>"}
+            </tr>
+        `).join("");
+
+        prHistory.innerHTML = `
+            <h3 style="margin: 24px 0 12px;">Personal Record History</h3>
+            <table style="width:100%; border-collapse:collapse;">
+                <thead>
+                    <tr>
+                        <th style="text-align:left; font-size:13px; color:var(--text-secondary); padding:8px 0; border-bottom:1px solid var(--border-color);">Date</th>
+                        <th style="text-align:left; font-size:13px; color:var(--text-secondary); padding:8px 0; border-bottom:1px solid var(--border-color);">1RM</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>
+        `;
+    }
+
+    liftDetail.appendChild(prHistory);
+
 }
 
 export function updateLiftMax(liftKey, newMax) {
@@ -87,9 +129,19 @@ export function updateLiftMax(liftKey, newMax) {
 
     lift.max = newMax;
 
+    // Save new max
     const savedMaxes = getLiftMaxes();
     savedMaxes[liftKey] = newMax;
     saveLiftMaxes(savedMaxes);
+
+    // Log personal record
+    const records = getPersonalRecords();
+    if (!records[liftKey]) records[liftKey] = [];
+    records[liftKey].push({
+        max: newMax,
+        date: new Date().toLocaleDateString("en-AU")
+    });
+    savePersonalRecords(records);
 
     renderLiftCards();
 }

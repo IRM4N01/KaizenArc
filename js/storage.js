@@ -24,3 +24,11 @@ export function getUserName() {
 export function saveUserName(name) {
     localStorage.setItem("userName", name);
 }
+
+export function getPersonalRecords() {
+    return JSON.parse(localStorage.getItem("personalRecords")) || {};
+}
+
+export function savePersonalRecords(records) {
+    localStorage.setItem("personalRecords", JSON.stringify(records));
+}
