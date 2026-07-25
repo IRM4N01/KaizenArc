@@ -11,6 +11,7 @@ let restTimerInterval = null;
 let restTimerSeconds = 0;
 let soundEnabled = true;
 let vibrationEnabled = true;
+let audioCtx = null;
 
 export function startWorkout(day, week, program, programs) {
     currentDay = day;
@@ -194,6 +195,16 @@ function updateWorkoutProgress(day) {
 }
 
 function initRestTimer() {
+    // Unlock audio context on first user interaction
+    document.addEventListener("touchstart", () => {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === "suspended") {
+            audioCtx.resume();
+        }
+    }, { once: false });
+
     document.getElementById("sound-toggle").addEventListener("change", (e) => {
         soundEnabled = e.target.checked;
     });
@@ -205,6 +216,11 @@ function initRestTimer() {
     document.getElementById("rest-timer-stop").addEventListener("click", () => {
         stopRestTimer();
     });
+
+    if (!navigator.vibrate) {
+      const vibrationRow = document.getElementById("vibration-toggle").closest(".workout-setting-row");
+      if (vibrationRow) vibrationRow.style.display = "none";
+    }
 }
 
 function startRestTimer(seconds) {
@@ -251,7 +267,14 @@ function onRestComplete() {
 }
 
 function playBeep() {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+    }
+
     const oscillator = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
 
