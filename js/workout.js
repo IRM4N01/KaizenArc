@@ -7,6 +7,10 @@ let currentDay = null;
 let currentWeek = null;
 let currentProgram = null;
 let currentPrograms = null;
+let restTimerInterval = null;
+let restTimerSeconds = 0;
+let soundEnabled = true;
+let vibrationEnabled = true;
 
 export function startWorkout(day, week, program, programs) {
     currentDay = day;
@@ -17,6 +21,8 @@ export function startWorkout(day, week, program, programs) {
     document.getElementById("week-detail-screen").classList.add("hidden");
     document.getElementById("workout-screen").classList.remove("hidden");
     document.getElementById("workout-day-name").textContent = day.date + (day.notes ? " — " + day.notes : "");
+
+    initRestTimer();
 
     // Remove old listeners by replacing buttons
     const backBtn = document.getElementById("back-to-program-from-workout-btn");
@@ -120,8 +126,29 @@ function renderWorkout(day) {
             }
         }
 
-        card.innerHTML = `<h3>${ex.name}</h3>${setsHTML}`;
+        const restTimerHTML = `
+            <div class="rest-timer-row">
+                <label>Rest</label>
+                <input type="number" class="rest-timer-input" placeholder="90" min="1" max="600" value="${ex.restSeconds || ''}" />
+                <span class="rest-timer-unit">sec</span>
+                <button class="start-rest-btn">Start rest</button>
+            </div>
+        `;
+
+        card.innerHTML = `<h3>${ex.name}</h3>${setsHTML}${restTimerHTML}`;
         list.appendChild(card);
+
+         // Start rest button listener
+        card.querySelector(".start-rest-btn").addEventListener("click", () => {
+            const input = card.querySelector(".rest-timer-input");
+            const seconds = parseInt(input.value);
+            if (!seconds || seconds < 1) {
+                alert("Please enter a rest time in seconds.");
+                return;
+            }
+            ex.restSeconds = seconds;
+            startRestTimer(seconds);
+        });
     });
 
     updateWorkoutProgress(day);
@@ -165,3 +192,78 @@ function updateWorkoutProgress(day) {
 
     document.getElementById("workout-progress").textContent = `${done} of ${total} sets completed`;
 }
+
+function initRestTimer() {
+    document.getElementById("sound-toggle").addEventListener("change", (e) => {
+        soundEnabled = e.target.checked;
+    });
+
+    document.getElementById("vibration-toggle").addEventListener("change", (e) => {
+        vibrationEnabled = e.target.checked;
+    });
+
+    document.getElementById("rest-timer-stop").addEventListener("click", () => {
+        stopRestTimer();
+    });
+}
+
+function startRestTimer(seconds) {
+    if (restTimerInterval) clearInterval(restTimerInterval);
+
+    restTimerSeconds = seconds;
+    const container = document.getElementById("rest-timer-container");
+    container.classList.remove("hidden");
+    updateRestTimerDisplay();
+
+    restTimerInterval = setInterval(() => {
+        restTimerSeconds--;
+        updateRestTimerDisplay();
+
+        if (restTimerSeconds <= 0) {
+            stopRestTimer();
+            onRestComplete();
+        }
+    }, 1000);
+}
+
+function stopRestTimer() {
+    if (restTimerInterval) {
+        clearInterval(restTimerInterval);
+        restTimerInterval = null;
+    }
+    document.getElementById("rest-timer-container").classList.add("hidden");
+}
+
+function updateRestTimerDisplay() {
+    const mins = Math.floor(restTimerSeconds / 60);
+    const secs = restTimerSeconds % 60;
+    document.getElementById("rest-timer-display").textContent =
+        `${mins}:${secs.toString().padStart(2, "0")}`;
+}
+
+function onRestComplete() {
+    if (soundEnabled) {
+        playBeep();
+    }
+    if (vibrationEnabled && navigator.vibrate) {
+        navigator.vibrate([200, 100, 200, 100, 200]);
+    }
+}
+
+function playBeep() {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
+    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
+
+    oscillator.start(audioCtx.currentTime);
+    oscillator.stop(audioCtx.currentTime + 0.8);
+}
+

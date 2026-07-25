@@ -230,6 +230,32 @@
         <div id="workout-screen" class="screen hidden">
           <button id="back-to-program-from-workout-btn">← Back</button>
           <h1 id="workout-day-name"></h1>
+
+          <div id="workout-settings">
+            <div class="workout-setting-row">
+              <span>🔊 Sound</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="sound-toggle" checked />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="workout-setting-row">
+              <span>📳 Vibration</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="vibration-toggle" checked />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div id="rest-timer-container" class="hidden">
+              <div id="rest-timer-display">0:00</div>
+              <div id="rest-timer-controls">
+                <button id="rest-timer-stop">Stop</button>
+              </div>
+            </div>
+
+          </div>
+
           <p id="workout-progress"></p>
 
           <div id="workout-exercises-list"></div>
