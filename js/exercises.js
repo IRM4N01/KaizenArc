@@ -1,6 +1,7 @@
 // ======= EXERCISES =======
 import { savePrograms } from './storage.js';
 import { getCurrentLiftMax, populateCompoundSelect } from './lifts.js';
+import { searchExercises, renderExerciseDropdown, renderExerciseInfo } from './exerciseSearch.js';
 
 let currentDay = null;
 let currentPrograms = null;
@@ -25,6 +26,7 @@ export function initExercises(day, programs) {
         populateCompoundSelect();
         document.getElementById("add-exercise-form").classList.remove("hidden");
         document.getElementById("add-exercise-btn").classList.add("hidden");
+        initExerciseSearch();
     });
 
     document.getElementById("cancel-exercise-btn").addEventListener("click", () => {
@@ -315,4 +317,31 @@ function resetExerciseForm() {
     document.getElementById("accessory-fields").classList.add("hidden");
     document.getElementById("working-pct-field").classList.remove("hidden");
     document.getElementById("accessory-weight-field").classList.add("hidden");
+}
+
+function initExerciseSearch() {
+    const nameInput = document.getElementById("accessory-name-input");
+    const formContainer = document.getElementById("add-exercise-form");
+
+    let searchTimeout = null;
+
+    nameInput.addEventListener("input", () => {
+        const query = nameInput.value.trim();
+
+        // Remove dropdown and info if query is too short
+        const existing = document.getElementById("exercise-dropdown");
+        if (existing) existing.remove();
+
+        if (query.length < 3) return;
+
+        // Debounce — wait 400ms after user stops typing
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(async () => {
+            const results = await searchExercises(query);
+            renderExerciseDropdown(results, formContainer, (selectedEx) => {
+                nameInput.value = selectedEx.name;
+                renderExerciseInfo(selectedEx, formContainer);
+            });
+        }, 400);
+    });
 }

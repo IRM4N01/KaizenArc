@@ -177,3 +177,101 @@
     border-color: var(--accent-gold);
     font-weight: 500;
 }
+
+/* Exercise search dropdown */
+#exercise-dropdown {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 4px;
+    z-index: 100;
+}
+
+.exercise-dropdown-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 0.5px solid var(--border-color);
+    transition: background 0.15s;
+}
+
+.exercise-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.exercise-dropdown-item:hover {
+    background: var(--bg-card-hover);
+}
+
+.ex-drop-name {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-transform: capitalize;
+}
+
+.ex-drop-meta {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+    text-transform: capitalize;
+}
+
+/* Exercise info panel */
+#exercise-info-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 12px;
+}
+
+.ex-info-header {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.ex-info-muscle {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(201, 168, 76, 0.15);
+    color: var(--accent-gold);
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.ex-info-difficulty {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(138, 157, 181, 0.15);
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.ex-info-instructions {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.ex-info-watch {
+    display: inline-block;
+    padding: 8px 16px;
+    background: var(--accent-gold);
+    color: var(--text-on-gold);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.ex-info-watch:hover {
+    background: var(--accent-gold-hover);
+}
