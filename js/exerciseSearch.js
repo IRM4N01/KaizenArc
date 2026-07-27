@@ -1,41 +1,11 @@
 // ======= EXERCISE SEARCH =======
-import { API_NINJAS_KEY } from '../config.js';
+import { searchLocalExercises } from './exerciseData.js';
 
-const exerciseCache = JSON.parse(localStorage.getItem("exerciseCache")) || {};
-
-export async function searchExercises(query) {
-    const cacheKey = query.toLowerCase().trim();
-
-    // Check cache first
-    if (exerciseCache[cacheKey]) {
-        return exerciseCache[cacheKey];
-    }
-
-    try {
-        const response = await fetch(`https://api.api-ninjas.com/v1/exercises?name=${encodeURIComponent(query)}`, {
-            headers: {
-                "X-Api-Key": API_NINJAS_KEY
-            }
-        });
-
-        if (!response.ok) throw new Error("API error");
-
-        const data = await response.json();
-
-        // Save to cache
-        exerciseCache[cacheKey] = data;
-        localStorage.setItem("exerciseCache", JSON.stringify(exerciseCache));
-
-        return data;
-
-    } catch (error) {
-        console.error("Exercise search error:", error);
-        return [];
-    }
+export function searchExercises(query) {
+    return searchLocalExercises(query);
 }
 
 export function renderExerciseDropdown(results, container, onSelect) {
-    // Remove existing dropdown
     const existing = document.getElementById("exercise-dropdown");
     if (existing) existing.remove();
 

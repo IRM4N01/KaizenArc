@@ -323,25 +323,18 @@ function initExerciseSearch() {
     const nameInput = document.getElementById("accessory-name-input");
     const formContainer = document.getElementById("add-exercise-form");
 
-    let searchTimeout = null;
-
     nameInput.addEventListener("input", () => {
         const query = nameInput.value.trim();
 
-        // Remove dropdown and info if query is too short
         const existing = document.getElementById("exercise-dropdown");
         if (existing) existing.remove();
 
-        if (query.length < 3) return;
+        if (query.length < 2) return;
 
-        // Debounce — wait 400ms after user stops typing
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(async () => {
-            const results = await searchExercises(query);
-            renderExerciseDropdown(results, formContainer, (selectedEx) => {
-                nameInput.value = selectedEx.name;
-                renderExerciseInfo(selectedEx, formContainer);
-            });
-        }, 400);
+        const results = searchExercises(query);
+        renderExerciseDropdown(results, formContainer, (selectedEx) => {
+            nameInput.value = selectedEx.name;
+            renderExerciseInfo(selectedEx, formContainer);
+        });
     });
 }
