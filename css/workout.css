@@ -235,3 +235,111 @@
     cursor: pointer;
 }
 
+/* Exercise info modal */
+#exercise-info-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 200;
+    display: flex;
+    align-items: flex-end;
+}
+
+#exercise-info-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+#exercise-info-content {
+    position: relative;
+    background: var(--bg-card);
+    border-radius: 20px 20px 0 0;
+    padding: 24px 20px;
+    width: 100%;
+    max-height: 70vh;
+    overflow-y: auto;
+    border-top: 1px solid var(--border-color);
+    z-index: 201;
+}
+
+#exercise-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+#exercise-info-header h3 {
+    font-size: 17px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+#exercise-info-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+#exercise-info-badges {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+#exercise-info-muscle {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(201, 168, 76, 0.15);
+    color: var(--accent-gold);
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+#exercise-info-difficulty {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(138, 157, 181, 0.15);
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+#exercise-info-instructions {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 16px;
+}
+
+/* Info button on exercise cards */
+.exercise-info-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.exercise-info-btn:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}

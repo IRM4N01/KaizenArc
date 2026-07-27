@@ -2,6 +2,7 @@
 import { savePrograms } from './storage.js';
 import { renderDays } from './days.js';
 import { refreshPrograms } from './programs.js';
+import { searchLocalExercises } from './exerciseData.js';
 
 let currentDay = null;
 let currentWeek = null;
@@ -24,6 +25,7 @@ export function startWorkout(day, week, program, programs) {
     document.getElementById("workout-day-name").textContent = day.date + (day.notes ? " — " + day.notes : "");
 
     initRestTimer();
+    initExerciseInfoModal();
 
     // Remove old listeners by replacing buttons
     const backBtn = document.getElementById("back-to-program-from-workout-btn");
@@ -136,8 +138,19 @@ function renderWorkout(day) {
             </div>
         `;
 
-        card.innerHTML = `<h3>${ex.name}</h3>${setsHTML}${restTimerHTML}`;
+        card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <h3 style="margin:0;">${ex.name}</h3>
+              <button class="exercise-info-btn" title="Exercise info">?</button>
+            </div>
+            ${setsHTML}${restTimerHTML}
+        `;
+
         list.appendChild(card);
+
+        card.querySelector(".exercise-info-btn").addEventListener("click", () => {
+            openExerciseInfo(ex.name);
+        });
 
          // Start rest button listener
         card.querySelector(".start-rest-btn").addEventListener("click", () => {
@@ -288,5 +301,29 @@ function playBeep() {
 
     oscillator.start(audioCtx.currentTime);
     oscillator.stop(audioCtx.currentTime + 0.8);
+}
+
+function initExerciseInfoModal() {
+    document.getElementById("exercise-info-close").addEventListener("click", closeExerciseInfo);
+    document.getElementById("exercise-info-overlay").addEventListener("click", closeExerciseInfo);
+}
+
+function openExerciseInfo(exerciseName) {
+    const results = searchLocalExercises(exerciseName);
+    const exercise = results[0];
+
+    if (!exercise) return;
+
+    document.getElementById("exercise-info-name").textContent = exercise.name;
+    document.getElementById("exercise-info-muscle").textContent = exercise.muscle;
+    document.getElementById("exercise-info-difficulty").textContent = exercise.difficulty;
+    document.getElementById("exercise-info-instructions").textContent = exercise.instructions;
+    document.getElementById("exercise-info-youtube").href = `https://www.youtube.com/results?search_query=${encodeURIComponent(exercise.name + " exercise tutorial")}`;
+
+    document.getElementById("exercise-info-modal").classList.remove("hidden");
+}
+
+function closeExerciseInfo() {
+    document.getElementById("exercise-info-modal").classList.add("hidden");
 }
 
