@@ -29,8 +29,7 @@
       <div id="splash-screen">
         <div id="splash-content">
           <img src="Kaizen-Arc-nobg.png" alt="Kaizen Arc" id="splash-logo" />
-          <h1 id="splash-welcome">Welcome back</h1>
-          <p id="splash-tagline">Get ready to train</p>
+          <h1 id="splash-welcome">Train. Grow. Repeat.</h1>
         </div>
       </div>
 
@@ -48,37 +47,91 @@
 
       <!--Main content area-->
         <nav id="bottom-nav">
-          <button class="nav-btn active" data-screen="home-screen">Lifts</button>
+          <button class="nav-btn active" data-screen="home-screen">Home</button>
+          <button class="nav-btn" data-screen="lifts-screen">Lifts</button>
           <button class="nav-btn" data-screen="programs-screen">Programs</button>
         </nav>
 
         <!--Screens-->
         <div id="home-screen" class="screen active">
-          <h1>My Lifts</h1>
-          <div id="lifts-container"></div>
-          <div id="lift-detail" class="hidden">
-            <button id="back-btn">← Back</button>
-            <h2 id="detail-name"></h2>
-            <p id="detail-max"></p>
+          <!-- Dashboard -->
+          <div id="dashboard">
+            <h1 id="dashboard-greeting">Welcome back</h1>
 
-            <table id="pct-table">
-              <thead>
-                <tr>
-                  <th>Percentage</th>
-                  <th>Weight</th>
-                </tr>
-              </thead>
-              <tbody id="pct-body"></tbody>
-            </table>
-
-            <div id="update-max-form">
-              <h3>Update 1RM</h3>
-              <input type="number" id="new-max-input" placeholder="e.g. 105" />
-              <button id="update-max-btn">Save New 1RM</button>
+            <!-- Active Program -->
+            <div class="dashboard-section">
+              <p class="dashboard-label">Current Program</p>
+              <div id="active-program-card" class="hidden">
+                <img id="active-program-cover" src="" alt="" class="program-cover" />
+                  <div id="active-program-info">
+                    <h3 id="active-program-name"></h3>
+                    <p id="active-program-week"></p>
+                    <div id="program-progress-bar-container">
+                      <div id="program-progress-bar"></div>
+                    </div>
+                    <p id="active-program-stats"></p>
+                    <button id="continue-program-btn">Continue →</button>
+                  </div>
+              </div>
+              <div id="no-active-program" class="hidden">
+                <p>No active program — go to Programs to get started.</p>
+              </div>
             </div>
+
+          <!-- Progress Photos -->
+          <div class="dashboard-section">
+            <p class="dashboard-label">Progress Photos</p>
+            <div id="progress-photos">
+              <div class="progress-photo-slot" id="before-photo-slot">
+                <p class="photo-label">Before</p>
+                <div class="photo-placeholder" id="before-photo-display">
+                  <label for="before-photo-input">+ Add</label>
+                  <input type="file" id="before-photo-input" accept="image/*" />
+                </div>
+              </div>
+              <div class="progress-photo-slot" id="latest-photo-slot">
+                <p class="photo-label">Latest</p>
+                <div class="photo-placeholder" id="latest-photo-display">
+                  <label for="latest-photo-input">+ Add</label>
+                  <input type="file" id="latest-photo-input" accept="image/*" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lift Summary -->
+          <div class="dashboard-section">
+            <p class="dashboard-label">My Lifts</p>
+            <div id="lift-summary"></div>
+          </div>
 
           </div>
         </div>
+
+          <!-- Lifts screen -->
+          <div id="lifts-screen" class="screen hidden">
+            <h1>My Lifts</h1>
+            <div id="lifts-container"></div>
+            <div id="lift-detail" class="hidden">
+              <button id="back-btn">← Back</button>
+              <h2 id="detail-name"></h2>
+              <p id="detail-max"></p>
+              <table id="pct-table">
+                <thead>
+                  <tr>
+                    <th>Percentage</th>
+                    <th>Weight</th>
+                  </tr>
+                </thead>
+                <tbody id="pct-body"></tbody>
+              </table>
+              <div id="update-max-form">
+                <h3>Update 1RM</h3>
+                <input type="number" id="new-max-input" placeholder="e.g. 105" />
+                <button id="update-max-btn">Save New 1RM</button>
+              </div>
+            </div>
+          </div>
 
         <!-- Programs screen -->
         <div id="programs-screen" class="screen hidden">
@@ -279,6 +332,7 @@
             <a id="exercise-info-youtube" href="" target="_blank" class="ex-info-watch">▶ Watch on YouTube</a>
           </div>
         </div>
+
 
         <script type="module" src="js/app.js"></script>
     </body>    

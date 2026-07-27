@@ -1,4 +1,4 @@
-const CACHE_NAME = "kaizen-arc-v9";
+const CACHE_NAME = "kaizen-arc-v10";
 const ASSETS = [
     "/KaizenArc/",
     "/KaizenArc/index.html",
@@ -23,7 +23,8 @@ const ASSETS = [
     "/KaizenArc/icons/icon-512.png",
     "/KaizenArc/Kaizen-Arc-Logo.png",
     "/KaizenArc/js/exerciseSearch.js",
-    "/KaizenArc/js/exerciseData.js"
+    "/KaizenArc/js/exerciseData.js",
+    "/KaizenArc/js/home.js"
 ];
 
 // Install — cache all assets

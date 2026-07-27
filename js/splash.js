@@ -28,7 +28,7 @@ export function initSplash(onComplete) {
 function showSplash(name, onComplete) {
     const splash = document.getElementById("splash-screen");
     splash.style.display = "flex";
-    document.getElementById("splash-welcome").textContent = `Welcome back, ${name}`;
+    document.getElementById("splash-welcome").textContent = "Train. Grow. Repeat.";
 
     setTimeout(() => {
         splash.classList.add("fade-out");

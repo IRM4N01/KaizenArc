@@ -99,3 +99,175 @@ button {
     font-family: inherit;
     cursor: pointer;
 }
+
+/* Dashboard */
+.dashboard-section {
+    margin-bottom: 24px;
+}
+
+.dashboard-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+#dashboard-greeting {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+/* Active program card */
+#active-program-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+#active-program-info {
+    padding: 14px 16px;
+}
+
+#active-program-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+#active-program-week {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+#program-progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    overflow: hidden;
+}
+
+#program-progress-bar {
+    height: 100%;
+    background: var(--accent-gold);
+    border-radius: 6px;
+    transition: width 0.4s ease;
+}
+
+#active-program-stats {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+#continue-program-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--accent-gold);
+    color: var(--text-on-gold);
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#continue-program-btn:hover {
+    background: var(--accent-gold-hover);
+}
+
+/* Progress photos */
+#progress-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.progress-photo-slot {
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.photo-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 8px 12px 0;
+    margin: 0;
+}
+
+.photo-placeholder {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-placeholder label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin: 0;
+}
+
+.photo-placeholder label:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+.photo-placeholder input {
+    display: none;
+}
+
+.progress-photo-img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    cursor: pointer;
+}
+
+/* Lift summary */
+#lift-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.lift-summary-card {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.lift-summary-card:hover {
+    border-color: var(--accent-gold);
+}
+
+.lift-summary-card h4 {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-bottom: 4px;
+}
+
+.lift-summary-card p {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent-gold);
+    margin: 0;
+}
