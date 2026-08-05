@@ -111,14 +111,19 @@ export function renderDays(week, program, programs) {
                 ${completedBadge}${restBadge}
             </div>
             <div class="day-card-btns">
-                ${!isRest ? `<button class="start-day-btn">${day.completed ? "Redo" : "Start"}</button>` : ""}
+                <button class="move-up-btn" ${dayIndex === 0 ? "disabled" : ""}>↑</button>
+                <button class="move-down-btn" ${dayIndex === week.days.length - 1 ? "disabled" : ""}>↓</button>
+                ${!isRest ? `<button class="start-day-btn">${day.completed ? "Redo" : "Start"}</button>` : `<button class="complete-rest-btn">${day.completed ? "✓ Done" : "Mark done"}</button>`}
                 <button class="delete-day-btn">Delete</button>
             </div>
         `;
 
         if (!isRest) {
             card.addEventListener("click", (e) => {
-                if (e.target.classList.contains("start-day-btn") || e.target.classList.contains("delete-day-btn")) return;
+                if (e.target.classList.contains("start-day-btn") ||
+                    e.target.classList.contains("delete-day-btn") ||
+                    e.target.classList.contains("move-up-btn") ||
+                    e.target.classList.contains("move-down-btn")) return;
                 openDay(day, program, programs);
             });
 
@@ -127,7 +132,34 @@ export function renderDays(week, program, programs) {
                     startWorkout(day, week, program, programs);
                 });
             });
+        } else {
+            card.querySelector(".complete-rest-btn").addEventListener("click", () => {
+                day.completed = !day.completed;
+                day.completedDate = day.completed ? new Date().toLocaleDateString("en-AU") : null;
+                savePrograms(programs);
+                renderDays(week, program, programs);
+            });
         }
+
+        card.querySelector(".move-up-btn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (dayIndex === 0) return;
+            const temp = week.days[dayIndex];
+            week.days[dayIndex] = week.days[dayIndex - 1];
+            week.days[dayIndex - 1] = temp;
+            savePrograms(programs);
+            renderDays(week, program, programs);
+        });
+
+        card.querySelector(".move-down-btn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (dayIndex === week.days.length - 1) return;
+            const temp = week.days[dayIndex];
+            week.days[dayIndex] = week.days[dayIndex + 1];
+            week.days[dayIndex + 1] = temp;
+            savePrograms(programs);
+            renderDays(week, program, programs);
+        });
 
         card.querySelector(".delete-day-btn").addEventListener("click", () => {
             const confirm = window.confirm("Delete this day?");
@@ -138,6 +170,36 @@ export function renderDays(week, program, programs) {
         });
 
         list.appendChild(card);
+    });
+
+    // Check if all days are completed and show finish week button
+    const finishBtn = document.getElementById("finish-week-btn");
+    const allCompleted = week.days.length > 0 && week.days.every(d => d.completed);
+
+    if (allCompleted) {
+        finishBtn.classList.remove("hidden");
+        if (week.completed) {
+            finishBtn.textContent = "✓ Week Complete!";
+            finishBtn.classList.add("week-completed");
+            finishBtn.disabled = true;
+        } else {
+            finishBtn.textContent = "✓ Finish Week";
+            finishBtn.classList.remove("week-completed");
+            finishBtn.disabled = false;
+            }
+    } else {
+            finishBtn.classList.add("hidden");
+    }
+
+    // Remove old listener
+    const newFinishBtn = finishBtn.cloneNode(true);
+    finishBtn.parentNode.replaceChild(newFinishBtn, finishBtn);
+
+    document.getElementById("finish-week-btn").addEventListener("click", () => {
+        week.completed = true;
+        week.completedDate = new Date().toLocaleDateString("en-AU");
+        savePrograms(programs);
+        renderDays(week, program, programs);
     });
 }
 

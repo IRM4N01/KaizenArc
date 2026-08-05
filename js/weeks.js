@@ -20,7 +20,7 @@ export function renderWeeks(program, programs) {
         card.classList.add("program-card");
         card.innerHTML = `
             <div>
-                <h3>${week.name}</h3>
+                <h3>${week.name} ${week.completed ? '<span style="font-size:12px; color:var(--accent-gold);">✓ Complete</span>' : ''}</h3>
                 <p>${totalWorkoutDays} workouts · ${totalRestDays} rest · ${completedDays} completed</p>
             </div>
             <span>→</span>
