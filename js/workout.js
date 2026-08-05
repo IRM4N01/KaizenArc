@@ -288,6 +288,13 @@ function playBeep() {
         audioCtx.resume();
     }
 
+    // Create a silent buffer and play it first to unlock audio alongside media
+    const silentBuffer = audioCtx.createBuffer(1, 1, 22050);
+    const silentSource = audioCtx.createBufferSource();
+    silentSource.buffer = silentBuffer;
+    silentSource.connect(audioCtx.destination);
+    silentSource.start();
+
     const oscillator = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
 
@@ -299,8 +306,8 @@ function playBeep() {
     gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
 
-    oscillator.start(audioCtx.currentTime);
-    oscillator.stop(audioCtx.currentTime + 0.8);
+    oscillator.start(audioCtx.currentTime + 0.1);
+    oscillator.stop(audioCtx.currentTime + 0.9);
 }
 
 function initExerciseInfoModal() {
