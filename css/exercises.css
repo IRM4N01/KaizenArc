@@ -275,3 +275,13 @@
 .ex-info-watch:hover {
     background: var(--accent-gold-hover);
 }
+
+.exercise-notes {
+    font-size: 13px;
+    color: var(--accent-gold);
+    background: rgba(201, 168, 76, 0.08);
+    border-left: 2px solid var(--accent-gold);
+    padding: 6px 10px;
+    border-radius: 0 6px 6px 0;
+    margin: 8px 0 4px;
+}

@@ -143,6 +143,7 @@ function renderWorkout(day) {
               <h3 style="margin:0;">${ex.name}</h3>
               <button class="exercise-info-btn" title="Exercise info">?</button>
             </div>
+            ${ex.notes ? `<p class="exercise-notes">📝 ${ex.notes}</p>` : ""}
             ${setsHTML}${restTimerHTML}
         `;
 

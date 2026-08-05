@@ -120,6 +120,19 @@ function renderActiveProgram(openProgramCallback, openWeekCallback) {
     continueBtn.parentNode.replaceChild(newBtn, continueBtn);
 
     document.getElementById("continue-program-btn").addEventListener("click", () => {
+        // Switch to programs screen first
+        document.querySelectorAll(".screen").forEach(s => {
+            s.classList.add("hidden");
+            s.classList.remove("active");
+        });
+        document.getElementById("programs-screen").classList.remove("hidden");
+        document.getElementById("programs-screen").classList.add("active");
+
+        // Update nav
+        document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+        document.querySelector(".nav-btn[data-screen='programs-screen']").classList.add("active");
+
+        // Open the program and week
         openProgramCallback(activeProgram);
         if (currentWeek) openWeekCallback(currentWeek, activeProgram, getPrograms());
     });

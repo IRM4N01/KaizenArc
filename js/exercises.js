@@ -91,6 +91,8 @@ export function initExercises(day, programs) {
                 warmupSets.push({ pct, weight });
             });
 
+            const notes = document.getElementById("exercise-notes-input").value.trim();
+
             exercise = {
                 type: "compound",
                 liftKey,
@@ -99,7 +101,8 @@ export function initExercises(day, programs) {
                 workingSets,
                 reps,
                 workingPct,
-                workingWeight: Math.round(max * workingPct / 100 * 4) / 4
+                workingWeight: Math.round(max * workingPct / 100 * 4) / 4,
+                notes: notes || null
             };
 
         } else {
@@ -113,13 +116,16 @@ export function initExercises(day, programs) {
 
             const warmupSetsCount = parseInt(document.getElementById("warmup-sets-input").value) || 0;
 
+            const notes = document.getElementById("exercise-notes-input").value.trim();
+
             exercise = {
                 type: "accessory",
                 name,
                 warmupSets: warmupSetsCount,
                 workingSets,
                 reps,
-                weight: weight || 0
+                weight: weight || 0,
+                notes: notes || null
             };
         }
 
@@ -163,6 +169,7 @@ export function renderExercises(day) {
                 </div>
                 ${warmupLines}
                 <p>Working: ${ex.workingSets} sets × ${ex.reps} reps @ ${ex.workingPct}% → ${ex.workingWeight}kg</p>
+                ${ex.notes ? `<p class="exercise-notes">📝 ${ex.notes}</p>` : ""}
             `;
         } else {
             card.innerHTML = `
@@ -175,6 +182,7 @@ export function renderExercises(day) {
                 </div>
                 <p>Warm up sets: ${ex.warmupSets || 0}</p>
                 <p>Working: ${ex.workingSets} sets × ${ex.reps} reps @ ${ex.weight}kg</p>
+                ${ex.notes ? `<p class="exercise-notes">📝 ${ex.notes}</p>` : ""}
             `;
         }
 
@@ -218,6 +226,8 @@ function editExercise(exIndex) {
         document.getElementById("working-pct-input").value = ex.workingPct;
         document.getElementById("working-weight-display").textContent = ex.workingWeight + "kg";
 
+        document.getElementById("exercise-notes-input").value = ex.notes || "";
+
         updateWarmupFields();
 
         const warmupInputs = document.querySelectorAll(".warmup-pct-input");
@@ -242,6 +252,8 @@ function editExercise(exIndex) {
         document.getElementById("working-sets-input").value = ex.workingSets;
         document.getElementById("reps-input").value = ex.reps;
         document.getElementById("accessory-weight-input").value = ex.weight;
+
+        document.getElementById("exercise-notes-input").value = ex.notes || "";
     }
 }
 
@@ -310,6 +322,7 @@ function resetExerciseForm() {
     document.getElementById("warmup-pct-fields").innerHTML = "";
     document.getElementById("accessory-name-input").value = "";
     document.getElementById("accessory-weight-input").value = "";
+    document.getElementById("exercise-notes-input").value = "";
     isCompound = true;
     document.getElementById("compound-btn").classList.add("active");
     document.getElementById("accessory-btn").classList.remove("active");
