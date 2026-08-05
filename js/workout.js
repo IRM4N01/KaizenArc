@@ -277,7 +277,28 @@ function onRestComplete() {
     if (vibrationEnabled && navigator.vibrate) {
         navigator.vibrate([200, 100, 200, 100, 200]);
     }
+    showRestAlert();
 }
+
+function showRestAlert() {
+    const alert = document.getElementById("rest-timer-alert");
+    alert.classList.remove("hidden");
+
+    const closeBtn = document.getElementById("rest-timer-alert-close");
+    const newCloseBtn = closeBtn.cloneNode(true);
+    closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+
+    document.getElementById("rest-timer-alert-close").addEventListener("click", () => {
+        alert.classList.add("hidden");
+    });
+
+    // Auto dismiss after 10 seconds
+    setTimeout(() => {
+        alert.classList.add("hidden");
+    }, 10000);
+}
+
+
 
 function playBeep() {
     if (!audioCtx) {
