@@ -73,8 +73,13 @@
                     <button id="continue-program-btn">Continue →</button>
                   </div>
               </div>
-              <div id="no-active-program" class="hidden">
-                <p>No active program — go to Programs to get started.</p>
+              <div id="no-active-program" class="empty-state hidden">
+                <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                  <circle cx="28" cy="28" r="27" stroke="#2a1a1a" stroke-width="1.5"/>
+                  <path d="M20 28h16M28 20v16" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <p class="empty-state-title">No active program</p>
+                <p class="empty-state-sub">Go to Programs to create or continue one.</p>
               </div>
             </div>
 
@@ -85,14 +90,29 @@
               <div class="progress-photo-slot" id="before-photo-slot">
                 <p class="photo-label">Before</p>
                 <div class="photo-placeholder" id="before-photo-display">
-                  <label for="before-photo-input">+ Add</label>
+                  <svg width="40" height="40" viewBox="0 0 80 40" fill="none" style="margin-bottom:8px;">
+                    <rect x="6" y="12" width="8" height="16" rx="2" fill="#2a1a1a" stroke="#c9a84c" stroke-width="1.5"/>
+                    <rect x="2" y="16" width="6" height="8" rx="1.5" fill="#c9a84c" opacity="0.6"/>
+                    <rect x="66" y="12" width="8" height="16" rx="2" fill="#2a1a1a" stroke="#c9a84c" stroke-width="1.5"/>
+                    <rect x="72" y="16" width="6" height="8" rx="1.5" fill="#c9a84c" opacity="0.6"/>
+                    <rect x="14" y="18" width="52" height="4" rx="2" fill="#2a1a1a" stroke="#8a9db5" stroke-width="1"/>
+                  </svg>
+                  <label for="before-photo-input">+ Add photo</label>
                   <input type="file" id="before-photo-input" accept="image/*" />
                 </div>
               </div>
+
               <div class="progress-photo-slot" id="latest-photo-slot">
                 <p class="photo-label">Latest</p>
                 <div class="photo-placeholder" id="latest-photo-display">
-                  <label for="latest-photo-input">+ Add</label>
+                  <svg width="40" height="40" viewBox="0 0 80 40" fill="none" style="margin-bottom:8px;">
+                    <rect x="6" y="12" width="8" height="16" rx="2" fill="#2a1a1a" stroke="#c9a84c" stroke-width="1.5"/>
+                    <rect x="2" y="16" width="6" height="8" rx="1.5" fill="#c9a84c" opacity="0.6"/>
+                    <rect x="66" y="12" width="8" height="16" rx="2" fill="#2a1a1a" stroke="#c9a84c" stroke-width="1.5"/>
+                    <rect x="72" y="16" width="6" height="8" rx="1.5" fill="#c9a84c" opacity="0.6"/>
+                    <rect x="14" y="18" width="52" height="4" rx="2" fill="#2a1a1a" stroke="#8a9db5" stroke-width="1"/>
+                  </svg>
+                  <label for="latest-photo-input">+ Add photo</label>
                   <input type="file" id="latest-photo-input" accept="image/*" />
                 </div>
               </div>
@@ -136,7 +156,15 @@
         <!-- Programs screen -->
         <div id="programs-screen" class="screen hidden">
           <h1>My Programs</h1>
-          <p id="no-programs-msg">No programs yet. Create one to get started.</p>
+          <div id="no-programs-msg" class="empty-state hidden">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+              <circle cx="28" cy="28" r="27" stroke="#2a1a1a" stroke-width="1.5"/>
+              <path d="M20 28h16M28 20v16" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <p class="empty-state-title">No programs yet</p>
+            <p class="empty-state-sub">Create your first program to start tracking.</p>
+          </div>
+
           <button id="create-program-btn">+ New Program</button>
 
           <div id="new-program-form" class="hidden">

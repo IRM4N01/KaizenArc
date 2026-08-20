@@ -92,7 +92,22 @@ export function renderDays(week, program, programs) {
     list.innerHTML = "";
 
     if (week.days.length === 0) {
-        list.innerHTML = "<p style='color:var(--text-secondary);'>No days yet. Add your first day.</p>";
+        list.innerHTML = `
+            <div class="empty-state">
+                <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                    <rect x="8" y="12" width="40" height="36" rx="6" stroke="#2a1a1a" stroke-width="1.5" fill="#141414"/>
+                    <rect x="8" y="12" width="40" height="12" rx="6" fill="#2a1a1a"/>
+                    <rect x="8" y="20" width="40" height="4" fill="#2a1a1a"/>
+                    <circle cx="20" cy="36" r="3" fill="#c9a84c" opacity="0.4"/>
+                    <circle cx="28" cy="36" r="3" fill="#c9a84c" opacity="0.4"/>
+                    <circle cx="36" cy="36" r="3" fill="#c9a84c" opacity="0.4"/>
+                    <line x1="18" y1="8" x2="18" y2="16" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="38" y1="8" x2="38" y2="16" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <p class="empty-state-title">No days planned</p>
+                <p class="empty-state-sub">Add workout and rest days to build your week.</p>
+            </div>
+        `;
         return;
     }
 

@@ -147,7 +147,19 @@ export function renderExercises(day) {
     list.innerHTML = "";
 
     if (day.exercises.length === 0) {
-        list.innerHTML = "<p style='color:var(--text-secondary);'>No exercises yet. Add your first one.</p>";
+        list.innerHTML = `
+            <div class="empty-state">
+                <svg width="80" height="40" viewBox="0 0 80 40" fill="none">
+                    <rect x="6" y="12" width="8" height="16" rx="2" fill="#2a1a1a" stroke="#c9a84c" stroke-width="1.5"/>
+                    <rect x="2" y="16" width="6" height="8" rx="1.5" fill="#c9a84c" opacity="0.6"/>
+                    <rect x="66" y="12" width="8" height="16" rx="2" fill="#2a1a1a" stroke="#c9a84c" stroke-width="1.5"/>
+                    <rect x="72" y="16" width="6" height="8" rx="1.5" fill="#c9a84c" opacity="0.6"/>
+                    <rect x="14" y="18" width="52" height="4" rx="2" fill="#2a1a1a" stroke="#8a9db5" stroke-width="1"/>
+                </svg>
+                <p class="empty-state-title">No exercises added</p>
+                <p class="empty-state-sub">Add your first exercise to plan this day.</p>
+            </div>
+        `;
         return;
     }
 
