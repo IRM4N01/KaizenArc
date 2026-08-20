@@ -286,3 +286,64 @@
     border-color: var(--accent-gold);
     color: var(--accent-gold);
 }
+
+.day-name-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.day-name-display h3 {
+    margin: 0;
+}
+
+.edit-day-details-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    color: var(--text-secondary);
+}
+
+.day-details-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.day-date-edit-input,
+.day-notes-edit-input {
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.save-day-details-btn {
+    padding: 6px 12px;
+    background: var(--accent-gold);
+    color: var(--text-on-gold);
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.cancel-day-details-btn {
+    padding: 6px 12px;
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    width: fit-content;
+}

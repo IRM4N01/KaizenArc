@@ -106,7 +106,16 @@ export function renderDays(week, program, programs) {
 
         card.innerHTML = `
             <div style="flex:1;">
-                <h3>${day.date || "No date"} ${day.notes ? "— " + day.notes : ""}</h3>
+                <div class="day-name-display">
+                    <h3>${day.date || "No date"} ${day.notes ? "— " + day.notes : ""}</h3>
+                    <button class="edit-day-details-btn">✏️</button>
+                </div>
+                <div class="day-details-edit hidden">
+                    <input type="date" class="day-date-edit-input" value="${day.date || ""}" />
+                    <input type="text" class="day-notes-edit-input" placeholder="e.g. Push Day" value="${day.notes || ""}" />
+                    <button class="save-day-details-btn">Save</button>
+                    <button class="cancel-day-details-btn">Cancel</button>
+                </div>
                 <p>${isRest ? "" : day.exercises.length + " exercises"}</p>
                 ${completedBadge}${restBadge}
             </div>
@@ -123,7 +132,12 @@ export function renderDays(week, program, programs) {
                 if (e.target.classList.contains("start-day-btn") ||
                     e.target.classList.contains("delete-day-btn") ||
                     e.target.classList.contains("move-up-btn") ||
-                    e.target.classList.contains("move-down-btn")) return;
+                    e.target.classList.contains("move-down-btn") ||
+                    e.target.classList.contains("edit-day-details-btn") ||
+                    e.target.classList.contains("save-day-details-btn") ||
+                    e.target.classList.contains("cancel-day-details-btn") ||
+                    e.target.classList.contains("day-date-edit-input") ||
+                    e.target.classList.contains("day-notes-edit-input")) return;
                 openDay(day, program, programs);
             });
 
@@ -165,6 +179,29 @@ export function renderDays(week, program, programs) {
             const confirm = window.confirm("Delete this day?");
             if (!confirm) return;
             week.days.splice(dayIndex, 1);
+            savePrograms(programs);
+            renderDays(week, program, programs);
+        });
+
+        card.querySelector(".edit-day-details-btn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            card.querySelector(".day-name-display").classList.add("hidden");
+            card.querySelector(".day-details-edit").classList.remove("hidden");
+        });
+
+        card.querySelector(".cancel-day-details-btn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            card.querySelector(".day-details-edit").classList.add("hidden");
+            card.querySelector(".day-name-display").classList.remove("hidden");
+        });
+
+        card.querySelector(".save-day-details-btn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            const newDate = card.querySelector(".day-date-edit-input").value;
+            const newNotes = card.querySelector(".day-notes-edit-input").value.trim();
+            if (!newDate) { alert("Please enter a date."); return; }
+            day.date = newDate;
+            day.notes = newNotes;
             savePrograms(programs);
             renderDays(week, program, programs);
         });
