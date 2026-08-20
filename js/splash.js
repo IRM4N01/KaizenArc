@@ -1,5 +1,6 @@
 // ======= SPLASH SCREEN =======
 import { getUserName, saveUserName } from './storage.js';
+import { initOnboarding } from './onboarding.js';
 
 export function initSplash(onComplete) {
     const userName = getUserName();
@@ -34,7 +35,8 @@ function showSplash(name, onComplete) {
         splash.classList.add("fade-out");
         setTimeout(() => {
             splash.style.display = "none";
-            if (onComplete) onComplete();
+            // Show onboarding before starting app
+            initOnboarding(onComplete);
         }, 600);
     }, 2000);
 }

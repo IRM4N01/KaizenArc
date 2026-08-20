@@ -4,6 +4,12 @@ import { getPrograms, getPersonalRecords } from './storage.js';
 export function initHome(lifts, openProgramCallback, openWeekCallback) {
     renderDashboard(lifts, openProgramCallback, openWeekCallback);
     initProgressPhotos();
+
+    document.getElementById("replay-onboarding-btn").addEventListener("click", () => {
+    import('./onboarding.js').then(({ showOnboarding }) => {
+            showOnboarding(() => {});
+        });
+    });
 }
 
 export function renderDashboard(lifts, openProgramCallback, openWeekCallback) {

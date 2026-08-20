@@ -24,7 +24,8 @@ const ASSETS = [
     "/KaizenArc/Kaizen-Arc-Logo.png",
     "/KaizenArc/js/exerciseSearch.js",
     "/KaizenArc/js/exerciseData.js",
-    "/KaizenArc/js/home.js"
+    "/KaizenArc/js/home.js",
+    "/KaizenArc/js/onboarding.js"
 ];
 
 // Install — cache all assets

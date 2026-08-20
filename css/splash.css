@@ -134,3 +134,123 @@
 #save-name-btn:hover {
     background: var(--accent-red-hover);
 }
+
+/* Onboarding */
+#onboarding-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #0a0a0a;
+    z-index: 9997;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#onboarding-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+#onboarding-skip {
+    position: absolute;
+    top: 0;
+    right: 28px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 0;
+}
+
+#onboarding-slides {
+    width: 100%;
+    overflow: hidden;
+    margin: 40px 0 24px;
+}
+
+.onboarding-slide {
+    display: none;
+    text-align: center;
+    animation: slide-in 0.3s ease;
+}
+
+.onboarding-slide.active {
+    display: block;
+}
+
+@keyframes slide-in {
+    0% { opacity: 0; transform: translateX(20px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+.onboarding-illustration {
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.onboarding-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.onboarding-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Dots */
+#onboarding-dots {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+}
+
+.onboarding-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2a1a1a;
+    transition: background 0.3s, width 0.3s;
+}
+
+.onboarding-dot.active {
+    background: var(--accent-gold);
+    width: 24px;
+    border-radius: 4px;
+}
+
+/* Buttons */
+#onboarding-buttons {
+    width: 100%;
+}
+
+#onboarding-next {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent-gold);
+    color: var(--text-on-gold);
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#onboarding-next:hover {
+    background: var(--accent-gold-hover);
+}
