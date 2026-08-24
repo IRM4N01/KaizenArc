@@ -1,4 +1,4 @@
-const CACHE_NAME = "kaizen-arc-v25";
+const CACHE_NAME = "kaizen-arc-v26";
 const ASSETS = [
     "/KaizenArc/",
     "/KaizenArc/index.html",
@@ -35,6 +35,7 @@ self.addEventListener("install", event => {
             return cache.addAll(ASSETS);
         })
     );
+    self.skipWaiting();
 });
 
 // Activate — clean up old caches
@@ -44,6 +45,8 @@ self.addEventListener("activate", event => {
             return Promise.all(
                 keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
             );
+        }).then(() => {
+            return self.clients.claim();
         })
     );
 });
