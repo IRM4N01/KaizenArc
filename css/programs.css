@@ -212,3 +212,32 @@
     align-items: center;
     padding: 16px 20px;
 }
+
+#programs-tab-switcher {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0;
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.programs-tab {
+    flex: 1;
+    padding: 8px;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.programs-tab.active {
+    background: var(--accent-gold);
+    color: var(--text-on-gold);
+    font-weight: 500;
+}

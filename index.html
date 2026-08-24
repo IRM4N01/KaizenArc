@@ -253,46 +253,63 @@
         <!-- Programs screen -->
         <div id="programs-screen" class="screen hidden">
           <h1>My Programs</h1>
-          <div id="no-programs-msg" class="empty-state hidden">
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-              <circle cx="28" cy="28" r="27" stroke="#2a1a1a" stroke-width="1.5"/>
-              <path d="M20 28h16M28 20v16" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <p class="empty-state-title">No programs yet</p>
-            <p class="empty-state-sub">Create your first program to start tracking.</p>
+
+          <!-- Tab switcher -->
+          <div id="programs-tab-switcher">
+            <button class="programs-tab active" data-tab="my-programs">My Programs</button>
+            <button class="programs-tab" data-tab="templates">Templates</button>
           </div>
 
-          <button id="create-program-btn">+ New Program</button>
+          <!-- My Programs tab -->
+          <div id="my-programs-tab">
+            <div id="no-programs-msg" class="empty-state hidden">
+              <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                <circle cx="28" cy="28" r="27" stroke="#2a1a1a" stroke-width="1.5"/>
+                <path d="M20 28h16M28 20v16" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <p class="empty-state-title">No programs yet</p>
+              <p class="empty-state-sub">Create your first program to start tracking.</p>
+            </div>
+            <button id="create-program-btn">+ New Program</button>
 
-          <div id="new-program-form" class="hidden">
-            <h2>New Program</h2>
-            <label>Program name</label>
-            <input type="text" id="program-name-input" placeholder="e.g. Jeff Nippard PB System 3" />
-
-            <label>Start date</label>
-            <input type="date" id="program-start-date" />
-
-            <label>Number of weeks</label>
-            <input type="number" id="program-weeks-input" min="1" max="52" placeholder="e.g. 12" />
-
-            <label>Starting bodyweight (kg)</label>
-            <input type="number" id="program-start-weight" placeholder="e.g. 82.5" />
-
-            <label>Program cover image (optional)</label>
-            <input type ="file" id="program-image-input" accept="image/*" />
-            <div id="program-image-preview" class="hidden">
-              <div id="drag-container">
-                <img id="preview-img" src="" alt="Program cover" draggable="false" />
+            <div id="new-program-form" class="hidden">
+              <h2>New Program</h2>
+              <label>Program name</label>
+              <input type="text" id="program-name-input" placeholder="e.g. Jeff Nippard PB System 3" />
+              <label>Start date</label>
+              <input type="date" id="program-start-date" />
+              <label>Number of weeks</label>
+              <input type="number" id="program-weeks-input" min="1" max="52" placeholder="e.g. 12" />
+              <label>Starting bodyweight (kg)</label>
+              <input type="number" id="program-start-weight" placeholder="e.g. 82.5" />
+              <label>Program cover image (optional)</label>
+              <input type="file" id="program-image-input" accept="image/*" />
+              <div id="program-image-preview" class="hidden">
+                <div id="drag-container">
+                  <img id="preview-img" src="" alt="Program cover" draggable="false" />
+                </div>
               </div>
+              <div id="image-position-selector" class="hidden">
+                <p id="drag-instruction" style="font-size:13px; color:var(--text-secondary); margin-top:8px;">Drag the image to reposition</p>
+              </div>
+              <button id="save-program-btn">Save Program</button>
+              <button id="cancel-program-btn">Cancel</button>
             </div>
-            <div id="image-position-selector" class="hidden">
-              <p id="drag-instruction" style="font-size:13px; color:var(--text-secondary); margin-top:8px;">Drag the image to reposition</p>
-            </div>
-
-            <button id="save-program-btn">Save Program</button>
-            <button id="cancel-program-btn">Cancel</button>
           </div>
-       </div>
+
+          <!-- Templates tab -->
+          <div id="templates-tab" class="hidden">
+            <div id="no-templates-msg" class="empty-state">
+              <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                <circle cx="28" cy="28" r="27" stroke="#2a1a1a" stroke-width="1.5"/>
+                <path d="M20 28h16M28 20v16" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <p class="empty-state-title">No templates yet</p>
+              <p class="empty-state-sub">Open a program and tap "Save as template" to save it here.</p>
+            </div>
+            <div id="templates-list"></div>
+          </div>
+        </div>
 
         <!-- Program detail screen -->
         <div id="program-detail-screen" class="screen hidden">

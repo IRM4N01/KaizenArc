@@ -69,6 +69,19 @@ Push, wait 60 seconds, then repeat Step 3.
 
 ---
 
+## Step 5.5 — Restart your iPhone
+If bumping the cache and clearing Safari data doesn't work, try a full phone restart:
+1. Hold the power button and slide to power off
+2. Wait 30 seconds
+3. Turn your phone back on
+4. Open Safari → go to your GitHub Pages URL
+5. Wait for full load
+6. Open the app from home screen
+
+This clears the service worker state that iOS sometimes holds onto.
+
+---
+
 ### Step 6 — Delete and reinstall the PWA (last resort)
 ⚠️ **Warning:** This will wipe your localStorage data including all programs and lift data.
 Only do this if all other steps have failed.

@@ -32,3 +32,11 @@ export function getPersonalRecords() {
 export function savePersonalRecords(records) {
     localStorage.setItem("personalRecords", JSON.stringify(records));
 }
+
+export function getTemplates() {
+    return JSON.parse(localStorage.getItem("programTemplates")) || [];
+}
+
+export function saveTemplates(templates) {
+    localStorage.setItem("programTemplates", JSON.stringify(templates));
+}

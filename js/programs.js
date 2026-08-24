@@ -1,6 +1,7 @@
 // ======= PROGRAMS =======
 import { getPrograms, savePrograms } from './storage.js';
 import { openWeek } from './weeks.js';
+import { saveAsTemplate, renderTemplatesList } from './templates.js';
 
 export let programs = getPrograms();
 
@@ -162,10 +163,29 @@ export function initPrograms() {
             saveProgram(null);
         }
     });
+
+    // Tab switching
+    document.querySelectorAll(".programs-tab").forEach(tab => {
+        tab.addEventListener("click", () => {
+            document.querySelectorAll(".programs-tab").forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+
+            const target = tab.dataset.tab;
+            document.getElementById("my-programs-tab").classList.toggle("hidden", target !== "my-programs");
+            document.getElementById("templates-tab").classList.toggle("hidden", target !== "templates");
+
+            if (target === "templates") {
+                renderTemplatesList(programs, () => {
+                    renderPrograms();
+                    document.querySelectorAll(".programs-tab")[0].click();
+                });
+            }
+        });
+    });
 }
 
 export function renderPrograms() {
-    const container = document.getElementById("programs-screen");
+    const container = document.getElementById("my-programs-tab");
     const noMsg = document.getElementById("no-programs-msg");
 
     document.querySelectorAll(".program-card").forEach(card => card.remove());
@@ -202,7 +222,8 @@ export function renderPrograms() {
             });
 
             card.addEventListener("click", () => openProgram(program));
-            container.insertBefore(card, document.getElementById("new-program-form"));
+            const myProgramsTab = document.getElementById("my-programs-tab");
+            myProgramsTab.insertBefore(card, document.getElementById("create-program-btn"));
         });
     }
 }
@@ -242,6 +263,7 @@ export function openProgram(program) {
         `}
         <p style="color:var(--text-secondary); font-size:13px;">Started: ${program.startDate} · ${program.weeks.length} weeks · Start weight: ${program.startWeight || "—"}kg ${program.endWeight ? "· End weight: " + program.endWeight + "kg" : ""}</p>
         <button id="edit-details-btn" style="margin-top:8px; padding:8px 16px; background:none; border:1px solid var(--border-color); border-radius:8px; font-size:13px; color:var(--text-secondary); cursor:pointer;">Edit details</button>
+        <button id="save-template-btn" style="margin-top:8px; margin-left:8px; padding:8px 16px; background:none; border:1px solid var(--accent-gold); border-radius:8px; font-size:13px; color:var(--accent-gold); cursor:pointer;">Save as template</button>
     `;
 
     document.getElementById("back-to-programs-btn").addEventListener("click", () => {
@@ -276,6 +298,10 @@ export function openProgram(program) {
         document.getElementById("edit-program-weeks").value = program.weeks.length;
         document.getElementById("edit-program-start-weight").value = program.startWeight || "";
         document.getElementById("edit-program-end-weight").value = program.endWeight || "";
+    });
+
+    document.getElementById("save-template-btn").addEventListener("click", () => {
+    saveAsTemplate(program);
     });
 
     document.getElementById("cancel-program-details-btn").addEventListener("click", () => {
