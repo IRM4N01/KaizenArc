@@ -40,3 +40,11 @@ export function getTemplates() {
 export function saveTemplates(templates) {
     localStorage.setItem("programTemplates", JSON.stringify(templates));
 }
+
+export function getWorkoutHistory() {
+    return JSON.parse(localStorage.getItem("workoutHistory")) || [];
+}
+
+export function saveWorkoutHistory(history) {
+    localStorage.setItem("workoutHistory", JSON.stringify(history));
+}

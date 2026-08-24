@@ -3,6 +3,8 @@ import { savePrograms } from './storage.js';
 import { renderDays } from './days.js';
 import { refreshPrograms } from './programs.js';
 import { searchLocalExercises } from './exerciseData.js';
+import { addWorkoutToHistory, renderHistory } from './history.js';
+import { saveWorkoutHistory } from './storage.js';
 
 let currentDay = null;
 let currentWeek = null;
@@ -49,7 +51,16 @@ export function startWorkout(day, week, program, programs) {
 
         savePrograms(currentPrograms);
 
-        // Refresh programs from localStorage
+        // Ask for a post workout note
+        const note = window.prompt("Add a workout note (optional):", "");
+
+        // Add to history
+        const history = addWorkoutToHistory(currentDay, currentWeek, currentProgram, note);
+        saveWorkoutHistory(history);
+
+        // Refresh history if on that screen
+        renderHistory();
+
         const freshPrograms = refreshPrograms();
 
         alert(`Workout done! ${total}`);
