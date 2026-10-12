@@ -346,7 +346,10 @@ function resetExerciseForm() {
 
 function initExerciseSearch() {
     const nameInput = document.getElementById("accessory-name-input");
-    const formContainer = document.getElementById("add-exercise-form");
+    const inputWrapper = nameInput.parentElement;
+
+    // Make sure the wrapper is positioned relatively for the dropdown to anchor to
+    inputWrapper.style.position = "relative";
 
     nameInput.addEventListener("input", () => {
         const query = nameInput.value.trim();
@@ -357,9 +360,19 @@ function initExerciseSearch() {
         if (query.length < 2) return;
 
         const results = searchExercises(query);
-        renderExerciseDropdown(results, formContainer, (selectedEx) => {
+        renderExerciseDropdown(results, inputWrapper, (selectedEx) => {
             nameInput.value = selectedEx.name;
-            renderExerciseInfo(selectedEx, formContainer);
+            const existingInfo = document.getElementById("exercise-info-panel");
+            if (existingInfo) existingInfo.remove();
+            renderExerciseInfo(selectedEx, nameInput.closest("#add-exercise-form"));
         });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+        if (!nameInput.contains(e.target)) {
+            const existing = document.getElementById("exercise-dropdown");
+            if (existing) existing.remove();
+        }
     });
 }

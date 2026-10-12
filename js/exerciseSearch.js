@@ -13,6 +13,18 @@ export function renderExerciseDropdown(results, container, onSelect) {
 
     const dropdown = document.createElement("div");
     dropdown.id = "exercise-dropdown";
+    dropdown.style.cssText = `
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        margin-top: 4px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        background: var(--bg-card);
+    `;
 
     results.slice(0, 6).forEach(ex => {
         const item = document.createElement("div");

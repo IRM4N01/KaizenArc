@@ -184,8 +184,6 @@
     border: 1px solid var(--border-color);
     border-radius: 10px;
     overflow: hidden;
-    margin-top: 4px;
-    z-index: 100;
 }
 
 .exercise-dropdown-item {
