@@ -10,7 +10,7 @@
     display: flex;
     background: var(--bg-card);
     border-top: 1px solid var(--border-color);
-    padding: 10px 0;
+    padding: 8px 0 10px;
     z-index: 100;
 }
 
@@ -18,14 +18,28 @@
     flex: 1;
     background: none;
     border: none;
-    font-size: 13px;
+    font-size: 11px;
     color: var(--text-secondary);
     cursor: pointer;
-    padding: 8px 0;
+    padding: 6px 4px;
     font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
 }
 
 .nav-btn.active {
     color: var(--accent-gold);
     font-weight: 500;
 }
+
+.nav-btn::before {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.nav-btn[data-screen="home-screen"]::before { content: "⌂"; }
+.nav-btn[data-screen="lifts-screen"]::before { content: "⊕"; }
+.nav-btn[data-screen="programs-screen"]::before { content: "≡"; }
+.nav-btn[data-screen="history-screen"]::before { content: "◷"; }
