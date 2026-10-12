@@ -241,3 +241,135 @@
     color: var(--text-on-gold);
     font-weight: 500;
 }
+
+/* Finish Program Button */
+#finish-program-btn {
+    width: 100%;
+    padding: 13px;
+    background: none;
+    border: 2px solid var(--accent-gold);
+    color: var(--accent-gold);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+#finish-program-btn:hover {
+    background: var(--accent-gold);
+    color: var(--text-on-gold);
+}
+
+#finish-program-btn.completed {
+    background: rgba(201, 168, 76, 0.1);
+    cursor: default;
+}
+
+/* Finish program modal */
+#finish-program-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#finish-program-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+}
+
+#finish-program-content {
+    position: relative;
+    background: var(--bg-card);
+    border: 2px solid var(--accent-gold);
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    width: 85%;
+    max-width: 340px;
+    z-index: 301;
+    animation: congrats-pop 0.4s ease;
+}
+
+@keyframes congrats-pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+#finish-program-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+    animation: trophy-bounce 0.6s ease infinite alternate;
+}
+
+@keyframes trophy-bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-8px); }
+}
+
+#finish-program-content h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--accent-gold);
+    margin-bottom: 8px;
+}
+
+#finish-program-name {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+#finish-program-stats {
+    background: var(--bg-page);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.finish-stat {
+    text-align: center;
+}
+
+.finish-stat-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--accent-gold);
+    display: block;
+}
+
+.finish-stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#finish-program-close {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent-gold);
+    color: var(--text-on-gold);
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+}

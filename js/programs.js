@@ -456,7 +456,108 @@ export function openProgram(program) {
         });
     }
 
+    // Finish program button
+    checkProgramComplete(program);
+
+    const finishBtn = document.getElementById("finish-program-btn");
+    const newFinishBtn = finishBtn.cloneNode(true);
+    finishBtn.parentNode.replaceChild(newFinishBtn, finishBtn);
+
+    document.getElementById("finish-program-btn").addEventListener("click", () => {
+        if (program.completed) return;
+        program.completed = true;
+        program.completedDate = new Date().toLocaleDateString("en-AU");
+        savePrograms(programs);
+        checkProgramComplete(program);
+        showCongratsModal(program);
+    });
+
     import('./weeks.js').then(({ renderWeeks }) => {
         renderWeeks(program, programs);
+
+        // Check if program is complete after rendering weeks
+        checkProgramComplete(program);
+    });
+}
+
+function checkProgramComplete(program) {
+    const finishBtn = document.getElementById("finish-program-btn");
+    if (!finishBtn) return;
+
+    const allWeeksComplete = program.weeks.length > 0 &&
+        program.weeks.every(week =>
+            week.days.length > 0 &&
+            week.days.every(day => day.completed)
+        );
+
+    if (program.completed) {
+        finishBtn.classList.remove("hidden");
+        finishBtn.classList.add("completed");
+        finishBtn.textContent = "✓ Program Complete";
+        finishBtn.disabled = true;
+        return;
+    }
+
+    if (allWeeksComplete) {
+        finishBtn.classList.remove("hidden");
+        finishBtn.classList.remove("completed");
+        finishBtn.textContent = "🏆 Finish Program";
+        finishBtn.disabled = false;
+    } else {
+        finishBtn.classList.add("hidden");
+    }
+}
+
+function showCongratsModal(program) {
+    const modal = document.getElementById("finish-program-modal");
+    modal.classList.remove("hidden");
+
+    document.getElementById("finish-program-name").textContent = program.name;
+
+    // Calculate stats
+    let totalWorkouts = 0;
+    let totalExercises = 0;
+    const startDate = program.startDate;
+    const endDate = new Date().toLocaleDateString("en-AU");
+
+    program.weeks.forEach(week => {
+        week.days.forEach(day => {
+            if (day.type === "workout") {
+                totalWorkouts++;
+                totalExercises += day.exercises.length;
+            }
+        });
+    });
+
+    document.getElementById("finish-program-stats").innerHTML = `
+        <div class="finish-stat">
+            <span class="finish-stat-value">${program.weeks.length}</span>
+            <span class="finish-stat-label">Weeks</span>
+        </div>
+        <div class="finish-stat">
+            <span class="finish-stat-value">${totalWorkouts}</span>
+            <span class="finish-stat-label">Workouts</span>
+        </div>
+        <div class="finish-stat">
+            <span class="finish-stat-value">${totalExercises}</span>
+            <span class="finish-stat-label">Exercises</span>
+        </div>
+        <div class="finish-stat">
+            <span class="finish-stat-value">${startDate}</span>
+            <span class="finish-stat-label">Started</span>
+        </div>
+    `;
+
+    // Close button
+    const closeBtn = document.getElementById("finish-program-close");
+    const newCloseBtn = closeBtn.cloneNode(true);
+    closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+
+    document.getElementById("finish-program-close").addEventListener("click", () => {
+        modal.classList.add("hidden");
+    });
+
+    document.getElementById("finish-program-overlay").addEventListener("click", () => {
+        modal.classList.add("hidden");
     });
 }

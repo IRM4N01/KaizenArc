@@ -335,6 +335,8 @@
             <button id="cancel-program-details-btn">Cancel</button>
           </div>
 
+          <button id="finish-program-btn" class="hidden">🏆 Finish Program</button>
+
           <div id="weeks-list"></div>
         </div>
 
@@ -524,6 +526,18 @@
 
           <div id="history-list"></div>
           <button id="load-more-btn" class="hidden">Load more</button>
+        </div>
+
+        <!-- Finish program modal -->
+        <div id="finish-program-modal" class="hidden">
+          <div id="finish-program-overlay"></div>
+          <div id="finish-program-content">
+            <div id="finish-program-icon">🏆</div>
+            <h2>Program Complete!</h2>
+            <p id="finish-program-name"></p>
+            <div id="finish-program-stats"></div>
+            <button id="finish-program-close">Done 💪</button>
+          </div>
         </div>
 
         <script type="module" src="js/app.js"></script>
