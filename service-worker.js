@@ -1,4 +1,4 @@
-const CACHE_NAME = "kaizen-arc-v31";
+const CACHE_NAME = "kaizen-arc-v32";
 const ASSETS = [
     "/KaizenArc/",
     "/KaizenArc/index.html",
