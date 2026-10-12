@@ -15,6 +15,7 @@ let restTimerSeconds = 0;
 let soundEnabled = true;
 let vibrationEnabled = true;
 let audioCtx = null;
+let restTimerTotal = 0;
 
 export function startWorkout(day, week, program, programs) {
     currentDay = day;
@@ -141,11 +142,11 @@ function renderWorkout(day) {
         }
 
         const restTimerHTML = `
-            <div class="rest-timer-row">
-                <label>Rest</label>
-                <input type="number" class="rest-timer-input" placeholder="90" min="1" max="600" value="${ex.restSeconds || ''}" />
-                <span class="rest-timer-unit">sec</span>
-                <button class="start-rest-btn">Start rest</button>
+            <div class="rest-timer-presets">
+                <button class="rest-preset-btn" data-seconds="30">30s</button>
+                <button class="rest-preset-btn" data-seconds="60">60s</button>
+                <button class="rest-preset-btn" data-seconds="90">90s</button>
+                <button class="rest-preset-btn" data-seconds="120">2min</button>
             </div>
         `;
 
@@ -165,15 +166,17 @@ function renderWorkout(day) {
         });
 
          // Start rest button listener
-        card.querySelector(".start-rest-btn").addEventListener("click", () => {
-            const input = card.querySelector(".rest-timer-input");
-            const seconds = parseInt(input.value);
-            if (!seconds || seconds < 1) {
-                alert("Please enter a rest time in seconds.");
-                return;
-            }
-            ex.restSeconds = seconds;
-            startRestTimer(seconds);
+        card.querySelectorAll(".rest-preset-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const seconds = parseInt(btn.dataset.seconds);
+                const exerciseName = ex.name;
+
+                // Highlight active preset
+                card.querySelectorAll(".rest-preset-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                startRestTimer(seconds, exerciseName);
+            });
         });
     });
 
@@ -248,23 +251,41 @@ function initRestTimer() {
     }
 }
 
-function startRestTimer(seconds) {
+function startRestTimer(seconds, exerciseName) {
     if (restTimerInterval) clearInterval(restTimerInterval);
 
     restTimerSeconds = seconds;
+    restTimerTotal = seconds;
+
     const container = document.getElementById("rest-timer-container");
     container.classList.remove("hidden");
+
+    document.getElementById("rest-timer-exercise").textContent = exerciseName || "";
+    document.getElementById("rest-timer-progress-bar").style.transition = "none";
+    document.getElementById("rest-timer-progress-bar").style.width = "100%";
+
+    setTimeout(() => {
+        document.getElementById("rest-timer-progress-bar").style.transition = "width 1s linear";
+    }, 50);
+
     updateRestTimerDisplay();
+    updateProgressBar();
 
     restTimerInterval = setInterval(() => {
         restTimerSeconds--;
         updateRestTimerDisplay();
+        updateProgressBar();
 
         if (restTimerSeconds <= 0) {
             stopRestTimer();
             onRestComplete();
         }
     }, 1000);
+}
+
+function updateProgressBar() {
+    const pct = restTimerTotal > 0 ? (restTimerSeconds / restTimerTotal) * 100 : 0;
+    document.getElementById("rest-timer-progress-bar").style.width = pct + "%";
 }
 
 function stopRestTimer() {

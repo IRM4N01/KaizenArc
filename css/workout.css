@@ -155,34 +155,65 @@
 /* Rest timer */
 #rest-timer-container {
     position: fixed;
-    bottom: 80px;
-    left: 20px;
-    right: 20px;
+    bottom: 60px;
+    left: 0;
+    right: 0;
     background: var(--bg-card);
-    border: 1px solid var(--accent-gold);
-    border-radius: 16px;
-    padding: 16px 20px;
+    border-top: 1px solid var(--accent-gold);
+    padding: 10px 20px;
     z-index: 50;
     display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#rest-timer-exercise {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#rest-timer-body {
+    display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 12px;
 }
 
 #rest-timer-display {
-    font-size: 32px;
+    font-size: 22px;
     font-weight: 600;
     color: var(--accent-gold);
     font-variant-numeric: tabular-nums;
+    min-width: 48px;
+}
+
+#rest-timer-progress-bar-wrap {
+    flex: 1;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+#rest-timer-progress-bar {
+    height: 100%;
+    background: var(--accent-gold);
+    border-radius: 6px;
+    width: 100%;
+    transition: width 1s linear;
 }
 
 #rest-timer-stop {
-    padding: 8px 16px;
+    padding: 6px 14px;
     background: none;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-secondary);
     cursor: pointer;
+    white-space: nowrap;
 }
 
 #rest-timer-stop:hover {
@@ -190,49 +221,37 @@
     color: var(--accent-gold);
 }
 
-/* Rest timer input on exercise cards */
-.rest-timer-row {
+.rest-timer-presets {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    gap: 6px;
     margin-top: 10px;
     padding-top: 10px;
     border-top: 0.5px solid var(--border-color);
 }
 
-.rest-timer-row label {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin: 0;
-    white-space: nowrap;
-}
-
-.rest-timer-input {
-    width: 60px;
-    padding: 4px 8px;
-    font-size: 13px;
-    text-align: center;
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
+.rest-preset-btn {
+    flex: 1;
+    padding: 7px 0;
     background: var(--bg-page);
-    color: var(--text-primary);
-}
-
-.rest-timer-unit {
-    font-size: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 13px;
     color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
 }
 
-.start-rest-btn {
-    margin-left: auto;
-    padding: 5px 12px;
+.rest-preset-btn:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+.rest-preset-btn.active {
     background: var(--accent-gold);
     color: var(--text-on-gold);
-    border: none;
-    border-radius: 6px;
-    font-size: 12px;
+    border-color: var(--accent-gold);
     font-weight: 500;
-    cursor: pointer;
 }
 
 /* Exercise info modal */
