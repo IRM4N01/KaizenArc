@@ -61,11 +61,15 @@ function renderActiveProgram(openProgramCallback, openWeekCallback) {
         return;
     }
 
-    // Find most recently active program
+    // Separate completed and incomplete programs
+    const incompletePrograms = programs.filter(p => !p.completed);
+    const poolToSearch = incompletePrograms.length > 0 ? incompletePrograms : programs;
+
+    // Find most recently active program within that pool
     let activeProgram = null;
     let latestDate = null;
 
-    programs.forEach(program => {
+    poolToSearch.forEach(program => {
         program.weeks.forEach(week => {
             week.days.forEach(day => {
                 if (day.completedDate) {
@@ -79,8 +83,8 @@ function renderActiveProgram(openProgramCallback, openWeekCallback) {
         });
     });
 
-    // Fall back to most recently created program
-    if (!activeProgram) activeProgram = programs[programs.length - 1];
+    // Fall back to most recently created incomplete program (or last program if all complete)
+    if (!activeProgram) activeProgram = poolToSearch[poolToSearch.length - 1];
 
     // Calculate progress
     let totalWorkouts = 0;

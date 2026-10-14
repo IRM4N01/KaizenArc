@@ -248,7 +248,7 @@ function openStarterPreview(starter, programs, onProgramCreated) {
 
         return `
             <div style="margin-bottom:20px;">
-                <p style="font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent-gold); margin:0 0 8px;">${day.date}</p>
+                <p style="font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent-gold); margin:0 0 8px;">${day.date || "Day " + (week1.days.indexOf(day) + 1)}</p>
                 <ul style="list-style:none; margin:0; padding:0;">
                     ${exercisesHTML}
                 </ul>
