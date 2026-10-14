@@ -281,7 +281,7 @@ function openStarterPreview(starter, programs, onProgramCreated) {
                 <button id="starter-preview-close" style="background:none; border:none; color:var(--text-secondary); font-size:22px; cursor:pointer; line-height:1; padding:0 0 0 12px;">✕</button>
             </div>
             <div style="padding:20px; overflow-y:auto; flex:1;">
-                <p style="font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-secondary); margin:0 0 16px;">Program Structure (all 4 weeks identical)</p>
+                <p style="font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-secondary); margin:0 0 16px;">Week 1 Structure${starter.weeks.length > 4 ? " (all " + starter.weeks.length + " weeks progress in weight/intensity)" : " (all " + starter.weeks.length + " weeks identical)"}</p>
                 ${daysHTML}
             </div>
             <div style="padding:16px 20px; border-top:1px solid var(--border-color); flex-shrink:0;">
