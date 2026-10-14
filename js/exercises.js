@@ -184,6 +184,10 @@ export function renderExercises(day) {
                 ${ex.notes ? `<p class="exercise-notes">📝 ${ex.notes}</p>` : ""}
             `;
         } else {
+            const setsDisplay = ex.workingSets ?? ex.sets ?? "—";
+            const weightDisplay = ex.weight != null ? ex.weight + "kg" : "—";
+            const warmupDisplay = typeof ex.warmupSets === "number" ? ex.warmupSets : (ex.warmupSets?.length ?? 0);
+
             card.innerHTML = `
                 <div class="exercise-card-header">
                     <h3>${ex.name}</h3>
@@ -192,8 +196,9 @@ export function renderExercises(day) {
                         <button class="delete-exercise-btn">Delete</button>
                     </div>
                 </div>
-                <p>Warm up sets: ${ex.warmupSets || 0}</p>
-                <p>Working: ${ex.workingSets} sets × ${ex.reps} reps @ ${ex.weight}kg</p>
+                <p>Warm up sets: ${warmupDisplay}</p>
+                <p>Working: ${setsDisplay} sets × ${ex.reps} reps @ ${weightDisplay}</p>
+                ${ex.rest ? `<p class="exercise-notes">⏱ Rest: ${ex.rest}</p>` : ""}
                 ${ex.notes ? `<p class="exercise-notes">📝 ${ex.notes}</p>` : ""}
             `;
         }

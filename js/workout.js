@@ -128,11 +128,11 @@ function renderWorkout(day) {
                 `;
             }
 
-            for (let i = 0; i < ex.workingSets; i++) {
+            for (let i = 0; i < (ex.workingSets ?? ex.sets ?? 0); i++) {
                 const done = ex.workingSetsDone ? ex.workingSetsDone[i] : false;
                 setsHTML += `
                     <div class="set-row ${done ? "completed" : ""}">
-                        <span>Set ${i + 1} — ${ex.reps} reps @ ${ex.weight}kg</span>
+                        <span>Set ${i + 1} — ${ex.reps} reps${ex.weight ? " @ " + ex.weight + "kg" : ""}</span>
                         <button class="tick-btn ${done ? "done" : ""}" onclick="toggleSet(this, ${exIndex}, 'accessory-working', ${i})">
                             ${done ? "✓" : ""}
                         </button>
@@ -189,7 +189,7 @@ window.toggleSet = function(btn, exIndex, type, setIndex) {
     if (type === "warmup") {
         ex.warmupSets[setIndex].done = !ex.warmupSets[setIndex].done;
     } else if (type === "working") {
-        if (!ex.workingSetsDone) ex.workingSetsDone = Array(ex.workingSets).fill(false);
+        if (!ex.workingSetsDone) ex.workingSetsDone = Array(ex.workingSets ?? ex.sets ?? 0).fill(false);
         ex.workingSetsDone[setIndex] = !ex.workingSetsDone[setIndex];
     } else if (type === "accessory-warmup") {
         if (!ex.warmupDone) ex.warmupDone = Array(ex.warmupSets).fill(false);
@@ -213,7 +213,7 @@ function updateWorkoutProgress(day) {
             done += ex.warmupSets.filter(s => s.done).length;
             done += ex.workingSetsDone ? ex.workingSetsDone.filter(Boolean).length : 0;
         } else {
-            total += (ex.warmupSets || 0) + ex.workingSets;
+            total += (ex.warmupSets || 0) + (ex.workingSets ?? ex.sets ?? 0);
             done += ex.warmupDone ? ex.warmupDone.filter(Boolean).length : 0;
             done += ex.workingSetsDone ? ex.workingSetsDone.filter(Boolean).length : 0;
         }
