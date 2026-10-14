@@ -260,13 +260,13 @@ function openStarterPreview(starter, programs, onProgramCreated) {
     modal.id = "starter-preview-modal";
     modal.style.cssText = `
         position:fixed; inset:0; z-index:1000;
-        background:rgba(0,0,0,0.7);
+        background:rgba(0,0,0,0.85);
         display:flex; align-items:flex-end; justify-content:center;
     `;
 
     modal.innerHTML = `
         <div style="
-            background:var(--bg-secondary);
+            background:var(--bg-primary);
             width:100%; max-width:600px;
             max-height:85vh;
             border-radius:20px 20px 0 0;
