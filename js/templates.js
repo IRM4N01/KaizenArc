@@ -51,39 +51,54 @@ export function renderTemplatesList(programs, onProgramCreated) {
 
     // ── STARTER PROGRAMS ────────────────────────────────────────
     if (STARTER_PROGRAMS.length > 0) {
-        const starterHeading = document.createElement("p");
-        starterHeading.style.cssText = "font-size:12px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-secondary); margin:0 0 10px 4px;";
-        starterHeading.textContent = "Starter Programs";
-        container.appendChild(starterHeading);
+        const groups = [
+            { label: "Starter Programs",       level: "beginner" },
+            { label: "Intermediate Programs",  level: "intermediate" },
+        ];
 
-        STARTER_PROGRAMS.forEach(starter => {
-            const card = document.createElement("div");
-            card.classList.add("program-card");
-            card.style.cursor = "pointer";
-            card.innerHTML = `
-                <div class="program-card-content" style="display:flex; justify-content:space-between; align-items:center; padding:16px 20px; width:100%;">
-                    <div>
-                        <h3>${starter.name}</h3>
-                        <p>${starter.totalWeeks} weeks · ${starter.daysPerWeek} days/week · ${starter.description}</p>
-                    </div>
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <button class="use-starter-btn" style="padding:6px 14px; background:var(--accent-gold); color:var(--text-on-gold); border:none; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer;">Use</button>
-                    </div>
-                </div>
-            `;
+        groups.forEach(group => {
+            const groupPrograms = STARTER_PROGRAMS.filter(p => p.level === group.level);
+            if (!groupPrograms.length) return;
 
-            card.addEventListener("click", (e) => {
-                if (!e.target.classList.contains("use-starter-btn")) {
-                    openStarterPreview(starter, programs, onProgramCreated);
-                }
+            const heading = document.createElement("p");
+            heading.style.cssText = "font-size:12px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-secondary); margin:0 0 10px 4px;";
+            heading.textContent = group.label;
+            container.appendChild(heading);
+
+            groupPrograms.forEach(starter => {
+                const card = document.createElement("div");
+                card.classList.add("program-card");
+                card.style.cursor = "pointer";
+                card.innerHTML = `
+                    <div class="program-card-content" style="display:flex; justify-content:space-between; align-items:center; padding:16px 20px; width:100%;">
+                        <div>
+                            <h3>${starter.name}</h3>
+                            <p>${starter.totalWeeks} weeks · ${starter.daysPerWeek} days/week · ${starter.description}</p>
+                        </div>
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <button class="use-starter-btn" style="padding:6px 14px; background:var(--accent-gold); color:var(--text-on-gold); border:none; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer;">Use</button>
+                        </div>
+                    </div>
+                `;
+ 
+                card.addEventListener("click", (e) => {
+                    if (!e.target.classList.contains("use-starter-btn")) {
+                        openStarterPreview(starter, programs, onProgramCreated);
+                    }
+                });
+
+                card.querySelector(".use-starter-btn").addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    useStarterProgram(starter, programs, onProgramCreated);
+                });
+
+                container.appendChild(card);
             });
 
-            card.querySelector(".use-starter-btn").addEventListener("click", (e) => {
-                e.stopPropagation();
-                useStarterProgram(starter, programs, onProgramCreated);
-            });
-
-            container.appendChild(card);
+            // Small gap between groups
+            const spacer = document.createElement("div");
+            spacer.style.cssText = "height:16px;";
+            container.appendChild(spacer);
         });
 
         // Divider before user templates (only if user has templates too)
