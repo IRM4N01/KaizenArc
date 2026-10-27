@@ -1,6 +1,6 @@
 // ============================================================
 // STARTER PROGRAMS — Fundamentals Hypertrophy Program
-// Jeff Nippard | 3 programs × 4 weeks
+// Jeff Nippard | programs × 4–8 weeks
 //
 // This is a 4-week strength base block. Exercises are identical
 // across all 4 weeks — progressive overload is achieved by
@@ -228,6 +228,14 @@ function pplPull2() {
   ]);
 }
 
+// Build Block 1: 8 identical weeks (same exercises, add weight each week)
+function pplBlock1Weeks() {
+  return [1, 2, 3, 4, 5, 6, 7, 8].map(w => ({
+    name: `Week ${w}`,
+    days: [pplLegs1(), pplPush1(), pplPull1(), pplLegs2(), pplPush2(), pplPull2()],
+  }));
+}
+
 // ── PPL BLOCK 2 day builders (Peaking Phase) ─────────────────
 // Week 1 = deload. Weeks 2-8 build progressively.
 // Each day builder returns the Week 1 (deload) version.
@@ -372,14 +380,6 @@ function pplB2Pull2_working() {
   ]);
 }
 
-// Build Block 1: 8 identical weeks (same exercises, add weight each week)
-function pplBlock1Weeks() {
-  return [1, 2, 3, 4, 5, 6, 7, 8].map(w => ({
-    name: `Week ${w}`,
-    days: [pplLegs1(), pplPush1(), pplPull1(), pplLegs2(), pplPush2(), pplPull2()],
-  }));
-}
-
 // Build Block 2: Week 1 deload, Weeks 2-8 progressive working weeks
 function pplBlock2Weeks() {
   const weeks = [];
@@ -394,6 +394,152 @@ function pplBlock2Weeks() {
     });
   }
   return weeks;
+}
+
+// ── PPL 5x/WEEK day builders (Base Hypertrophy System) ───────
+// 5 days/week: Push #1, Pull #1, Legs #1, [Optional Rest], Upper #1, Lower #1
+// Phase 1 (Weeks 1-4): moderate volume, moderate intensity
+// Phase 2 (Weeks 5-8): same exercises, higher intensity — add weight each week
+
+function ppl5xPush1() {
+  return makeDay("Push #1", [
+    { name: "Barbell Bench Press",
+      sets: 1, reps: "3-5", rest: "3-4 min",
+      notes: "Top set. Quick pause on chest, explode up on each rep. Set up a comfortable arch." },
+    { name: "Larsen Press",
+      sets: 2, reps: 10, rest: "3-4 min",
+      notes: "Back-off sets. Shoulder blades retracted and depressed. Slight arch in upper back. Zero leg drive." },
+    { name: "Standing Dumbbell Arnold Press",
+      sets: 3, reps: "8-10", rest: "2-3 min",
+      notes: "Start with elbows in front and palms facing in. Rotate so palms face forward as you press." },
+    { name: "Press-Around (Cable)",
+      sets: 2, reps: "12-15", rest: "0 min",
+      notes: "Superset with Pec Static Stretch. Brace with non-working arm, squeeze pecs by pressing cable across body." },
+    { name: "Pec Static Stretch",
+      sets: 2, reps: "30 sec", rest: "1-2 min",
+      notes: "Superset with Press-Around. Hold pec stretch at ~7/10 intensity for 30 seconds." },
+    { name: "Cross-Body Cable Y-Raise",
+      sets: 3, reps: "12-15", rest: "1-2 min",
+      notes: "Side delt focus. Swing cable out and up as if drawing a sword from your side." },
+    { name: "Triceps Pressdown + Overhead Triceps Extension",
+      sets: 3, reps: "8+8", rest: "1-2 min",
+      notes: "Do second half of ROM for pressdowns (squeeze-only) then first half for overhead extensions (stretch-only). Back-to-back." },
+    { name: "N1-Style Cross-Body Triceps Extension",
+      sets: 2, reps: "10-12", rest: "1-2 min",
+      notes: "Extend arm more out to side than a regular pressdown. Feel the stretch as the cable moves across your torso." },
+  ]);
+}
+
+function ppl5xPull1() {
+  return makeDay("Pull #1", [
+    { name: "Lat Pulldown (Feeder Sets)",
+      sets: 4, reps: 10, rest: "2-3 min",
+      notes: "Build weight each set: Set 1 RPE 4-5, Set 2 RPE 6-7, Set 3 RPE 7-8, Set 4 reach failure at 10 reps." },
+    { name: "Lat Pulldown (Drop Set)",
+      sets: 1, reps: "10+5", rest: "2-3 min",
+      notes: "Immediately after hitting ~10 reps, strip 30-50% weight and do 5 more reps with controlled technique." },
+    { name: "Omni-Grip Machine Chest-Supported Row",
+      sets: 3, reps: "10-12", rest: "2-3 min",
+      notes: "Use a different grip for each working set, progressing from wider to closer." },
+    { name: "Bottom-Half DB Lat Pullover",
+      sets: 2, reps: "10-12", rest: "0 min",
+      notes: "Superset with Lat Static Stretch. Stay in the stretched (bottom) aspect of the lift — cut out the top half of ROM." },
+    { name: "Lat Static Stretch",
+      sets: 2, reps: "30 sec", rest: "1-2 min",
+      notes: "Superset with DB Lat Pullover. Hold lat stretch at ~7/10 intensity for 30 seconds." },
+    { name: "Omni-Direction Face Pull",
+      sets: 3, reps: "12-15", rest: "1-2 min",
+      notes: "Set 1: low-to-high angle. Set 2: mid-range. Set 3: high-to-low angle." },
+    { name: "EZ-Bar Curl",
+      sets: 3, reps: "6-8", rest: "1-2 min",
+      notes: "Focus on contracting biceps, minimize torso momentum." },
+    { name: "Bottom-Half Preacher Curl",
+      sets: 2, reps: "10-12", rest: "1-2 min",
+      notes: "Stay in the stretched (bottom) aspect of the lift — cut out the top half of ROM." },
+  ]);
+}
+
+function ppl5xLegs1() {
+  return makeDay("Legs #1", [
+    { name: "Squat",
+      sets: 1, reps: "3-5", rest: "3-4 min",
+      notes: "Top set. Sit back and down, keep upper back tight to bar." },
+    { name: "Pause Squat",
+      sets: 2, reps: 5, rest: "3-4 min",
+      notes: "Back-off sets at ~75% of top set. 2-second pause at the bottom. Sit back and down." },
+    { name: "Barbell RDL",
+      sets: 3, reps: "8-10", rest: "2-3 min",
+      notes: "Maintain neutral lower back, set hips back, don't allow spine to round." },
+    { name: "Walking Lunge",
+      sets: 2, reps: 10, rest: "2-3 min",
+      notes: "10 steps each leg. Take medium strides, minimize the amount you push off the rear leg." },
+    { name: "Seated Leg Curl",
+      sets: 3, reps: "10-12", rest: "1-2 min",
+      notes: "Focus on squeezing hamstrings to move the weight." },
+    { name: "Leg Press Toe Press",
+      sets: 4, reps: "10-12", rest: "1-2 min",
+      notes: "Calf raises on leg press. Press all the way up to toes, stretch calves at bottom, don't bounce." },
+    { name: "Decline Plate-Weighted Crunch",
+      sets: 3, reps: "10-12", rest: "1-2 min",
+      notes: "Hold a plate or dumbbell to chest and crunch hard." },
+  ]);
+}
+
+function ppl5xUpper1() {
+  return makeDay("Upper #1", [
+    { name: "Pull-Up",
+      sets: 2, reps: "8-10", rest: "2-3 min",
+      notes: "1.5× shoulder-width grip, pull chest to bar." },
+    { name: "Close-Grip Barbell Incline Press",
+      sets: 3, reps: "8/5/12", rest: "3-4 min",
+      notes: "~45° incline, grip just outside shoulder width. Cluster sets: 8 reps, rest-pause, 5 reps, rest-pause, 12 reps." },
+    { name: "Kroc Row",
+      sets: 3, reps: "10-12", rest: "2-3 min",
+      notes: "Dumbbell row with mild cheating and slightly upright posture. Go heavy, use straps." },
+    { name: "Eccentric + Constant-Tension Cable Lateral Raise",
+      sets: 3, reps: "5+15", rest: "1-2 min",
+      notes: "First 5 reps: 5-second lowering phase. Last 15 reps: constant tension with no pausing at top or bottom." },
+    { name: "N1-Style Cross-Body Bicep Curl",
+      sets: 3, reps: "10-12", rest: "1-2 min",
+      notes: "Curl with arm out to the side at ~60° angle from torso." },
+    { name: "Diamond Push-Up",
+      sets: 1, reps: "AMRAP", rest: "0 min",
+      notes: "Hands form a diamond shape. Do as many as possible with smooth, controlled tempo." },
+  ]);
+}
+
+function ppl5xLower1() {
+  return makeDay("Lower #1", [
+    { name: "Deadlift",
+      sets: 1, reps: 5, rest: "3-5 min",
+      notes: "Top set. Brace lats, chest tall, pull the slack out of the bar before lifting." },
+    { name: "Stiff-Leg Deadlift",
+      sets: 2, reps: 8, rest: "3-4 min",
+      notes: "High-hip conventional deadlift with a slight bend in the knees." },
+    { name: "Leg Press",
+      sets: 4, reps: "10-12", rest: "2-3 min",
+      notes: "Medium-width foot placement, don't allow lower back to round at the bottom." },
+    { name: "Glute Ham Raise",
+      sets: 3, reps: "8-10", rest: "1-2 min",
+      notes: "Keep hips straight. If no GHR machine, substitute Nordic ham curls." },
+    { name: "Slow-Eccentric Leg Extension",
+      sets: 3, reps: "8-10", rest: "1-2 min",
+      notes: "Control the weight with a 3-4 second negative (lowering phase)." },
+    { name: "Seated Calf Raise",
+      sets: 4, reps: "15-20", rest: "1-2 min",
+      notes: "Press all the way up to toes, stretch calves at bottom, don't bounce." },
+    { name: "Roman Chair Leg Raise",
+      sets: 3, reps: "10-20", rest: "1-2 min",
+      notes: "Tuck knees toward chest, minimize momentum." },
+  ]);
+}
+
+// Build 8 identical weeks (Phase 1: Wks 1-4, Phase 2: Wks 5-8 — add weight each week)
+function ppl5xWeeks() {
+  return [1, 2, 3, 4, 5, 6, 7, 8].map(w => ({
+    name: `Week ${w}`,
+    days: [ppl5xPush1(), ppl5xPull1(), ppl5xLegs1(), ppl5xUpper1(), ppl5xLower1()],
+  }));
 }
 
 // ── EXPORT ───────────────────────────────────────────────────
@@ -417,7 +563,6 @@ export const STARTER_PROGRAMS = [
     name: "Fundamentals: Upper/Lower",
     isStarter: true,
     level: "beginner",
-
     daysPerWeek: 4,
     totalWeeks: 4,
     description: "4-week strength base. 2 lower + 2 upper sessions per week. Same exercises each week — add weight to progress.",
@@ -444,7 +589,7 @@ export const STARTER_PROGRAMS = [
     level: "intermediate",
     daysPerWeek: 6,
     totalWeeks: 8,
-    description: "Intermediate–Advanced. Legs/Push/Pull × 2 per week. Same exercises across 8 weeks — add weight each week to progress.",
+    description: "Legs/Push/Pull × 2 per week. Same exercises across 8 weeks — add weight each week to progress.",
     weeks: pplBlock1Weeks(),
   },
 
@@ -456,8 +601,20 @@ export const STARTER_PROGRAMS = [
     level: "intermediate",
     daysPerWeek: 6,
     totalWeeks: 8,
-    description: "Intermediate–Advanced. Week 1 is a deload with new exercises. Weeks 2–8 build to peak intensity.",
+    description: "Week 1 is a deload with new exercises. Weeks 2–8 build to peak intensity.",
     weeks: pplBlock2Weeks(),
+  },
+
+  // 6. PPL 5x/WEEK — 5 days/week, 8 weeks
+  {
+    id: "starter-ppl-5x",
+    name: "PPL: 5x/Week System",
+    isStarter: true,
+    level: "advanced",
+    daysPerWeek: 5,
+    totalWeeks: 8,
+    description: "Push, Pull, Legs, Upper, Lower. Phase 1 (Wks 1-4): base hypertrophy. Phase 2 (Wks 5-8): higher intensity. Same exercises throughout — add weight each week.",
+    weeks: ppl5xWeeks(),
   },
 
 ];

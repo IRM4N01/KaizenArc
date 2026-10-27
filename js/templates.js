@@ -54,6 +54,7 @@ export function renderTemplatesList(programs, onProgramCreated) {
         const groups = [
             { label: "Starter Programs",       level: "beginner" },
             { label: "Intermediate Programs",  level: "intermediate" },
+            { label: "Advanced Programs",      level: "advanced" }
         ];
 
         groups.forEach(group => {
