@@ -79,6 +79,7 @@ function initSwipeBack() {
     let activeScreen = null;      // the screen being dragged
     let prevScreen = null;        // the screen revealed underneath
     let prevScreenWasHidden = false; // did we unhide prevScreen ourselves?
+    let targetBtn = null; 
 
     const EDGE_ZONE = 30;         // px from left edge to start gesture
     const THRESHOLD = 0.4;        // % of screen width to commit
@@ -136,6 +137,7 @@ function initSwipeBack() {
         prevScreenWasHidden = false;
         isSwiping          = false;
         swipeRejected      = false;
+        targetBtn          = null; 
     }
 
     document.addEventListener("touchstart", (e) => {
@@ -167,6 +169,7 @@ function initSwipeBack() {
 
             activeScreen = target.current;
             prevScreen   = target.prev;
+            targetBtn    = target.btn;
 
             // Reveal the previous screen underneath
             prevScreenWasHidden = prevScreen.classList.contains("hidden");
@@ -217,30 +220,21 @@ function initSwipeBack() {
             prevScreen.style.transform    = "scale(1)";
 
             activeScreen.addEventListener("transitionend", () => {
-                // Let the back button do the real navigation
-                for (const { btnId } of BACK_MAP) {
-                    const btn = document.getElementById(btnId);
-                    if (btn && isVisible(btn)) {
-                        // Clean up visual state first so navigation doesn't fight it
-                        const snap = activeScreen;
-                        snap.style.transition = "";
-                        snap.style.transform  = "";
-                        snap.style.boxShadow  = "";
-                        snap.style.zIndex     = "";
-                        prevScreen.style.transition = "";
-                        prevScreen.style.transform  = "";
-                        prevScreen.style.zIndex     = "";
-                        // prevScreen stays visible — the nav will manage it
-                        prevScreenWasHidden = false;
-                        activeScreen = null;
-                        prevScreen   = null;
-                        isSwiping    = false;
-
-                        btn.click();
-                        return;
-                    }
-                }
-                cleanUp();
+                const snap = activeScreen;
+                snap.style.transition = "";
+                snap.style.transform  = "";
+                snap.style.boxShadow  = "";
+                snap.style.zIndex     = "";
+                prevScreen.style.transition = "";
+                prevScreen.style.transform  = "";
+                prevScreen.style.zIndex     = "";
+                prevScreenWasHidden = false;
+                const btn = targetBtn;     // ← use saved reference
+                activeScreen = null;
+                prevScreen   = null;
+                targetBtn    = null;
+                isSwiping    = false;
+                btn.click();               // ← direct click, no isVisible chec
             }, { once: true });
         } else {
             // Cancel — snap back
