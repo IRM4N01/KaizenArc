@@ -5,7 +5,7 @@ import { initPrograms } from './programs.js';
 import { initHome, renderDashboard } from './home.js';
 import { openProgram } from './programs.js';
 import { openWeek } from './weeks.js';
-import { initHistory, renderHistory } from './history.js';
+
 
 
 // Bottom navigation
@@ -36,10 +36,6 @@ function initNav() {
                 if (liftDetail) liftDetail.classList.add("hidden");
                 if (liftsContainer) liftsContainer.classList.remove("hidden");
             }
-
-            if (target === "history-screen") {
-                renderHistory();
-            }
             
         });
     });
@@ -53,7 +49,6 @@ function startApp() {
     initHome(lifts, openProgram, openWeek);
     // Render dashboard after everything is ready
     renderDashboard(lifts, openProgram, openWeek);
-    initHistory();
     initSwipeBack();
 }
 
