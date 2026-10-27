@@ -542,6 +542,452 @@ function ppl5xWeeks() {
   }));
 }
 
+// ── THE GRANDMASTER ──────────────────────────────────────────
+// 6-week rotating split. 5 training days/week.
+// Weeks 1-3 use one set of base exercises; Weeks 4-6 rotate
+// key movements (e.g. Meadows Row replaces One Arm BB Row,
+// Lying Leg Curl replaces Seated, Slight Incline replaces Slight Decline).
+// All 6 weeks have their own unique exercise lists.
+//
+// Superset notation: rest: "0 min" on all but the LAST exercise
+// in a superset/giant-set; the last exercise gets normal rest.
+// ─────────────────────────────────────────────────────────────
+
+// ── WEEK 1 ────────────────────────────────────────────────────
+function gm_w1_legs() {
+  return makeDay("Week 1 – Legs", [
+    { name: "Seated Leg Curl",              sets: 3, reps: "10-12",  rest: "2 min",   notes: "Work up to a hard set. Slow eccentric, full stretch at bottom." },
+    { name: "Barbell Squat",               sets: 3, reps: "8-6",    rest: "3 min",   notes: "Work up in weight each set. Drive knees out, sit back and down." },
+    { name: "Leg Press",                   sets: 3, reps: "10-12",  rest: "2-3 min", notes: "Moderate weight, full range of motion, don't lock knees at top." },
+    { name: "Barbell Walking Lunge",       sets: 2, reps: "12/leg", rest: "2 min",   notes: "Step out, keep torso upright, don't let knee cave inward." },
+    { name: "Stiff Legged Barbell Deadlift", sets: 3, reps: "8-10", rest: "2 min",   notes: "Slight knee bend, hinge at hips, feel stretch in hamstrings, neutral spine." },
+    { name: "Standing Calf Raise",         sets: 4, reps: "10-12",  rest: "1-2 min", notes: "Full stretch at bottom, pause at top. Go heavy." },
+  ]);
+}
+
+function gm_w1_chest_shoulders_abs() {
+  return makeDay("Week 1 – Chest/Shoulders/Abs", [
+    { name: "Slight Decline DB Press",     sets: 1, reps: 8,        rest: "2-3 min", notes: "Hard working set. Slight decline angle, full ROM, elbows at ~75°." },
+    { name: "Incline Barbell Press",       sets: 1, reps: "10-8",   rest: "2-3 min", notes: "Work up in weight. Upper chest focus, controlled eccentric." },
+    { name: "Hex Press / Smash Press",     sets: 1, reps: "cluster",rest: "2 min",   notes: "Cluster set: hit 4-5 reps, rest 15 sec, repeat. DB heads touching throughout." },
+    { name: "Machine / Cable Flye",        sets: 3, reps: "10-12",  rest: "1-2 min", notes: "Squeeze and hold at peak contraction. Full stretch on eccentric." },
+    { name: "Bent Over Lateral Raise",     sets: 3, reps: "15-20",  rest: "1-2 min", notes: "Torso parallel to floor, lead with elbows, rear delt focus." },
+    { name: "Smith Machine Seated OHP",    sets: 3, reps: "8-10",   rest: "2 min",   notes: "Press to lockout, controlled descent to chin level." },
+    { name: "DB Y Raise",                  sets: 3, reps: "12-15",  rest: "1-2 min", notes: "Incline bench, raise arms out into a Y shape, lower trap / rear delt focus." },
+    { name: "Dual Rope Tricep Extension",  sets: 3, reps: "12-15",  rest: "1-2 min", notes: "Bonus tricep work. Pull ropes apart at bottom, full extension." },
+    { name: "Rope Crunches",               sets: 4, reps: "15-20",  rest: "1 min",   notes: "Kneel at cable, crunch elbows to knees, round lower back at bottom." },
+  ]);
+}
+
+function gm_w1_back_abs() {
+  return makeDay("Week 1 – Back/Abs", [
+    { name: "One Arm Barbell Row",         sets: 3, reps: "8-6",    rest: "2-3 min", notes: "Landmine or plate-loaded, brace against a bench. Pull elbow back and up, feel the lat stretch." },
+    { name: "One Arm Supinated Pulldown",  sets: 3, reps: "10-8",   rest: "2 min",   notes: "Single arm cable pulldown with underhand grip. Pull elbow to hip, full lat contraction." },
+    { name: "Rack Pull",                   sets: 3, reps: "6-8",    rest: "3 min",   notes: "Pull from just below knee. Drive hips through, squeeze traps and lats at top." },
+    { name: "Chest Pulls",                 sets: 3, reps: "12-15",  rest: "2 min",   notes: "Cable row pulling to chest / upper abdomen. Elbows flared, upper back focus." },
+    { name: "DB Pullover with Band",       sets: 3, reps: "10-12",  rest: "1-2 min", notes: "Band adds resistance at peak. Full lat stretch overhead, squeeze at bottom." },
+    { name: "DB Shrugs",                   sets: 3, reps: "10-12",  rest: "1-2 min", notes: "Bonus trap work. Squeeze at top and hold for 1-2 seconds." },
+    { name: "Decline Bench Leg Raises",    sets: 4, reps: "12-15",  rest: "1 min",   notes: "Full range of motion, slow eccentric, don't swing." },
+  ]);
+}
+
+function gm_w1_arms_calves() {
+  return makeDay("Week 1 – Arms/Calves", [
+    // Superset 1: Hammer Curls + Dual Rope Kickbacks (4 rounds)
+    { name: "Hammer Curls",               sets: 4, reps: "10-12",  rest: "0 min",   notes: "Superset A1. Neutral grip, controlled curl, don't swing." },
+    { name: "Dual Rope Tricep Kickbacks", sets: 4, reps: "12-15",  rest: "1-2 min", notes: "Superset A2. Bent over, elbows locked at sides, extend fully." },
+    // Superset 2: Drag Curls + DB Lying Extensions (4 rounds)
+    { name: "Drag Curls",                 sets: 4, reps: "10-12",  rest: "0 min",   notes: "Superset B1. Bar drags up your torso, elbows travel back not up." },
+    { name: "DB Lying Extensions",        sets: 4, reps: "10-12",  rest: "1-2 min", notes: "Superset B2. Skull crusher position, full stretch at bottom, squeeze at top." },
+    // Superset 3: Concentration Preacher Curls + Seated Overhead Rope Extensions (3 rounds)
+    { name: "Concentration Preacher Curls", sets: 3, reps: "10-12", rest: "0 min",  notes: "Superset C1. Full stretch at bottom, peak contraction at top." },
+    { name: "Seated Overhead Rope Extensions", sets: 3, reps: "12-15", rest: "1-2 min", notes: "Superset C2. Elbows by ears, full stretch, press to lockout." },
+    { name: "Standing Calf Raise",        sets: 4, reps: "10-12",  rest: "1-2 min", notes: "Full range, pause at top and bottom." },
+  ]);
+}
+
+function gm_w1_legs2() {
+  return makeDay("Week 1 – Legs (2nd)", [
+    { name: "Seated Leg Curl",            sets: 3, reps: "10-12",  rest: "2 min",   notes: "Pre-exhaust hamstrings. Slow eccentric." },
+    { name: "Barbell Squat",              sets: 3, reps: "8-6",    rest: "3 min",   notes: "Work up in weight. Drive knees out, sit back and down." },
+    { name: "Hack Squat",                 sets: 3, reps: "10-12",  rest: "2-3 min", notes: "Quad emphasis, feet slightly forward on platform." },
+    { name: "Leg Extension",              sets: 3, reps: "12-15",  rest: "1-2 min", notes: "Full squeeze at top, controlled eccentric." },
+    { name: "Stiff Legged Barbell Deadlift", sets: 3, reps: "8-10", rest: "2 min",  notes: "Slight knee bend, feel hamstring stretch, neutral spine throughout." },
+  ]);
+}
+
+// ── WEEK 2 ────────────────────────────────────────────────────
+function gm_w2_chest_shoulders_abs() {
+  return makeDay("Week 2 – Chest/Shoulders/Abs", [
+    { name: "Slight Incline DB Press",    sets: 1, reps: "10-12",  rest: "2-3 min", notes: "Very slight incline. Full ROM, controlled eccentric." },
+    { name: "Incline Barbell Press",      sets: 1, reps: "8-10",   rest: "2-3 min", notes: "One working set, go heavy with good form." },
+    { name: "Dips",                       sets: 3, reps: "8-12",   rest: "2 min",   notes: "Slight forward lean for chest emphasis. Full ROM." },
+    { name: "Low Cable Crossover",        sets: 3, reps: "12-15",  rest: "1-2 min", notes: "Pull cables up and together, squeeze pecs at top." },
+    { name: "Landmine Shoulder Press",    sets: 3, reps: 8,        rest: "2 min",   notes: "Single arm or two-arm. Press landmine up and slightly forward." },
+    { name: "Bent Over DB Lateral",       sets: 3, reps: 30,       rest: "0 min",   notes: "Superset with DB Side Lateral. Torso parallel, high rep burn set." },
+    { name: "DB Side Lateral",            sets: 3, reps: 15,       rest: "1-2 min", notes: "Superset finisher. Standing, raise to shoulder height." },
+    { name: "Rope Crunches",              sets: 4, reps: "15-20",  rest: "1 min",   notes: "Cable crunch, round spine at bottom, full contraction." },
+  ]);
+}
+
+function gm_w2_back_calves() {
+  return makeDay("Week 2 – Back/Calves", [
+    { name: "One Arm Barbell Row",        sets: 3, reps: "8-6",    rest: "2-3 min", notes: "Landmine setup. Pull elbow back and up, big stretch at bottom." },
+    { name: "One Arm Supinated Pulldown", sets: 3, reps: "10-8",   rest: "2 min",   notes: "Underhand single arm cable pulldown. Drive elbow to hip." },
+    { name: "Low Cable Row",              sets: 3, reps: "10-12",  rest: "2 min",   notes: "Seated cable row to waist. Full stretch forward, squeeze at contraction." },
+    { name: "DB Pullovers",               sets: 3, reps: "12-15",  rest: "2 min",   notes: "Across bench, full lat stretch overhead, squeeze at bottom." },
+    { name: "Barbell Hyperextension",     sets: 3, reps: "10-12",  rest: "1-2 min", notes: "Lower back and glute focus. Controlled, don't hyperextend at top." },
+    { name: "DB Shrugs",                  sets: 3, reps: "10-12",  rest: "1-2 min", notes: "Bonus trap work. Hold squeeze at top." },
+    { name: "Toe Press",                  sets: 4, reps: "10-12",  rest: "1-2 min", notes: "Calf raise on leg press. Full ROM, don't bounce at bottom." },
+  ]);
+}
+
+function gm_w2_arms_abs() {
+  return makeDay("Week 2 – Arms/Abs", [
+    // Giant set A (3 rounds): EZ Bar Curls + Hammer Curls + One Arm Cable Curl
+    { name: "EZ Bar Curls",               sets: 3, reps: "10-12",  rest: "0 min",   notes: "Giant set A1. Supinated grip, squeeze at top, slow eccentric." },
+    { name: "Hammer Curls",               sets: 3, reps: "10-12",  rest: "0 min",   notes: "Giant set A2. Neutral grip, don't swing." },
+    { name: "One Arm Cable Curl",         sets: 3, reps: "12-15",  rest: "1-2 min", notes: "Giant set A3 finisher. Face cable, supinate at top." },
+    // Giant set B (4 rounds): Dual Handle Pushdowns + Kettlebell Lying Extensions + Bent Over Extensions
+    { name: "Dual Handle Pushdowns",      sets: 4, reps: "12-15",  rest: "0 min",   notes: "Giant set B1. Squeeze at full extension, elbows tight to sides." },
+    { name: "Kettlebell Lying Extensions", sets: 4, reps: "10-12", rest: "0 min",   notes: "Giant set B2. Skull crusher with KB, stretch at bottom." },
+    { name: "Bent Over Extensions",       sets: 4, reps: "12-15",  rest: "1-2 min", notes: "Giant set B3 finisher. Bent over cable, extend arm back fully." },
+    { name: "Decline Bench Leg Raises",   sets: 4, reps: "12-15",  rest: "1 min",   notes: "Slow and controlled, don't use momentum." },
+  ]);
+}
+
+function gm_w2_legs() {
+  return makeDay("Week 2 – Legs", [
+    { name: "Seated Leg Curl",            sets: 3, reps: "10-12",  rest: "2 min",   notes: "Pre-exhaust. Slow eccentric, full ROM." },
+    { name: "Barbell Squat",              sets: 3, reps: "8-6",    rest: "3 min",   notes: "Work up in weight." },
+    { name: "Leg Extension",              sets: 3, reps: "12-15",  rest: "1-2 min", notes: "Squeeze at top, 1-second hold." },
+    { name: "Leg Press",                  sets: 3, reps: "10-12",  rest: "2-3 min", notes: "Full range, controlled descent." },
+    { name: "Stiff Legged Barbell Deadlift", sets: 3, reps: "8-10", rest: "2 min",  notes: "Feel hamstring stretch, neutral spine." },
+  ]);
+}
+
+function gm_w2_chest_shoulders_calves() {
+  return makeDay("Week 2 – Chest/Shoulders/Calves", [
+    { name: "Slight Decline DB Press",    sets: 1, reps: "8-10",   rest: "2-3 min", notes: "Hard working set." },
+    { name: "Incline Barbell Press",      sets: 1, reps: "8-10",   rest: "2-3 min", notes: "One working set, upper chest focus." },
+    { name: "Machine Press",              sets: 3, reps: "10-12",  rest: "2 min",   notes: "Controlled rep, full ROM." },
+    { name: "Dips",                       sets: 3, reps: "8-12",   rest: "2 min",   notes: "Chest dips, slight forward lean." },
+    { name: "Landmine Shoulder Press",    sets: 3, reps: 8,        rest: "2 min",   notes: "Press up and slightly forward." },
+    { name: "Bent Over DB Lateral",       sets: 3, reps: 30,       rest: "0 min",   notes: "Superset. High rep rear delt burnout." },
+    { name: "DB Side Lateral",            sets: 3, reps: 15,       rest: "1-2 min", notes: "Superset finisher." },
+    { name: "Toe Press",                  sets: 4, reps: 10,       rest: "1-2 min", notes: "Calf raise on leg press. Full ROM." },
+  ]);
+}
+
+// ── WEEK 3 ────────────────────────────────────────────────────
+function gm_w3_back_abs() {
+  return makeDay("Week 3 – Back/Abs", [
+    { name: "One Arm Barbell Row",        sets: 2, reps: "8-6",    rest: "2-3 min", notes: "Two working sets (strict then challenge). Heavy, full stretch." },
+    { name: "One Arm Supinated Pulldown", sets: 2, reps: 8,        rest: "2 min",   notes: "Drive elbow to hip, hold contraction." },
+    { name: "Rack Pull",                  sets: 3, reps: 6,        rest: "3 min",   notes: "Heavy. Pull from knee height, squeeze glutes and traps at top." },
+    { name: "Curry 3-Way Pulldowns",      sets: 3, reps: "6/6/6",  rest: "2 min",   notes: "Wide grip 6 reps, medium grip 6 reps, close grip 6 reps — no rest between grips." },
+    { name: "DB Pullover with Band",      sets: 2, reps: "10-12",  rest: "1-2 min", notes: "Band adds resistance at bottom. Lat stretch at top." },
+    { name: "DB Shrugs",                  sets: 3, reps: "10-12",  rest: "1-2 min", notes: "Bonus. Squeeze and hold." },
+    { name: "Decline Bench Leg Raises",   sets: 4, reps: "12-15",  rest: "1 min",   notes: "Controlled, full ROM." },
+  ]);
+}
+
+function gm_w3_arms_calves() {
+  return makeDay("Week 3 – Arms/Calves", [
+    { name: "Seated Hammer Curls",        sets: 3, reps: 12,       rest: "1-2 min", notes: "Seated for strict form. Neutral grip." },
+    { name: "Concentration Preacher Curls", sets: 3, reps: 10,     rest: "1-2 min", notes: "Elbow on pad, full range, peak contraction." },
+    { name: "EZ Bar Curls",               sets: 3, reps: "8 + partials", rest: "2 min", notes: "8 full reps then 6 partial reps at bottom half. Burnout the biceps." },
+    { name: "Dual Handle Pushdown",       sets: 3, reps: "12 drop", rest: "2 min",  notes: "Work set then drop set. Full extension each rep." },
+    { name: "Floor Press",                sets: 3, reps: 8,        rest: "2 min",   notes: "Elbows touch floor at bottom, no leg drive." },
+    { name: "Lying Kettlebell Extensions", sets: 3, reps: 10,      rest: "1-2 min", notes: "Skull crusher with KB, feel the tricep stretch." },
+    { name: "Toe Presses",                sets: 2, reps: "cluster", rest: "2 min",  notes: "2 cluster sets. Hit reps, rest 15 sec, repeat until failure." },
+  ]);
+}
+
+function gm_w3_legs_abs() {
+  return makeDay("Week 3 – Legs/Abs", [
+    { name: "Seated Leg Curl",            sets: 3, reps: "10-12",  rest: "2 min",   notes: "3 work sets. Slow eccentric, full stretch." },
+    { name: "Barbell Squat",              sets: 3, reps: "8-6",    rest: "3 min",   notes: "Work up in weight each set." },
+    { name: "Reverse Lunge",              sets: 2, reps: "15/leg", rest: "2 min",   notes: "Step back, keep torso upright, full ROM." },
+    { name: "Leg Press Close Stance",     sets: 3, reps: 15,       rest: "2 min",   notes: "Feet together or close, quad emphasis." },
+    { name: "DB Stiff Legged Deadlift",   sets: 3, reps: 8,        rest: "2 min",   notes: "Dumbbells, slightly wider ROM than barbell version." },
+    { name: "Rope Crunches",              sets: 4, reps: "15-20",  rest: "1 min",   notes: "Cable crunch, fully contract abs at bottom." },
+  ]);
+}
+
+function gm_w3_chest_shoulders_calves() {
+  return makeDay("Week 3 – Chest/Shoulders/Calves", [
+    { name: "Slight Decline DB Press",    sets: 1, reps: 8,        rest: "2-3 min", notes: "Hard working set." },
+    { name: "Incline Barbell Press",      sets: 1, reps: 6,        rest: "2-3 min", notes: "Heavier single working set." },
+    { name: "Hex Press",                  sets: 1, reps: "cluster", rest: "2 min",  notes: "Cluster set with DB heads touching. Short rest-pause intervals." },
+    { name: "Cable Fly Press",            sets: 4, reps: "10-12",  rest: "1-2 min", notes: "Cable crossover into a press motion. Squeeze pecs." },
+    { name: "Rear Delt Band Pulls",       sets: 3, reps: 15,       rest: "1-2 min", notes: "Band pull-aparts. Rear delt focus." },
+    { name: "Partial DB Side Laterals",   sets: 3, reps: 25,       rest: "0 min",   notes: "Superset with Top Partial laterals. Bottom half of range only." },
+    { name: "Top Partial DB Side Laterals", sets: 3, reps: 10,     rest: "1-2 min", notes: "Superset finisher. Top half of range only." },
+    { name: "Kettlebell Tate Press",      sets: 3, reps: 8,        rest: "1-2 min", notes: "Bonus tricep. Elbows flared out, press KB up from chest." },
+    { name: "Toe Press",                  sets: 4, reps: 10,       rest: "1-2 min", notes: "Full ROM calf raises on leg press." },
+  ]);
+}
+
+function gm_w3_back_abs2() {
+  return makeDay("Week 3 – Back/Abs (2nd)", [
+    { name: "One Arm Barbell Row",        sets: 2, reps: "10-6",   rest: "2-3 min", notes: "Strict set then challenge/heavier set." },
+    { name: "One Arm Supinated Pulldown", sets: 2, reps: "10-12",  rest: "2 min",   notes: "Full ROM, lat contraction at bottom." },
+    { name: "Barbell Pullovers",          sets: 3, reps: 10,       rest: "2 min",   notes: "Barbell version, heavy stretch across chest and lats." },
+    { name: "Curry 3-Way Pulldowns",      sets: 3, reps: "8/8/8",  rest: "2 min",   notes: "Wide / medium / close grip — 8 reps each, no rest between grips." },
+    { name: "Barbell Hyperextensions",    sets: 3, reps: 10,       rest: "1-2 min", notes: "Lower back and glute focus." },
+    { name: "Preacher Curl",              sets: 4, reps: 10,       rest: "1-2 min", notes: "Bonus bicep. Full stretch at bottom." },
+    { name: "Rope Crunches",              sets: 4, reps: "15-20",  rest: "1 min",   notes: "Full contraction each rep." },
+  ]);
+}
+
+// ── WEEK 4 ────────────────────────────────────────────────────
+function gm_w4_legs_calves() {
+  return makeDay("Week 4 – Legs/Calves", [
+    { name: "Lying Leg Curl",             sets: 1, reps: "10-12",  rest: "2-3 min", notes: "Elaborate work set: feeder sets up to a hard working set. Slow eccentric." },
+    { name: "Leg Press",                  sets: 2, reps: 8,        rest: "3 min",   notes: "Work up in weight each set. Full ROM." },
+    { name: "Smith Machine Split Squat",  sets: 2, reps: "8-10",   rest: "2-3 min", notes: "Hard set then drop set. Rear foot elevated if possible." },
+    { name: "Leg Extension",              sets: 2, reps: "10 + 25 partials", rest: "2 min", notes: "Full reps then partial reps at top. Quad burnout." },
+    { name: "Single Leg Romanian Deadlift", sets: 3, reps: 8,      rest: "2 min",   notes: "Balance focus. Slight knee bend, hinge at hip, neutral spine." },
+    { name: "Toe Press in Leg Press",     sets: 4, reps: 12,       rest: "1-2 min", notes: "Full calf ROM on leg press. Stretch at bottom, squeeze at top." },
+  ]);
+}
+
+function gm_w4_chest_shoulders_abs() {
+  return makeDay("Week 4 – Chest/Shoulders/Abs", [
+    { name: "Slight Incline DB Press",    sets: 1, reps: 8,        rest: "2-3 min", notes: "NEW base movement Wk4. Slight incline for upper chest." },
+    { name: "Slight Incline Barbell Press", sets: 1, reps: 6,      rest: "2-3 min", notes: "NEW. Slight incline angle, heavy single working set." },
+    { name: "Banded Chest Press",         sets: 2, reps: "cluster", rest: "2 min",  notes: "Band adds resistance at lockout. Cluster set format." },
+    { name: "Machine / Cable Flye",       sets: 3, reps: "8 + 10-sec pause", rest: "1-2 min", notes: "End each set with a 10-second isometric hold at peak contraction." },
+    { name: "Reverse Pec Deck",           sets: 3, reps: 15,       rest: "1-2 min", notes: "Rear delt focus. Sweep arms out and back." },
+    { name: "Wide Grip Barbell Row",      sets: 3, reps: 10,       rest: "2 min",   notes: "Upper back / rear delt. Wide grip, pull to upper chest." },
+    { name: "DB Y Raise",                 sets: 3, reps: 12,       rest: "1-2 min", notes: "Incline bench, arms in Y shape. Lower trap and rear delt." },
+    { name: "Dual Rope Tricep Extensions", sets: 3, reps: "drop",  rest: "1-2 min", notes: "Bonus. 3 sets with drop set on last. Pull ropes apart at bottom." },
+    { name: "Rope Crunches",              sets: 4, reps: "15-20",  rest: "1 min",   notes: "Full crunch, round spine at bottom." },
+  ]);
+}
+
+function gm_w4_back_abs() {
+  return makeDay("Week 4 – Back/Abs", [
+    { name: "Meadows Row",                sets: 2, reps: "10-12",  rest: "2-3 min", notes: "NEW base movement Wk4. Landmine row, elbow high and back, big lat stretch." },
+    { name: "Standing One Arm DB Row",    sets: 2, reps: 8,        rest: "2-3 min", notes: "NEW. Bent over, brace with free arm, pull DB to hip." },
+    { name: "Chest Pulls",                sets: 3, reps: 12,       rest: "2 min",   notes: "Cable row to chest. Elbows flared, upper back emphasis." },
+    { name: "Stretch Pulldowns",          sets: 2, reps: "cluster", rest: "2 min",  notes: "Wide grip pulldown with cluster set format. Emphasize stretch at top." },
+    { name: "Trap Bar Deadlifts",         sets: 3, reps: 5,        rest: "3-4 min", notes: "Heavy. Drive through floor, hips and shoulders rise together." },
+    { name: "Decline Bench Leg Raises",   sets: 4, reps: "12-15",  rest: "1 min",   notes: "Slow and controlled." },
+  ]);
+}
+
+function gm_w4_arms_calves() {
+  return makeDay("Week 4 – Arms/Calves", [
+    // Superset: Single Handle Pushdown + Bent Over Extensions (4 rounds = 8 sets)
+    { name: "Single Handle Pushdown",     sets: 4, reps: "12-15",  rest: "0 min",   notes: "Superset A1. Full extension, squeeze at bottom." },
+    { name: "Bent Over Extensions",       sets: 4, reps: "12-15",  rest: "1-2 min", notes: "Superset A2. Cable, bent over, extend arm back fully." },
+    { name: "Assist Dip Machine",         sets: 4, reps: 8,        rest: "2 min",   notes: "Weighted dip using assist machine or parallel bars. Chest dip angle." },
+    { name: "Drag Curls",                 sets: 4, reps: 12,       rest: "1-2 min", notes: "Bar drags up the torso. Elbows travel back." },
+    // Superset: Spider Curls + EZ Bar Reverse Curl (4 rounds = 8 sets)
+    { name: "Spider Curls",               sets: 4, reps: "10-12",  rest: "0 min",   notes: "Superset B1. Chest on incline bench, elbows in front, full curl." },
+    { name: "EZ Bar Reverse Curl",        sets: 4, reps: "10-12",  rest: "1-2 min", notes: "Superset B2. Overhand grip, forearm and brachialis focus." },
+    { name: "Seated Calf Raises",         sets: 4, reps: 12,       rest: "1-2 min", notes: "Soleus focus. Full ROM, pause at bottom." },
+  ]);
+}
+
+function gm_w4_legs2() {
+  return makeDay("Week 4 – Legs (2nd)", [
+    { name: "Lying Leg Curl",             sets: 2, reps: "cluster", rest: "2-3 min", notes: "2 cluster sets. Hit reps, brief rest-pause, more reps until failure." },
+    { name: "Leg Press",                  sets: 2, reps: "8-10",   rest: "3 min",   notes: "Heavier than Monday. Full ROM." },
+    { name: "Smith Machine Split Squat",  sets: 2, reps: "cluster + isohold", rest: "2-3 min", notes: "Cluster reps with isohold at bottom. Intense quad and glute burn." },
+    { name: "Dumbbell Squat",             sets: 2, reps: 10,       rest: "2 min",   notes: "Goblet squat or DB between legs. Upright torso, full depth." },
+    { name: "Nordic Leg Curl",            sets: 2, reps: "to failure", rest: "2-3 min", notes: "Partner holds feet or anchor. Eccentric hamstring focus." },
+  ]);
+}
+
+// ── WEEK 5 ────────────────────────────────────────────────────
+function gm_w5_chest_shoulders_abs() {
+  return makeDay("Week 5 – Chest/Shoulders/Abs", [
+    { name: "Slight Incline DB Press",    sets: 1, reps: "9-10",   rest: "2-3 min", notes: "Working set. Slight incline, controlled and full ROM." },
+    { name: "Slight Incline Barbell Press", sets: 1, reps: "7-8",  rest: "2-3 min", notes: "Single working set, push the weight." },
+    { name: "Pec Minor Dips",             sets: 3, reps: "to failure", rest: "2 min", notes: "Straight-arm dip focusing on pec minor. Shrug shoulders down at bottom." },
+    { name: "Low Cable Crossover",        sets: 2, reps: "10-12",  rest: "2 min",   notes: "One hard set + drop set. Pull cables up and together." },
+    { name: "DB Partial Side Laterals",   sets: 3, reps: 20,       rest: "1-2 min", notes: "Bottom half of range. High rep for side delt pump." },
+    { name: "Reverse Pec Deck",           sets: 3, reps: "10 + 5 partials", rest: "0 min", notes: "With Spidercrawls between sets. Full reps then partial reps." },
+    { name: "Incline Front Delt Raises",  sets: 3, reps: 10,       rest: "1-2 min", notes: "Lying face-down on incline, raise arms forward. Front delt isolation." },
+    { name: "Sit Ups",                    sets: 4, reps: "12-15",  rest: "1 min",   notes: "Full sit-up, controlled tempo." },
+  ]);
+}
+
+function gm_w5_back_calves() {
+  return makeDay("Week 5 – Back/Calves", [
+    { name: "Meadows Row",                sets: 2, reps: "12-10",  rest: "2-3 min", notes: "Elbow high and flared out, feel the lat stretch at bottom." },
+    { name: "Standing One Arm DB Row",    sets: 3, reps: "9-10",   rest: "2-3 min", notes: "Bent over, pull to hip. Slight body english allowed." },
+    { name: "Curry 3-Way Pulldowns",      sets: 3, reps: "6/6/6",  rest: "2 min",   notes: "Wide, medium, close grip — 6 reps each grip, no rest between." },
+    { name: "DB Pullovers",               sets: 3, reps: 12,       rest: "2 min",   notes: "Lat stretch at top, squeeze at bottom." },
+    { name: "Barbell Hyperextension",     sets: 2, reps: 10,       rest: "1-2 min", notes: "Lower back and glute focus." },
+    { name: "Toe Press",                  sets: 5, reps: 8,        rest: "1-2 min", notes: "Calf raises on leg press. 5 sets for extra volume." },
+  ]);
+}
+
+function gm_w5_arms_abs() {
+  return makeDay("Week 5 – Arms/Abs", [
+    // Giant Set (5 rounds): Dual Handle Pushdown + Hammer Curls + Bent Over Extensions + Palms Up Partials
+    { name: "Dual Handle Pushdown",       sets: 5, reps: 10,       rest: "0 min",   notes: "Giant set 1. Full extension, squeeze tricep." },
+    { name: "Hammer Curls",               sets: 5, reps: 8,        rest: "0 min",   notes: "Giant set 2. Neutral grip, don't swing." },
+    { name: "Bent Over Extensions",       sets: 5, reps: 10,       rest: "0 min",   notes: "Giant set 3. Cable, bent over, full tricep extension." },
+    { name: "Palms Up Supinated DB Curl Partials", sets: 5, reps: 15, rest: "1-2 min", notes: "Giant set 4 finisher. Supinated grip, bottom half partial curls — burn out the biceps." },
+    { name: "Decline Bench Leg Raises",   sets: 4, reps: "12-15",  rest: "1 min",   notes: "Full range, slow and controlled." },
+  ]);
+}
+
+function gm_w5_legs() {
+  return makeDay("Week 5 – Legs", [
+    { name: "Lying Leg Curl",             sets: 3, reps: 10,       rest: "2 min",   notes: "3 working sets. Pre-exhaust hamstrings." },
+    { name: "Leg Press",                  sets: 2, reps: 8,        rest: "3 min",   notes: "Heavy, full ROM." },
+    { name: "Reverse Lunge",              sets: 3, reps: 10,       rest: "2 min",   notes: "Step back, controlled, quad and glute emphasis." },
+    { name: "Hack Squat",                 sets: 3, reps: 8,        rest: "2-3 min", notes: "Quad emphasis, feet close together or shoulder width." },
+    { name: "Banded Good Mornings",       sets: 2, reps: 25,       rest: "1-2 min", notes: "Band around neck, hinge at hip, feel hamstring and lower back stretch." },
+  ]);
+}
+
+function gm_w5_chest_shoulders_calves() {
+  return makeDay("Week 5 – Chest/Shoulders/Calves", [
+    { name: "Slight Incline DB Press",    sets: 1, reps: 12,       rest: "2-3 min", notes: "Higher rep working set this day." },
+    { name: "Slight Incline Barbell Press", sets: 1, reps: "8-9",  rest: "2-3 min", notes: "Single working set." },
+    { name: "Machine Press",              sets: 1, reps: "cluster 10+10+10", rest: "2 min", notes: "Cluster set: 10 reps, 15-sec rest, 10 reps, 15-sec rest, 10 reps." },
+    { name: "Cable Fly Press",            sets: 4, reps: 10,       rest: "1-2 min", notes: "Cable crossover into press. Full ROM, squeeze pecs." },
+    { name: "Landmine Shoulder Press",    sets: 3, reps: 8,        rest: "2 min",   notes: "Delt focus. Press up and slightly forward." },
+    { name: "Bent Over DB Swings",        sets: 3, reps: 25,       rest: "0 min",   notes: "With Spidercrawls between sets. Rear delt swings, high rep." },
+    { name: "DB Side Laterals with Forward Lean", sets: 3, reps: 10, rest: "1-2 min", notes: "Lean forward slightly to better isolate side delt." },
+    { name: "Standing Calf Raise",        sets: 2, reps: "isohold sequence", rest: "2 min", notes: "2 sets with isohold protocol. Hit reps, hold at stretched position, repeat." },
+  ]);
+}
+
+// ── WEEK 6 ────────────────────────────────────────────────────
+function gm_w6_back_abs() {
+  return makeDay("Week 6 – Back/Abs", [
+    { name: "Meadows Row",                sets: 2, reps: "8-6",    rest: "2-3 min", notes: "Two sets (work set then challenge set). Heavy, full ROM." },
+    { name: "Standing One Arm DB Row",    sets: 2, reps: 8,        rest: "2-3 min", notes: "Two sets. Pull to hip, feel lat contraction." },
+    { name: "Supported Row",              sets: 3, reps: 8,        rest: "2-3 min", notes: "Chest supported. Squeeze shoulder blades, full ROM." },
+    { name: "Curry 3-Way Pulldowns",      sets: 3, reps: "6/6/6",  rest: "2 min",   notes: "Wide / medium / close — 6 reps each grip, no rest between grips." },
+    { name: "DB Pullovers",               sets: 2, reps: 10,       rest: "1-2 min", notes: "Lat stretch overhead, squeeze at bottom." },
+    { name: "Decline Bench Leg Raises",   sets: 4, reps: "12-15",  rest: "1 min",   notes: "Full range, slow eccentric." },
+  ]);
+}
+
+function gm_w6_arms_calves() {
+  return makeDay("Week 6 – Arms/Calves", [
+    { name: "Cross Bench Hammer Curls",   sets: 3, reps: 12,       rest: "1-2 min", notes: "Lie across bench, arm hangs down, neutral grip curl. Long head stretch." },
+    { name: "Concentration Preacher Curls", sets: 3, reps: 10,     rest: "1-2 min", notes: "Full stretch at bottom, peak contraction at top." },
+    { name: "EZ Bar Curls",               sets: 3, reps: "8 + drop", rest: "2 min", notes: "8 reps then drop the weight and continue. Last set with drop." },
+    { name: "Dual Handle Pushdown",       sets: 3, reps: "12 + drop", rest: "2 min", notes: "12 reps then drop the weight. Last set finisher." },
+    { name: "Pin Press",                  sets: 3, reps: 5,        rest: "2-3 min", notes: "Barbell from pins at mid-range. Heavy, pause on pins each rep." },
+    { name: "Lying Kettlebell Extensions", sets: 3, reps: 10,      rest: "1-2 min", notes: "Skull crusher with KB, stretch at bottom." },
+    { name: "Standing Calf Raise",        sets: 3, reps: "isohold sequence", rest: "1-2 min", notes: "3 sets with isohold protocol. Hold in stretched position between reps." },
+  ]);
+}
+
+function gm_w6_legs_abs() {
+  return makeDay("Week 6 – Legs/Abs", [
+    { name: "Lying Leg Curl",             sets: 3, reps: "elaborate", rest: "2-3 min", notes: "3 elaborate work sets with feeder sets. Slow eccentric, full stretch." },
+    { name: "Leg Press",                  sets: 3, reps: "8 + backoff×20", rest: "2-3 min", notes: "3 heavy sets then a backoff set of 20 reps. Full ROM." },
+    { name: "Reverse Lunge",              sets: 3, reps: "20-15-10", rest: "2 min",  notes: "Descending reps each set with more weight. Controlled." },
+    { name: "Leg Extension",              sets: 3, reps: "12 + 2-count squeeze", rest: "1-2 min", notes: "2-second squeeze at peak contraction each rep." },
+    { name: "DB Stiff Legged Deadlift",   sets: 3, reps: 8,        rest: "2 min",   notes: "Full hamstring stretch, neutral spine." },
+    { name: "Rope Crunches",              sets: 4, reps: "15-20",  rest: "1 min",   notes: "Full contraction, round spine at bottom." },
+  ]);
+}
+
+function gm_w6_chest_shoulders_calves() {
+  return makeDay("Week 6 – Chest/Shoulders/Calves", [
+    { name: "Slight Incline DB Press",    sets: 1, reps: 8,        rest: "2-3 min", notes: "Hard working set." },
+    { name: "Slight Incline Barbell Press", sets: 1, reps: 6,      rest: "2-3 min", notes: "Heavy single set." },
+    { name: "Hex Press",                  sets: 1, reps: "drop",   rest: "2 min",   notes: "Drop set. DB heads touching, set → drop → continue." },
+    { name: "Machine Flyes",              sets: 4, reps: 10,       rest: "45 sec",  notes: "Shorter rest (45 sec). Full ROM, 10 clean reps each set." },
+    { name: "Cage Press",                 sets: 3, reps: 8,        rest: "2 min",   notes: "Smith machine or cage press. Controlled movement, shoulder focus." },
+    { name: "Rear Delt Band Pulls",       sets: 3, reps: "15/side", rest: "1-2 min", notes: "Band pull-aparts, rear delt focus." },
+    { name: "DB Side Laterals",           sets: 4, reps: 8,        rest: "45 sec",  notes: "Shorter rest (45 sec). 4 sets with quality reps." },
+    { name: "Standing Calf Raise",        sets: 4, reps: "isohold sequence", rest: "1-2 min", notes: "4 sets with isohold protocol. Hold at stretch, full ROM." },
+    { name: "Dual Rope Extensions",       sets: 3, reps: 8,        rest: "1-2 min", notes: "Bonus tricep finisher. Pull ropes apart at bottom." },
+  ]);
+}
+
+function gm_w6_back_abs2() {
+  return makeDay("Week 6 – Back/Abs (2nd)", [
+    { name: "Meadows Row",                sets: 2, reps: "10 + challenge", rest: "2-3 min", notes: "10-rep set then a challenge/PR set. Max effort on second set." },
+    { name: "Standing One Arm DB Row",    sets: 2, reps: "10 + challenge", rest: "2-3 min", notes: "10-rep set then challenge set heavier." },
+    { name: "Straight Arm Pulldowns",     sets: 3, reps: 10,       rest: "2 min",   notes: "Cable, arms straight, pull down to hips. Lat focus." },
+    { name: "Curry 3-Way Pulldowns",      sets: 3, reps: "6/6/6",  rest: "2 min",   notes: "Wide / medium / close — 6 reps each, no rest between grips." },
+    { name: "Barbell Hyperextensions",    sets: 3, reps: 10,       rest: "1-2 min", notes: "Lower back and glute focus." },
+    { name: "Rope Crunches",              sets: 4, reps: "15-20",  rest: "1 min",   notes: "Full contraction at bottom." },
+    { name: "Concentration Preacher Curls", sets: 4, reps: 10,     rest: "1-2 min", notes: "Bonus bicep. Peak contraction focus." },
+  ]);
+}
+
+// Build The Grandmaster weeks array
+function grandmasterWeeks() {
+  return [
+    {
+      name: "Week 1",
+      days: [
+        gm_w1_legs(),
+        gm_w1_chest_shoulders_abs(),
+        gm_w1_back_abs(),
+        gm_w1_arms_calves(),
+        gm_w1_legs2(),
+      ],
+    },
+    {
+      name: "Week 2",
+      days: [
+        gm_w2_chest_shoulders_abs(),
+        gm_w2_back_calves(),
+        gm_w2_arms_abs(),
+        gm_w2_legs(),
+        gm_w2_chest_shoulders_calves(),
+      ],
+    },
+    {
+      name: "Week 3",
+      days: [
+        gm_w3_back_abs(),
+        gm_w3_arms_calves(),
+        gm_w3_legs_abs(),
+        gm_w3_chest_shoulders_calves(),
+        gm_w3_back_abs2(),
+      ],
+    },
+    {
+      name: "Week 4",
+      days: [
+        gm_w4_legs_calves(),
+        gm_w4_chest_shoulders_abs(),
+        gm_w4_back_abs(),
+        gm_w4_arms_calves(),
+        gm_w4_legs2(),
+      ],
+    },
+    {
+      name: "Week 5",
+      days: [
+        gm_w5_chest_shoulders_abs(),
+        gm_w5_back_calves(),
+        gm_w5_arms_abs(),
+        gm_w5_legs(),
+        gm_w5_chest_shoulders_calves(),
+      ],
+    },
+    {
+      name: "Week 6",
+      days: [
+        gm_w6_back_abs(),
+        gm_w6_arms_calves(),
+        gm_w6_legs_abs(),
+        gm_w6_chest_shoulders_calves(),
+        gm_w6_back_abs2(),
+      ],
+    },
+  ];
+}
+
 // ── EXPORT ───────────────────────────────────────────────────
 export const STARTER_PROGRAMS = [
 
@@ -615,6 +1061,18 @@ export const STARTER_PROGRAMS = [
     totalWeeks: 8,
     description: "Push, Pull, Legs, Upper, Lower. Phase 1 (Wks 1-4): base hypertrophy. Phase 2 (Wks 5-8): higher intensity. Same exercises throughout — add weight each week.",
     weeks: ppl5xWeeks(),
+  },
+
+  // 7. THE GRANDMASTER — 5 days/week, 6 weeks
+  {
+    id: "advanced-grandmaster",
+    name: "The Grandmaster",
+    isStarter: true,
+    level: "advanced",
+    daysPerWeek: 5,
+    totalWeeks: 6,
+    description: "6-week rotating split. 5 days/week. Exercises rotate each week — Weeks 1–3 build the base, Weeks 4–6 introduce new movements. High intensity with supersets, giant sets, cluster sets and advanced techniques.",
+    weeks: grandmasterWeeks(),
   },
 
 ];
