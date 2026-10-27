@@ -26,8 +26,6 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background-color: var(--bg-page);
     color: var(--text-primary);
-    padding: 20px;
-    padding-bottom: 100px;
 }
 
 h1 {
@@ -92,7 +90,16 @@ select option {
 }
 
 .screen {
-    padding-bottom: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    padding-bottom: 100px;
+    background: var(--bg-page);
+    box-sizing: border-box;
 }
 
 button {
