@@ -5,6 +5,7 @@ import { initPrograms } from './programs.js';
 import { initHome, renderDashboard } from './home.js';
 import { openProgram } from './programs.js';
 import { openWeek } from './weeks.js';
+import { initBodyTab } from './body.js';
 
 
 
@@ -50,6 +51,7 @@ function startApp() {
     // Render dashboard after everything is ready
     renderDashboard(lifts, openProgram, openWeek);
     initSwipeBack();
+    initBodyTab();
 }
 
 initSplash(startApp);

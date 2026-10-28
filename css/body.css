@@ -1,0 +1,269 @@
+/* ======= MUSCLE MAP / BODY TAB ======= */
+
+/* ── Top bar ── */
+.body-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 14px;
+}
+
+.body-view-toggle {
+    display: flex;
+    background: var(--bg-secondary, #141414);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.body-view-toggle button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.body-view-toggle button.active {
+    background: rgba(201, 168, 76, 0.15);
+    color: var(--accent-gold, #c9a84c);
+}
+
+/* ── Diagram ── */
+.body-diagram-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0 4px;
+    flex-shrink: 0;
+}
+
+.body-diagram-figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.body-diagram-label {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-weight: 600;
+}
+
+/* Muscle zone SVG paths */
+.mzone {
+    fill: var(--bg-secondary, #1e1e1e);
+    stroke: var(--border-color);
+    stroke-width: 1;
+    transition: fill 0.18s, stroke 0.18s, filter 0.18s;
+    cursor: pointer;
+}
+
+.mzone:hover {
+    fill: rgba(201, 168, 76, 0.45);
+    stroke: var(--accent-gold, #c9a84c);
+    filter: drop-shadow(0 0 6px rgba(201, 168, 76, 0.3));
+}
+
+.mzone.active {
+    fill: rgba(201, 168, 76, 0.55);
+    stroke: var(--accent-gold, #c9a84c);
+    filter: drop-shadow(0 0 8px rgba(201, 168, 76, 0.35));
+}
+
+.body-outline {
+    fill: none;
+    stroke: var(--border-color);
+    stroke-width: 1.5;
+}
+
+/* ── Info panel ── */
+.body-info-panel {
+    flex: 1;
+    background: var(--bg-secondary, #111);
+    border: 1px solid var(--border-color);
+    border-radius: 16px 16px 0 0;
+    margin-top: 8px;
+    overflow-y: auto;
+    min-height: 200px;
+}
+
+.body-panel-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 40px 20px;
+    height: 100%;
+    min-height: 180px;
+}
+
+.body-panel-empty svg {
+    opacity: 0.3;
+}
+
+.body-panel-empty p {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Panel header */
+.body-panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.body-muscle-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+}
+
+.body-sci-name {
+    font-size: 12px;
+    color: var(--accent-gold, #c9a84c);
+    margin-top: 3px;
+    font-style: italic;
+}
+
+.body-group-badge {
+    background: rgba(201, 168, 76, 0.12);
+    color: var(--accent-gold, #c9a84c);
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 4px 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 12px;
+    margin-top: 2px;
+}
+
+/* Exercise list */
+.body-ex-label {
+    padding: 12px 20px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.body-ex-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.body-ex-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 20px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.15s;
+}
+
+.body-ex-item:last-child {
+    border-bottom: none;
+}
+
+.body-ex-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.body-ex-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.body-ex-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.body-ex-diff {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.body-diff-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.body-diff-dot.beginner     { background: #4caf50; }
+.body-diff-dot.intermediate { background: var(--accent-gold, #c9a84c); }
+.body-diff-dot.advanced     { background: #e05a5a; }
+
+/* Add button */
+.body-ex-add-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--accent-gold, #c9a84c);
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 5px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 12px;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.body-ex-add-btn:hover {
+    background: rgba(201, 168, 76, 0.1);
+    border-color: var(--accent-gold, #c9a84c);
+}
+
+/* ── Toast notification ── */
+.body-toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--bg-secondary, #1a1a1a);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 500;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+}
+
+.body-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}

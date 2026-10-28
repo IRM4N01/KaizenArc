@@ -43,3 +43,4 @@
 .nav-btn[data-screen="lifts-screen"]::before { content: "⊕"; }
 .nav-btn[data-screen="programs-screen"]::before { content: "≡"; }
 .nav-btn[data-screen="history-screen"]::before { content: "◷"; }
+.nav-btn[data-screen="body-screen"]::before { content: "☥"; }

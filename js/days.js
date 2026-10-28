@@ -1,5 +1,7 @@
 // ======= DAYS =======
 import { savePrograms } from './storage.js';
+import { savePrograms } from './storage.js';
+import { setBodyTabActiveDay } from './body.js'; 
 
 let currentWeek = null;
 let currentProgram = null;
@@ -280,5 +282,6 @@ export function openDay(day, program, programs) {
     import('./exercises.js').then(({ initExercises, renderExercises }) => {
         initExercises(day, programs);
         renderExercises(day);
+        setBodyTabActiveDay(day, programs, savePrograms);
     });
 }

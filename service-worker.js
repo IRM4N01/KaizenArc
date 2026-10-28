@@ -28,7 +28,10 @@ const ASSETS = [
     "/KaizenArc/js/onboarding.js",
     "/KaizenArc/js/templates.js",
     "/KaizenArc/js/starterPrograms.js",
-    "/KaizenArc/js/customExercises.js"
+    "/KaizenArc/js/customExercises.js",
+    "/KaizenArc/js/body.js",
+    "/KaizenArc/css/body.css"
+
 ];
 
 // Install — cache all assets

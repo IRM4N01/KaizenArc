@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="css/exercises.css">
         <link rel="stylesheet" href="css/workout.css">
         <link rel="stylesheet" href="css/splash.css">
+        <link rel="stylesheet" href="css/body.css">
 
         <link rel="manifest" href="manifest.json">
         <link rel="icon" type="image/png" href="icons/favicon-96x96.png">
@@ -143,6 +144,7 @@
           <button class="nav-btn active" data-screen="home-screen">Home</button>
           <button class="nav-btn" data-screen="lifts-screen">Lifts</button>
           <button class="nav-btn" data-screen="programs-screen">Programs</button>
+          <button class="nav-btn" data-screen="body-screen">Muscle Map</button>
         </nav>
 
         <!--Screens-->
@@ -466,6 +468,124 @@
           <div id="workout-exercises-list"></div>
 
           <button id="finish-workout-btn">Finish Workout</button>
+        </div>
+
+        <!-- Muscle Map screen — paste as sibling of other .screen divs in index.html -->
+        <div id="body-screen" class="screen hidden">
+
+          <div class="body-topbar">
+            <h1>Muscle Map</h1>
+            <div class="body-view-toggle">
+              <button id="body-btn-front" class="active">Front</button>
+              <button id="body-btn-back">Back</button>
+            </div>
+          </div>
+
+          <!-- Diagram -->
+          <div class="body-diagram-wrap">
+
+            <!-- FRONT VIEW -->
+            <div class="body-diagram-figure" id="body-front-view">
+              <svg width="160" height="310" viewBox="0 0 160 310" fill="none">
+                <path class="body-outline" d="M80 8 C68 8 60 14 58 22 C52 20 44 22 42 30 C38 38 40 50 44 56 C40 60 36 68 36 76 C34 84 36 92 40 98 C36 104 32 116 32 130 C30 144 32 156 34 164 C36 172 38 180 40 194 C40 202 40 212 40 222 C38 234 36 246 36 256 C36 268 38 278 40 286 C42 292 46 296 50 296 C54 296 56 290 58 284 C60 278 60 270 60 262 C62 268 64 278 66 284 C68 290 70 296 74 296 C78 296 80 290 80 290 C80 290 82 296 86 296 C90 296 92 290 94 284 C96 278 98 268 100 262 C100 270 100 278 102 284 C104 290 106 296 110 296 C114 296 118 292 120 286 C122 278 124 268 124 256 C124 246 122 234 120 222 C120 212 120 202 120 194 C122 180 124 172 126 164 C128 156 130 144 128 130 C128 116 124 104 120 98 C124 92 126 84 124 76 C124 68 120 60 116 56 C120 50 122 38 118 30 C116 22 108 20 102 22 C100 14 92 8 80 8Z"/>
+
+                <!-- Neck -->
+                <path class="mzone" data-muscle="neck" d="M72 22 Q80 18 88 22 L90 36 Q80 40 70 36Z"/>
+
+                <!-- Chest -->
+                <path class="mzone" data-muscle="chest" d="M42 58 Q52 54 66 56 L68 84 Q56 86 44 80Z"/>
+                <path class="mzone" data-muscle="chest" d="M118 58 Q108 54 94 56 L92 84 Q104 86 116 80Z"/>
+
+                <!-- Shoulders -->
+                <path class="mzone" data-muscle="shoulders" d="M38 54 Q44 46 56 50 L58 66 Q46 68 38 66Z"/>
+                <path class="mzone" data-muscle="shoulders" d="M122 54 Q116 46 104 50 L102 66 Q114 68 122 66Z"/>
+
+                <!-- Biceps -->
+                <path class="mzone" data-muscle="biceps" d="M36 70 Q40 66 50 68 L52 96 Q42 98 36 94Z"/>
+                <path class="mzone" data-muscle="biceps" d="M124 70 Q120 66 110 68 L108 96 Q118 98 124 94Z"/>
+
+                <!-- Forearms -->
+                <path class="mzone" data-muscle="forearms" d="M36 96 Q42 92 52 96 L52 130 Q42 132 36 128Z"/>
+                <path class="mzone" data-muscle="forearms" d="M124 96 Q118 92 108 96 L108 130 Q118 132 124 128Z"/>
+
+                <!-- Abs -->
+                <path class="mzone" data-muscle="abs" d="M66 86 L94 86 L94 110 L66 110Z"/>
+                <path class="mzone" data-muscle="abs" d="M66 112 L94 112 L94 136 L66 136Z"/>
+                <path class="mzone" data-muscle="abs" d="M66 138 L94 138 L94 158 L66 158Z"/>
+
+                <!-- Obliques -->
+                <path class="mzone" data-muscle="obliques" d="M44 100 Q56 96 66 100 L64 150 Q52 154 44 148Z"/>
+                <path class="mzone" data-muscle="obliques" d="M116 100 Q104 96 94 100 L96 150 Q108 154 116 148Z"/>
+
+                <!-- Hip Flexors -->
+                <path class="mzone" data-muscle="hip flexors" d="M44 158 Q58 154 68 158 L68 192 Q56 194 44 192Z"/>
+                <path class="mzone" data-muscle="hip flexors" d="M116 158 Q102 154 92 158 L92 192 Q104 194 116 192Z"/>
+
+                <!-- Quads -->
+                <path class="mzone" data-muscle="quads" d="M40 194 Q52 188 66 192 L68 248 Q54 252 40 248Z"/>
+                <path class="mzone" data-muscle="quads" d="M120 194 Q108 188 94 192 L92 248 Q106 252 120 248Z"/>
+
+                <!-- Calves / Shins (front) -->
+                <path class="mzone" data-muscle="calves" d="M40 250 Q52 246 64 250 L62 288 Q50 290 40 284Z"/>
+                <path class="mzone" data-muscle="calves" d="M120 250 Q108 246 96 250 L98 288 Q110 290 120 284Z"/>
+
+                <line x1="80" y1="58" x2="80" y2="158" stroke="var(--border-color)" stroke-width="0.75" stroke-dasharray="3,3"/>
+              </svg>
+              <p class="body-diagram-label">Front</p>
+            </div>
+
+            <!-- BACK VIEW -->
+            <div class="body-diagram-figure hidden" id="body-back-view">
+              <svg width="160" height="310" viewBox="0 0 160 310" fill="none">
+                <path class="body-outline" d="M80 8 C68 8 60 14 58 22 C52 20 44 22 42 30 C38 38 40 50 44 56 C40 60 36 68 36 76 C34 84 36 92 40 98 C36 104 32 116 32 130 C30 144 32 156 34 164 C36 172 38 180 40 194 C40 202 40 212 40 222 C38 234 36 246 36 256 C36 268 38 278 40 286 C42 292 46 296 50 296 C54 296 56 290 58 284 C60 278 60 270 60 262 C62 268 64 278 66 284 C68 290 70 296 74 296 C78 296 80 290 80 290 C80 290 82 296 86 296 C90 296 92 290 94 284 C96 278 98 268 100 262 C100 270 100 278 102 284 C104 290 106 296 110 296 C114 296 118 292 120 286 C122 278 124 268 124 256 C124 246 122 234 120 222 C120 212 120 202 120 194 C122 180 124 172 126 164 C128 156 130 144 128 130 C128 116 124 104 120 98 C124 92 126 84 124 76 C124 68 120 60 116 56 C120 50 122 38 118 30 C116 22 108 20 102 22 C100 14 92 8 80 8Z"/>
+
+                <!-- Traps -->
+                <path class="mzone" data-muscle="traps" d="M58 22 Q80 16 102 22 L106 52 Q80 58 54 52Z"/>
+
+                <!-- Rear Delts -->
+                <path class="mzone" data-muscle="rear delts" d="M38 52 Q46 46 58 52 L58 70 Q46 72 38 68Z"/>
+                <path class="mzone" data-muscle="rear delts" d="M122 52 Q114 46 102 52 L102 70 Q114 72 122 68Z"/>
+
+                <!-- Triceps -->
+                <path class="mzone" data-muscle="triceps" d="M36 70 Q40 66 50 68 L50 100 Q40 102 36 98Z"/>
+                <path class="mzone" data-muscle="triceps" d="M124 70 Q120 66 110 68 L110 100 Q120 102 124 98Z"/>
+
+                <!-- Forearms back -->
+                <path class="mzone" data-muscle="forearms" d="M36 100 Q42 96 50 100 L50 130 Q42 132 36 128Z"/>
+                <path class="mzone" data-muscle="forearms" d="M124 100 Q118 96 110 100 L110 130 Q118 132 124 128Z"/>
+
+                <!-- Lats -->
+                <path class="mzone" data-muscle="lats" d="M42 70 Q58 66 68 72 L66 140 Q50 150 40 142Z"/>
+                <path class="mzone" data-muscle="lats" d="M118 70 Q102 66 92 72 L94 140 Q110 150 120 142Z"/>
+
+                <!-- Mid Back -->
+                <path class="mzone" data-muscle="mid back" d="M66 66 L94 66 L94 104 L66 104Z"/>
+
+                <!-- Lower Back -->
+                <path class="mzone" data-muscle="lower back" d="M64 106 L96 106 L96 158 L64 158Z"/>
+
+                <!-- Glutes -->
+                <path class="mzone" data-muscle="glutes" d="M42 158 Q62 154 68 162 L68 196 Q54 200 42 194Z"/>
+                <path class="mzone" data-muscle="glutes" d="M118 158 Q98 154 92 162 L92 196 Q106 200 118 194Z"/>
+
+                <!-- Hamstrings -->
+                <path class="mzone" data-muscle="hamstrings" d="M42 196 Q56 192 68 196 L68 250 Q54 254 42 248Z"/>
+                <path class="mzone" data-muscle="hamstrings" d="M118 196 Q104 192 92 196 L92 250 Q106 254 118 248Z"/>
+
+                <!-- Calves back -->
+                <path class="mzone" data-muscle="calves" d="M42 252 Q54 248 66 252 L64 290 Q52 292 42 286Z"/>
+                <path class="mzone" data-muscle="calves" d="M118 252 Q106 248 94 252 L96 290 Q108 292 118 286Z"/>
+
+                <line x1="80" y1="66" x2="80" y2="158" stroke="var(--border-color)" stroke-width="0.75" stroke-dasharray="3,3"/>
+              </svg>
+              <p class="body-diagram-label">Back</p>
+            </div>
+
+          </div>
+
+          <!-- Info panel -->
+          <div class="body-info-panel" id="body-info-panel"></div>
+
         </div>
 
         <!-- Exercise info modal -->
