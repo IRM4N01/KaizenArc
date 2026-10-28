@@ -264,7 +264,13 @@ export function initBodyTab() {
         }
     });
 
+    document.getElementById("body-info-btn").addEventListener("click", () => {
+        document.querySelectorAll(".mzone.active").forEach(z => z.classList.remove("active"));
+        showEmptyPanel();
+    });
+
     showEmptyPanel();
+
 }
 
 function switchView(v) {
@@ -291,7 +297,9 @@ function showEmptyPanel() {
                 <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M20 18v10M20 14v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
-            <p>Tap a muscle to see exercises</p>
+            <p><strong style="color:var(--text-primary)">Tap a muscle to explore</strong></p>
+            <p>Select any highlighted zone on the body diagram to see its name, muscle group, and suggested exercises.</p>
+            <p>Hit <strong style="color:var(--accent-gold)">+ Add</strong> on any exercise to drop it straight into your currently open day.</p>
         </div>
     `;
 }

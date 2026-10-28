@@ -1,6 +1,5 @@
 // ======= DAYS =======
 import { savePrograms } from './storage.js';
-import { savePrograms } from './storage.js';
 import { setBodyTabActiveDay } from './body.js'; 
 
 let currentWeek = null;
