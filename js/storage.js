@@ -40,3 +40,11 @@ export function getTemplates() {
 export function saveTemplates(templates) {
     localStorage.setItem("programTemplates", JSON.stringify(templates));
 }
+
+export function getCustomExercises() {
+    return JSON.parse(localStorage.getItem("customExercises")) || [];
+}
+
+export function saveCustomExercises(exercises) {
+    localStorage.setItem("customExercises", JSON.stringify(exercises));
+}

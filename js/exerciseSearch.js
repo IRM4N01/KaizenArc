@@ -1,15 +1,23 @@
 // ======= EXERCISE SEARCH =======
 import { searchLocalExercises } from './exerciseData.js';
+import { getCustomExercises } from './storage.js';
 
 export function searchExercises(query) {
-    return searchLocalExercises(query);
+    const builtIn = searchLocalExercises(query);
+    const custom  = getCustomExercises();
+    const q = query.toLowerCase().trim();
+    const matchedCustom = custom.filter(ex =>
+        ex.name.toLowerCase().includes(q) ||
+        (ex.muscle || "").toLowerCase().includes(q)
+    );
+    // Tag custom ones so the dropdown can badge them
+    matchedCustom.forEach(ex => ex._custom = true);
+    return [...builtIn, ...matchedCustom];
 }
 
-export function renderExerciseDropdown(results, container, onSelect) {
+export function renderExerciseDropdown(results, container, onSelect, onAddNew) {
     const existing = document.getElementById("exercise-dropdown");
     if (existing) existing.remove();
-
-    if (results.length === 0) return;
 
     const dropdown = document.createElement("div");
     dropdown.id = "exercise-dropdown";
@@ -30,7 +38,7 @@ export function renderExerciseDropdown(results, container, onSelect) {
         const item = document.createElement("div");
         item.classList.add("exercise-dropdown-item");
         item.innerHTML = `
-            <span class="ex-drop-name">${ex.name}</span>
+            <span class="ex-drop-name">${ex.name}${ex._custom ? ' <span class="ex-custom-badge">★</span>' : ''}</span>
             <span class="ex-drop-meta">${ex.muscle} · ${ex.difficulty}</span>
         `;
         item.addEventListener("click", () => {
@@ -39,6 +47,16 @@ export function renderExerciseDropdown(results, container, onSelect) {
         });
         dropdown.appendChild(item);
     });
+
+    // Always show "+ Add to database" at the bottom
+    const addItem = document.createElement("div");
+    addItem.classList.add("exercise-dropdown-item", "exercise-dropdown-add");
+    addItem.innerHTML = `<span>+ Add to database</span>`;
+    addItem.addEventListener("click", () => {
+        dropdown.remove();
+        if (onAddNew) onAddNew();
+    });
+    dropdown.appendChild(addItem);
 
     container.appendChild(dropdown);
 }
@@ -49,16 +67,19 @@ export function renderExerciseInfo(exercise, container) {
 
     if (!exercise) return;
 
-    const youtubeUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(exercise.name + " exercise tutorial")}`;
+    // Use stored YouTube link if it exists (custom exercises), otherwise search URL
+    const youtubeUrl = exercise.youtubeUrl
+        ? exercise.youtubeUrl
+        : `https://www.youtube.com/results?search_query=${encodeURIComponent(exercise.name + " exercise tutorial")}`;
 
     const panel = document.createElement("div");
     panel.id = "exercise-info-panel";
     panel.innerHTML = `
         <div class="ex-info-header">
-            <span class="ex-info-muscle">${exercise.muscle}</span>
-            <span class="ex-info-difficulty">${exercise.difficulty}</span>
+            <span class="ex-info-muscle">${exercise.muscle || ""}</span>
+            <span class="ex-info-difficulty">${exercise.difficulty || ""}</span>
         </div>
-        <p class="ex-info-instructions">${exercise.instructions}</p>
+        ${exercise.instructions ? `<p class="ex-info-instructions">${exercise.instructions}</p>` : ""}
         <a href="${youtubeUrl}" target="_blank" class="ex-info-watch">▶ Watch on YouTube</a>
     `;
 

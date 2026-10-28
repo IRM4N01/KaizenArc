@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Kaizen Arc - Gym Tracker</title>
@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="css/exercises.css">
         <link rel="stylesheet" href="css/workout.css">
         <link rel="stylesheet" href="css/splash.css">
-        
+
         <link rel="manifest" href="manifest.json">
         <link rel="icon" type="image/png" href="icons/favicon-96x96.png">
         <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -48,7 +48,7 @@
       <div id="onboarding-screen" class="hidden">
         <div id="onboarding-container">
           <button id="onboarding-skip">Skip</button>
-        
+
           <div id="onboarding-slides">
 
             <!-- Slide 1 -->
@@ -360,10 +360,10 @@
 
             <label>Notes (optional)</label>
             <input type="text" id="day-notes-input" placeholder="e.g. Push Day" />
-            
+
             <button id="save-day-btn">Save Day</button>
             <button id="cancel-day-btn">Cancel</button>
-            
+
           </div>
         </div>
 
@@ -375,7 +375,7 @@
           <div id="exercises-list"></div>
 
           <button id="add-exercise-btn">+ Add Exercise</button>
-    
+
           <!--Exercise form-->
           <div id="add-exercise-form" class="hidden">
             <h2>Add Exercise</h2>
@@ -507,7 +507,37 @@
           </div>
         </div>
 
+        <!-- Custom Exercise Modal -->
+        <div id="custom-exercise-overlay" class="modal-overlay hidden"></div>
+        <div id="custom-exercise-modal" class="modal hidden">
+            <h2 class="modal-title">Add to Database</h2>
+
+            <label class="form-label">Exercise Name <span class="required">*</span></label>
+            <input type="text" id="custom-ex-name" class="form-input" placeholder="e.g. Cable Lateral Raise" />
+
+            <label class="form-label">Muscle Group</label>
+            <input type="text" id="custom-ex-muscle" class="form-input" placeholder="e.g. shoulders, biceps" />
+
+            <label class="form-label">Difficulty</label>
+            <select id="custom-ex-difficulty" class="form-input">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+            </select>
+
+            <label class="form-label">Instructions</label>
+            <textarea id="custom-ex-instructions" class="form-input form-textarea" placeholder="How to perform this exercise…" rows="4"></textarea>
+
+            <label class="form-label">YouTube Link <span class="form-hint">(optional)</span></label>
+            <input type="url" id="custom-ex-youtube" class="form-input" placeholder="https://youtube.com/..." />
+
+            <div class="modal-actions">
+                <button id="custom-ex-cancel-btn" class="btn-secondary">Cancel</button>
+                <button id="custom-ex-save-btn" class="btn-primary">Save Exercise</button>
+            </div>
+        </div>
+
         <script type="module" src="js/app.js"></script>
 
-    </body>    
+    </body>
 </html>

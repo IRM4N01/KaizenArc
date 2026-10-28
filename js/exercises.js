@@ -2,6 +2,7 @@
 import { savePrograms } from './storage.js';
 import { getCurrentLiftMax, populateCompoundSelect } from './lifts.js';
 import { searchExercises, renderExerciseDropdown, renderExerciseInfo } from './exerciseSearch.js';
+import { openCustomExerciseModal } from './customExercises.js';
 
 let currentDay = null;
 let currentPrograms = null;
@@ -340,6 +341,8 @@ function resetExerciseForm() {
     document.getElementById("accessory-name-input").value = "";
     document.getElementById("accessory-weight-input").value = "";
     document.getElementById("exercise-notes-input").value = "";
+    const existingInfo = document.getElementById("exercise-info-panel");
+    if (existingInfo) existingInfo.remove();
     isCompound = true;
     document.getElementById("compound-btn").classList.add("active");
     document.getElementById("accessory-btn").classList.remove("active");
@@ -353,7 +356,6 @@ function initExerciseSearch() {
     const nameInput = document.getElementById("accessory-name-input");
     const inputWrapper = nameInput.parentElement;
 
-    // Make sure the wrapper is positioned relatively for the dropdown to anchor to
     inputWrapper.style.position = "relative";
 
     nameInput.addEventListener("input", () => {
@@ -362,15 +364,40 @@ function initExerciseSearch() {
         const existing = document.getElementById("exercise-dropdown");
         if (existing) existing.remove();
 
-        if (query.length < 2) return;
+        if (query.length < 2) {
+            // Still show "+ Add to database" stub for short queries
+            renderExerciseDropdown([], inputWrapper,
+                (selectedEx) => {
+                    nameInput.value = selectedEx.name;
+                    const existingInfo = document.getElementById("exercise-info-panel");
+                    if (existingInfo) existingInfo.remove();
+                    renderExerciseInfo(selectedEx, nameInput.closest("#add-exercise-form"));
+                },
+                () => openCustomExerciseModal(nameInput.value.trim(), (saved) => {
+                    nameInput.value = saved.name;
+                    const existingInfo = document.getElementById("exercise-info-panel");
+                    if (existingInfo) existingInfo.remove();
+                    renderExerciseInfo(saved, nameInput.closest("#add-exercise-form"));
+                })
+            );
+            return;
+        }
 
         const results = searchExercises(query);
-        renderExerciseDropdown(results, inputWrapper, (selectedEx) => {
-            nameInput.value = selectedEx.name;
-            const existingInfo = document.getElementById("exercise-info-panel");
-            if (existingInfo) existingInfo.remove();
-            renderExerciseInfo(selectedEx, nameInput.closest("#add-exercise-form"));
-        });
+        renderExerciseDropdown(results, inputWrapper,
+            (selectedEx) => {
+                nameInput.value = selectedEx.name;
+                const existingInfo = document.getElementById("exercise-info-panel");
+                if (existingInfo) existingInfo.remove();
+                renderExerciseInfo(selectedEx, nameInput.closest("#add-exercise-form"));
+            },
+            () => openCustomExerciseModal(nameInput.value.trim(), (saved) => {
+                nameInput.value = saved.name;
+                const existingInfo = document.getElementById("exercise-info-panel");
+                if (existingInfo) existingInfo.remove();
+                renderExerciseInfo(saved, nameInput.closest("#add-exercise-form"));
+            })
+        );
     });
 
     // Close dropdown when clicking outside

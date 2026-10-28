@@ -283,3 +283,93 @@
     border-radius: 0 6px 6px 0;
     margin: 8px 0 4px;
 }
+
+/* Custom Exercise Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 300;
+}
+
+.modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 301;
+    background: var(--bg-card);
+    border-radius: 20px 20px 0 0;
+    padding: 24px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal.hidden,
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.form-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: -6px;
+}
+
+.form-hint {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.required {
+    color: #e05a5a;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.btn-primary {
+    flex: 1;
+    background: var(--accent-gold);
+    color: #0a0a0a;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    flex: 1;
+    background: var(--bg-secondary, #1a1a1a);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.ex-custom-badge {
+    color: var(--accent-gold);
+    font-size: 13px;
+    line-height: 1;
+}
