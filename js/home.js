@@ -17,11 +17,9 @@ export function renderDashboard(lifts, openProgramCallback, openWeekCallback) {
     const userName = localStorage.getItem("userName") || "there";
     document.getElementById("dashboard-greeting").textContent = `Welcome back, ${userName}`;
 
-    // Lift summary
     renderLiftSummary(lifts);
-
-    // Active program
     renderActiveProgram(openProgramCallback, openWeekCallback);
+    renderInsights();
 }
 
 function renderLiftSummary(lifts) {
@@ -204,3 +202,127 @@ function renderPhoto(containerId, src, type) {
         reader.readAsDataURL(file);
     });
 }
+
+function computeInsights() {
+    const programs = getPrograms();
+    const insights = [];
+
+    const allCompletedDays = [];
+    programs.forEach(program => {
+        program.weeks.forEach(week => {
+            week.days.forEach(day => {
+                if (day.type === "workout" && day.completed && day.completedDate) {
+                    const parts = day.completedDate.split(".");
+                    const date = parts.length === 3
+                        ? new Date(`${parts[2]}-${parts[1]}-${parts[0]}`)
+                        : new Date(day.completedDate);
+                    if (!isNaN(date)) allCompletedDays.push({ date, day, program });
+                }
+            });
+        });
+    });
+
+    allCompletedDays.sort((a, b) => b.date - a.date);
+
+    if (allCompletedDays.length === 0) {
+        return [{ icon: "💪", text: "Complete your first workout to start tracking progress." }];
+    }
+
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const sessionsThisWeek = allCompletedDays.filter(d => d.date >= startOfWeek).length;
+    const label = sessionsThisWeek === 1 ? "session" : "sessions";
+    insights.push(sessionsThisWeek > 0
+        ? { icon: "📅", text: `${sessionsThisWeek} ${label} completed this week` }
+        : { icon: "📅", text: "No sessions logged yet this week" }
+    );
+
+    const streak = computeStreak(allCompletedDays);
+    if (streak >= 2) insights.push({ icon: "🔥", text: `${streak}-day training streak — keep it up` });
+    else if (streak === 1) insights.push({ icon: "🔥", text: "Session logged today — you're on a streak" });
+
+    const startOfLastWeek = new Date(startOfWeek);
+    startOfLastWeek.setDate(startOfLastWeek.getDate() - 7);
+    const volumeThis = calcVolume(allCompletedDays.filter(d => d.date >= startOfWeek));
+    const volumeLast = calcVolume(allCompletedDays.filter(d => d.date >= startOfLastWeek && d.date < startOfWeek));
+
+    if (volumeThis > 0 && volumeLast > 0) {
+        const diff = Math.round(((volumeThis - volumeLast) / volumeLast) * 100);
+        if (diff > 0) insights.push({ icon: "📈", text: `Volume up ${diff}% vs last week` });
+        else if (diff < 0) insights.push({ icon: "📉", text: `Volume down ${Math.abs(diff)}% vs last week` });
+        else insights.push({ icon: "➡️", text: "Volume on par with last week" });
+    }
+
+    const last = allCompletedDays[0];
+    const daysAgo = Math.floor((now - last.date) / (1000 * 60 * 60 * 24));
+    const exCount = last.day.exercises?.length || 0;
+    if (daysAgo === 0) insights.push({ icon: "✅", text: `Last session: today${exCount > 0 ? ` · ${exCount} exercises` : ""}` });
+    else if (daysAgo === 1) insights.push({ icon: "✅", text: `Last session: yesterday${exCount > 0 ? ` · ${exCount} exercises` : ""}` });
+    else if (daysAgo <= 7) insights.push({ icon: "✅", text: `Last session: ${daysAgo} days ago` });
+    else insights.push({ icon: "⚠️", text: `No session in ${daysAgo} days — time to get back at it` });
+
+    return insights.slice(0, 3);
+}
+
+function computeStreak(sortedDays) {
+    if (sortedDays.length === 0) return 0;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const uniqueDates = [...new Set(sortedDays.map(d => {
+        const copy = new Date(d.date);
+        copy.setHours(0, 0, 0, 0);
+        return copy.getTime();
+    }))].sort((a, b) => b - a);
+
+    let streak = 0;
+    let expected = today.getTime();
+    for (const ts of uniqueDates) {
+        if (ts === expected) { streak++; expected -= 86400000; }
+        else if (ts === expected + 86400000 && streak === 0) { streak++; expected = ts - 86400000; }
+        else break;
+    }
+    return streak;
+}
+
+function calcVolume(days) {
+    let total = 0;
+    days.forEach(({ day }) => {
+        if (!day.exercises) return;
+        day.exercises.forEach(ex => {
+            total += ((ex.workingSets || 0) + (ex.warmupSets || 0)) * (ex.reps || 0) * (ex.weight || 0);
+        });
+    });
+    return total;
+}
+
+function renderInsights() {
+    const existing = document.getElementById("insights-section");
+    if (existing) existing.remove();
+
+    const insights = computeInsights();
+    if (!insights.length) return;
+
+    const section = document.createElement("div");
+    section.id = "insights-section";
+    section.className = "dashboard-section";
+    section.innerHTML = `
+        <p class="dashboard-label">Training Insights</p>
+        <div id="insights-cards">
+            ${insights.map(i => `
+                <div class="insight-card">
+                    <span class="insight-icon">${i.icon}</span>
+                    <span class="insight-text">${i.text}</span>
+                </div>
+            `).join("")}
+        </div>
+    `;
+
+    const progressPhotos = document.querySelector("#progress-photos")?.closest(".dashboard-section");
+    const dashboard = document.getElementById("dashboard");
+    if (progressPhotos) dashboard.insertBefore(section, progressPhotos);
+    else dashboard.appendChild(section);
+}
+
