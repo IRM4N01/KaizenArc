@@ -6,6 +6,7 @@ import { initHome, renderDashboard } from './home.js';
 import { openProgram } from './programs.js';
 import { openWeek } from './weeks.js';
 import { initBodyTab } from './body.js';
+import { initTourIcons } from './tour.js';
 
 
 
@@ -52,6 +53,7 @@ function startApp() {
     renderDashboard(lifts, openProgram, openWeek);
     initSwipeBack();
     initBodyTab();
+    initTourIcons();
 }
 
 initSplash(startApp);

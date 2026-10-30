@@ -134,6 +134,15 @@
           <div id="onboarding-buttons">
             <button id="onboarding-next">Next</button>
           </div>
+
+          <!-- Tour prompt (shown after last slide) -->
+          <div id="tour-prompt" class="hidden">
+            <div class="tour-prompt-icon">🗺️</div>
+            <h2 class="tour-prompt-title">Want a quick tour?</h2>
+            <p class="tour-prompt-desc">We'll walk you through each tab so you know exactly where everything lives.</p>
+            <button id="tour-yes-btn">Yes, show me around</button>
+            <button id="tour-no-btn">No thanks, I'll explore</button>
+          </div>
         </div>
 
       </div>
@@ -151,7 +160,10 @@
         <div id="home-screen" class="screen active">
           <!-- Dashboard -->
           <div id="dashboard">
-            <h1 id="dashboard-greeting">Welcome back</h1>
+            <div class="screen-topbar">
+              <h1 id="dashboard-greeting">Welcome back</h1>
+              <button class="tour-icon-btn" data-tour-tab="home-screen" aria-label="Tour Home tab">ⓘ</button>
+            </div>
 
             <!-- Active Program -->
             <div class="dashboard-section">
@@ -229,7 +241,10 @@
 
           <!-- Lifts screen -->
           <div id="lifts-screen" class="screen hidden">
-            <h1>My Lifts</h1>
+            <div class="screen-topbar">
+              <h1>My Lifts</h1>
+              <button class="tour-icon-btn" data-tour-tab="lifts-screen" aria-label="Tour Lifts tab">ⓘ</button>
+            </div>
             <div id="lifts-container"></div>
             <div id="lift-detail" class="hidden">
               <button id="back-btn">← Back</button>
@@ -254,7 +269,10 @@
 
         <!-- Programs screen -->
         <div id="programs-screen" class="screen hidden">
-          <h1>My Programs</h1>
+          <div class="screen-topbar">
+            <h1>My Programs</h1>
+            <button class="tour-icon-btn" data-tour-tab="programs-screen" aria-label="Tour Programs tab">ⓘ</button>
+          </div>
 
           <!-- Tab switcher -->
           <div id="programs-tab-switcher">
@@ -477,6 +495,7 @@
             <h1>Muscle Map</h1>
             <div style="display:flex; align-items:center; gap:10px;">
               <button id="body-info-btn" style="background:none; border:1px solid var(--border-color); color:var(--text-secondary); border-radius:50%; width:26px; height:26px; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center;">i</button>
+              <button class="tour-icon-btn" data-tour-tab="body-screen" aria-label="Tour Muscle Map tab" style="margin-left:4px;">ⓘ</button>
               <div class="body-view-toggle">
                 <button id="body-btn-front" class="active">Front</button>
                 <button id="body-btn-back">Back</button>

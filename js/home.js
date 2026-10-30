@@ -6,8 +6,8 @@ export function initHome(lifts, openProgramCallback, openWeekCallback) {
     initProgressPhotos();
 
     document.getElementById("replay-onboarding-btn").addEventListener("click", () => {
-    import('./onboarding.js').then(({ showOnboarding }) => {
-            showOnboarding(() => {});
+        import('./tour.js').then(({ launchTour }) => {
+            launchTour();
         });
     });
 }
@@ -326,4 +326,3 @@ function renderInsights() {
     if (progressPhotos) dashboard.insertBefore(section, progressPhotos);
     else dashboard.appendChild(section);
 }
-

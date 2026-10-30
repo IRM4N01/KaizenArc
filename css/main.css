@@ -337,3 +337,8 @@ button {
 .set-row.completed {
     animation: set-flash 0.8s ease-out;
 }
+
+h1, h2, h3, .dashboard-label, .nav-btn, .lift-card h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.5px;
+}
