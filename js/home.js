@@ -212,7 +212,8 @@ function computeInsights() {
         program.weeks.forEach(week => {
             week.days.forEach(day => {
                 if (day.type === "workout" && day.completed && day.completedDate) {
-                    const parts = day.completedDate.split(".");
+                    const sep = day.completedDate.includes("/") ? "/" : ".";
+                    const parts = day.completedDate.split(sep);
                     const date = parts.length === 3
                         ? new Date(`${parts[2]}-${parts[1]}-${parts[0]}`)
                         : new Date(day.completedDate);
