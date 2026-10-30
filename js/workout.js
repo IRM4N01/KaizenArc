@@ -179,7 +179,29 @@ window.toggleSet = function(btn, exIndex, type, setIndex) {
     }
 
     savePrograms(currentPrograms);
-    renderWorkout(currentDay);
+
+    // Update just this row in place — no full re-render
+    const row = btn.closest(".set-row");
+    const isDone = (
+        type === "warmup" ? ex.warmupSets[setIndex].done :
+        type === "working" ? ex.workingSetsDone[setIndex] :
+        type === "accessory-warmup" ? ex.warmupDone[setIndex] :
+        ex.workingSetsDone[setIndex]
+    );
+
+    if (isDone) {
+        row.classList.add("completed");
+        btn.classList.add("done");
+        btn.textContent = "✓";
+        row.classList.add("animating");
+        row.addEventListener("animationend", () => row.classList.remove("animating"), { once: true });
+    } else {
+        row.classList.remove("completed");
+        btn.classList.remove("done");
+        btn.textContent = "";
+    }
+
+    updateWorkoutProgress(currentDay);
 }
 
 function updateWorkoutProgress(day) {

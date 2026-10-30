@@ -328,3 +328,12 @@ button {
     color: var(--text-primary);
     line-height: 1.4;
 }
+
+@keyframes set-flash {
+    0%   { background-color: rgba(201, 168, 76, 0.25); }
+    100% { background-color: transparent; }
+}
+
+.set-row.completed {
+    animation: set-flash 0.8s ease-out;
+}
