@@ -253,6 +253,7 @@ export function renderDays(week, program, programs) {
         week.completedDate = new Date().toLocaleDateString("en-AU");
         savePrograms(programs);
         renderDays(week, program, programs);
+        showWeekSummary(week);
     });
 }
 
@@ -282,5 +283,97 @@ export function openDay(day, program, programs) {
         initExercises(day, programs);
         renderExercises(day);
         setBodyTabActiveDay(day, programs, savePrograms);
+    });
+}
+
+function showWeekSummary(week) {
+    const workoutDays = week.days.filter(d => d.type === "workout" && d.completed);
+    const restDays = week.days.filter(d => d.type === "rest" && d.completed);
+
+    let totalSets = 0;
+    let doneSets = 0;
+    let totalExercises = 0;
+
+    workoutDays.forEach(day => {
+        totalExercises += day.exercises ? day.exercises.length : 0;
+        (day.exercises || []).forEach(ex => {
+            if (ex.type === "compound") {
+                totalSets += ex.warmupSets.length + ex.workingSets;
+                doneSets += ex.warmupSets.filter(s => s.done).length;
+                doneSets += ex.workingSetsDone ? ex.workingSetsDone.filter(Boolean).length : 0;
+            } else {
+                totalSets += (ex.warmupSets || 0) + (ex.workingSets ?? ex.sets ?? 0);
+                doneSets += ex.warmupDone ? ex.warmupDone.filter(Boolean).length : 0;
+                doneSets += ex.workingSetsDone ? ex.workingSetsDone.filter(Boolean).length : 0;
+            }
+        });
+    });
+
+    const overlay = document.createElement("div");
+    overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;";
+
+    const modal = document.createElement("div");
+    modal.style.cssText = `
+        position:fixed;
+        left:50%; top:50%;
+        transform:translate(-50%,-50%);
+        background:var(--bg-secondary);
+        border:1px solid var(--border-color);
+        border-radius:20px;
+        padding:32px 24px;
+        z-index:201;
+        width:min(340px, 90vw);
+        text-align:center;
+    `;
+
+    modal.innerHTML = `
+        <div style="font-size:48px; margin-bottom:12px;">🏆</div>
+        <h2 style="margin:0 0 4px; font-size:22px;">Week Complete!</h2>
+        <p style="color:var(--text-secondary); font-size:13px; margin:0 0 24px;">
+            ${week.name || "Great work this week"}
+        </p>
+
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:28px;">
+            <div class="summary-stat-row">
+                <span class="summary-stat-icon">💪</span>
+                <span class="summary-stat-label">Workouts done</span>
+                <span class="summary-stat-value">${workoutDays.length}</span>
+            </div>
+            <div class="summary-stat-row">
+                <span class="summary-stat-icon">🏅</span>
+                <span class="summary-stat-label">Exercises</span>
+                <span class="summary-stat-value">${totalExercises}</span>
+            </div>
+            <div class="summary-stat-row">
+                <span class="summary-stat-icon">✅</span>
+                <span class="summary-stat-label">Sets completed</span>
+                <span class="summary-stat-value">${doneSets} / ${totalSets}</span>
+            </div>
+            <div class="summary-stat-row">
+                <span class="summary-stat-icon">😴</span>
+                <span class="summary-stat-label">Rest days taken</span>
+                <span class="summary-stat-value">${restDays.length}</span>
+            </div>
+        </div>
+
+        <button id="week-summary-done-btn" style="
+            width:100%;
+            padding:14px;
+            background:var(--accent-gold);
+            color:#000;
+            border:none;
+            border-radius:12px;
+            font-size:15px;
+            font-weight:700;
+            cursor:pointer;
+        ">Done 🙌</button>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+
+    document.getElementById("week-summary-done-btn").addEventListener("click", () => {
+        overlay.remove();
+        modal.remove();
     });
 }

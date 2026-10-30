@@ -529,6 +529,13 @@ function showCongratsModal(program) {
         });
     });
 
+    let totalRestDays = 0;
+    program.weeks.forEach(week => {
+        week.days.forEach(day => {
+            if (day.type === "rest" && day.completed) totalRestDays++;
+        });
+    });
+
     document.getElementById("finish-program-stats").innerHTML = `
         <div class="finish-stat">
             <span class="finish-stat-value">${program.weeks.length}</span>
@@ -541,6 +548,10 @@ function showCongratsModal(program) {
         <div class="finish-stat">
             <span class="finish-stat-value">${totalExercises}</span>
             <span class="finish-stat-label">Exercises</span>
+        </div>
+        <div class="finish-stat">
+            <span class="finish-stat-value">${totalRestDays}</span>
+            <span class="finish-stat-label">Rest days</span>
         </div>
         <div class="finish-stat">
             <span class="finish-stat-value">${startDate}</span>

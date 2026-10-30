@@ -43,20 +43,11 @@ export function startWorkout(day, week, program, programs) {
     });
 
     document.getElementById("finish-workout-btn").addEventListener("click", () => {
-        const total = document.getElementById("workout-progress").textContent;
-
         currentDay.completed = true;
         currentDay.completedDate = new Date().toLocaleDateString("en-AU");
-
         savePrograms(currentPrograms);
-
-        const freshPrograms = refreshPrograms();
-
-        alert(`Workout done! ${total}`);
-        document.getElementById("workout-screen").classList.add("hidden");
-        document.getElementById("week-detail-screen").classList.remove("hidden");
-
-        renderDays(currentWeek, currentProgram, currentPrograms);
+        refreshPrograms();
+        showWorkoutSummary();
     });
 
     renderWorkout(day);
@@ -372,4 +363,93 @@ function openExerciseInfo(exerciseName) {
 
 function closeExerciseInfo() {
     document.getElementById("exercise-info-modal").classList.add("hidden");
+}
+
+function showWorkoutSummary() {
+    // Count sets completed
+    let totalSets = 0;
+    let doneSets = 0;
+    currentDay.exercises.forEach(ex => {
+        if (ex.type === "compound") {
+            totalSets += ex.warmupSets.length + ex.workingSets;
+            doneSets += ex.warmupSets.filter(s => s.done).length;
+            doneSets += ex.workingSetsDone ? ex.workingSetsDone.filter(Boolean).length : 0;
+        } else {
+            totalSets += (ex.warmupSets || 0) + (ex.workingSets ?? ex.sets ?? 0);
+            doneSets += ex.warmupDone ? ex.warmupDone.filter(Boolean).length : 0;
+            doneSets += ex.workingSetsDone ? ex.workingSetsDone.filter(Boolean).length : 0;
+        }
+    });
+
+    // Count rest days taken this week
+    const restDaysThisWeek = currentWeek.days.filter(d => d.type === "rest" && d.completed).length;
+
+    // Build summary modal
+    const overlay = document.createElement("div");
+    overlay.id = "workout-summary-overlay";
+    overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;";
+
+    const modal = document.createElement("div");
+    modal.id = "workout-summary-modal";
+    modal.style.cssText = `
+        position:fixed;
+        left:50%; top:50%;
+        transform:translate(-50%,-50%);
+        background:var(--bg-secondary);
+        border:1px solid var(--border-color);
+        border-radius:20px;
+        padding:32px 24px;
+        z-index:201;
+        width:min(340px, 90vw);
+        text-align:center;
+    `;
+
+    modal.innerHTML = `
+        <div style="font-size:48px; margin-bottom:12px;">🏋️</div>
+        <h2 style="margin:0 0 4px; font-size:22px;">Session Complete!</h2>
+        <p style="color:var(--text-secondary); font-size:13px; margin:0 0 24px;">
+            ${currentDay.date}${currentDay.notes ? " — " + currentDay.notes : ""}
+        </p>
+
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:28px;">
+            <div class="summary-stat-row">
+                <span class="summary-stat-icon">🏅</span>
+                <span class="summary-stat-label">Exercises</span>
+                <span class="summary-stat-value">${currentDay.exercises.length}</span>
+            </div>
+            <div class="summary-stat-row">
+                <span class="summary-stat-icon">✅</span>
+                <span class="summary-stat-label">Sets completed</span>
+                <span class="summary-stat-value">${doneSets} / ${totalSets}</span>
+            </div>
+            <div class="summary-stat-row">
+                <span class="summary-stat-icon">😴</span>
+                <span class="summary-stat-label">Rest days this week</span>
+                <span class="summary-stat-value">${restDaysThisWeek}</span>
+            </div>
+        </div>
+
+        <button id="workout-summary-done-btn" style="
+            width:100%;
+            padding:14px;
+            background:var(--accent-gold);
+            color:#000;
+            border:none;
+            border-radius:12px;
+            font-size:15px;
+            font-weight:700;
+            cursor:pointer;
+        ">Done 💪</button>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+
+    document.getElementById("workout-summary-done-btn").addEventListener("click", () => {
+        overlay.remove();
+        modal.remove();
+        document.getElementById("workout-screen").classList.add("hidden");
+        document.getElementById("week-detail-screen").classList.remove("hidden");
+        renderDays(currentWeek, currentProgram, currentPrograms);
+    });
 }
