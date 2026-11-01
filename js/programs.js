@@ -10,17 +10,43 @@ export function refreshPrograms() {
     return programs;
 }
 
+function _showNewProgramForm() {
+    document.getElementById("new-program-form").classList.remove("hidden");
+    // Hide whichever create button is currently visible
+    document.getElementById("create-program-btn").classList.add("hidden");
+    const addBtn = document.getElementById("add-another-program-btn");
+    if (addBtn) addBtn.classList.add("hidden");
+}
+
+function _hideNewProgramForm() {
+    document.getElementById("new-program-form").classList.add("hidden");
+    // Restore the right button based on whether programs exist
+    if (programs.length === 0) {
+        document.getElementById("create-program-btn").classList.remove("hidden");
+    } else {
+        const addBtn = document.getElementById("add-another-program-btn");
+        if (addBtn) addBtn.classList.remove("hidden");
+    }
+}
+
 export function initPrograms() {
     renderPrograms();
 
-    document.getElementById("create-program-btn").addEventListener("click", () => {
-        document.getElementById("new-program-form").classList.remove("hidden");
-        document.getElementById("create-program-btn").classList.add("hidden");
-    });
+    document.getElementById("create-program-btn").addEventListener("click", _showNewProgramForm);
+
+    const addBtn = document.getElementById("add-another-program-btn");
+    if (addBtn) addBtn.addEventListener("click", _showNewProgramForm);
+
+    // Templates hint link — switch to templates tab
+    const goTemplates = document.getElementById("go-to-templates-btn");
+    if (goTemplates) {
+        goTemplates.addEventListener("click", () => {
+            document.querySelector('.programs-tab[data-tab="templates"]')?.click();
+        });
+    }
 
     document.getElementById("cancel-program-btn").addEventListener("click", () => {
-        document.getElementById("new-program-form").classList.add("hidden");
-        document.getElementById("create-program-btn").classList.remove("hidden");
+        _hideNewProgramForm();
         document.getElementById("program-name-input").value = "";
     });
 
@@ -139,8 +165,7 @@ export function initPrograms() {
             programs.push(newProgram);
             savePrograms(programs);
 
-            document.getElementById("new-program-form").classList.add("hidden");
-            document.getElementById("create-program-btn").classList.remove("hidden");
+            _hideNewProgramForm();
             document.getElementById("program-name-input").value = "";
             document.getElementById("program-start-date").value = "";
             document.getElementById("program-weeks-input").value = "";
@@ -190,10 +215,14 @@ export function renderPrograms() {
 
     document.querySelectorAll(".program-card").forEach(card => card.remove());
 
+    const addBtn = document.getElementById("add-another-program-btn");
+
     if (programs.length === 0) {
         noMsg.classList.remove("hidden");
+        if (addBtn) addBtn.classList.add("hidden");
     } else {
         noMsg.classList.add("hidden");
+        if (addBtn) addBtn.classList.remove("hidden");
 
         programs.forEach((program, programIndex) => {
             const card = document.createElement("div");
@@ -223,7 +252,7 @@ export function renderPrograms() {
 
             card.addEventListener("click", () => openProgram(program));
             const myProgramsTab = document.getElementById("my-programs-tab");
-            myProgramsTab.insertBefore(card, document.getElementById("create-program-btn"));
+            myProgramsTab.insertBefore(card, document.getElementById("add-another-program-btn"));
         });
     }
 }

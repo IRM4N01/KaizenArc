@@ -283,14 +283,21 @@
           <!-- My Programs tab -->
           <div id="my-programs-tab">
             <div id="no-programs-msg" class="empty-state hidden">
-              <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-                <circle cx="28" cy="28" r="27" stroke="#2a1a1a" stroke-width="1.5"/>
-                <path d="M20 28h16M28 20v16" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              <p class="empty-state-title">No programs yet</p>
-              <p class="empty-state-sub">Create your first program to start tracking.</p>
+              <div class="empty-state-icon-badge">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <rect x="4" y="6" width="20" height="18" rx="3" stroke="#c9a84c" stroke-width="1.5"/>
+                  <path d="M9 14h10M14 9v10" stroke="#c9a84c" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M9 4v4M19 4v4" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <p class="empty-state-title">Build your first program</p>
+              <p class="empty-state-sub">Set your training weeks, plan each day, and walk into the gym knowing exactly what to do.</p>
+              <button id="create-program-btn">+ Create Program</button>
+              <p class="empty-state-hint">Or browse <span class="empty-state-hint-link" id="go-to-templates-btn">Templates</span> to start from a proven plan</p>
             </div>
-            <button id="create-program-btn">+ New Program</button>
+
+            <!-- Shown when programs exist — insert point for program cards + add button -->
+            <button id="add-another-program-btn" class="hidden">+ New Program</button>
 
             <div id="new-program-form" class="hidden">
               <h2>New Program</h2>
