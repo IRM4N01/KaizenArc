@@ -105,7 +105,7 @@ function _buildUI() {
             currentStep++;
             _showStep(currentStep);
         } else {
-            dismissTour();
+            _showOutro();
         }
     });
 
@@ -240,6 +240,35 @@ function _updateOverlayCutout(rect, pad) {
     overlay.style.maskImage = `url("${encoded}")`;
     overlay.style.webkitMaskSize = "100% 100%";
     overlay.style.maskSize = "100% 100%";
+}
+
+function _showOutro() {
+    // Hide the ring — no element to spotlight for the closing message
+    if (ring) ring.style.cssText = "display: none;";
+
+    // Clear the overlay cutout so the whole screen dims
+    overlay.style.webkitMaskImage = "";
+    overlay.style.maskImage = "";
+    overlay.style.background = "rgba(0,0,0,0.82)";
+
+    // Swap bubble content to the motivational sign-off
+    bubble.innerHTML = `
+        <div id="tour-outro-icon" style="font-size:40px; text-align:center; margin-bottom:12px;">💪</div>
+        <div id="tour-title" style="text-align:center; font-size:20px; font-weight:700; color:#f0f0f0; margin-bottom:8px;">You're all set!</div>
+        <div id="tour-desc" style="text-align:center; font-size:14px; color:#888; line-height:1.6; margin-bottom:20px;">The gym is waiting — now you know exactly where everything lives. Go chase those PRs.</div>
+        <button id="tour-go-btn" style="width:100%; padding:13px; border-radius:10px; border:none; background:var(--accent-gold,#c9a84c); color:#000; font-size:15px; font-weight:700; cursor:pointer; letter-spacing:0.3px;">Let's go! 🏋️</button>
+        <button id="tour-close-btn" aria-label="Close tour" style="position:absolute; top:12px; right:14px; background:none; border:none; color:#555; font-size:14px; cursor:pointer; padding:2px 4px; line-height:1;">✕</button>
+    `;
+
+    document.getElementById("tour-go-btn").addEventListener("click", () => {
+        _activateTab("home-screen");
+        dismissTour();
+    });
+
+    document.getElementById("tour-close-btn").addEventListener("click", () => {
+        _activateTab("home-screen");
+        dismissTour();
+    });
 }
 
 function _updateBubble(idx) {
