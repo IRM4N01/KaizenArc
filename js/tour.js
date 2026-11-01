@@ -14,7 +14,7 @@ const TOUR_STEPS = [
     {
         tab: "programs-screen",
         navLabel: "Programs",
-        target: "#create-program-btn",
+        target: "#programs-tab-switcher, #my-programs-tab",
         title: "Programs",
         desc: "Create structured training blocks — set the weeks, add days, and plan every exercise before you walk in the gym."
     },
@@ -137,12 +137,12 @@ function _showStep(idx) {
     // 1. Switch tab
     _activateTab(step.tab);
 
-    // 2. Wait a tick for the tab to render, then position ring
+    // 2. Wait a tick for the tab to render, then position ring + bubble
     requestAnimationFrame(() => {
         setTimeout(() => {
-            _positionRing(step.target);
-            _updateBubble(idx);
-        }, 80);
+            const rect = _positionRing(step.target, step.tab);
+            _updateBubble(idx, rect);
+        }, 150);
     });
 }
 
@@ -165,13 +165,14 @@ function _activateTab(screenId) {
     });
 }
 
-function _positionRing(selector) {
-    // Try each selector in the comma list — use first visible one
+function _positionRing(selector, screenId) {
+    // Scope search to the active screen so we never match an element in a hidden tab
+    const scope = (screenId && document.getElementById(screenId)) || document;
     const selectors = selector.split(",").map(s => s.trim());
     let el = null;
     for (const s of selectors) {
-        const candidate = document.querySelector(s);
-        if (candidate && !candidate.classList.contains("hidden") && candidate.offsetParent !== null) {
+        const candidate = scope.querySelector(s);
+        if (candidate && !candidate.classList.contains("hidden")) {
             el = candidate;
             break;
         }
@@ -186,7 +187,7 @@ function _positionRing(selector) {
             transform: translate(-50%, -50%);
             border-radius: 12px;
         `;
-        return;
+        return null;
     }
 
     const rect = el.getBoundingClientRect();
@@ -206,6 +207,7 @@ function _positionRing(selector) {
     // We use a combination: the overlay is full-screen but we cut a transparent
     // hole at the ring's position using a polygon clip approach via SVG mask.
     _updateOverlayCutout(rect, pad);
+    return rect;
 }
 
 function _updateOverlayCutout(rect, pad) {
@@ -271,7 +273,7 @@ function _showOutro() {
     });
 }
 
-function _updateBubble(idx) {
+function _updateBubble(idx, targetRect) {
     const step = TOUR_STEPS[idx];
     const total = TOUR_STEPS.length;
 
@@ -292,6 +294,33 @@ function _updateBubble(idx) {
         const dot = document.createElement("span");
         dot.className = "tour-dot" + (i === idx ? " active" : "");
         dotsEl.appendChild(dot);
+    }
+
+    // Position bubble so it doesn't overlap the spotlight ring.
+    // Measure the actual rendered bubble height after content is set.
+    const NAV_H = 60;
+    const vh = window.innerHeight;
+
+    // Reset positioning so getBoundingClientRect gives a real height
+    bubble.style.top = "";
+    bubble.style.bottom = NAV_H + "px";
+
+    if (targetRect) {
+        const bubbleH = bubble.getBoundingClientRect().height || 220;
+        const ringBottom = targetRect.bottom + 8; // bottom of spotlight ring (with padding)
+        const ringTop = targetRect.top - 8;       // top of spotlight ring
+
+        // Does the bubble (anchored at bottom) overlap the ring?
+        const bubbleTop = vh - NAV_H - bubbleH;
+        const overlaps = bubbleTop < ringBottom;
+
+        if (overlaps) {
+            // Place bubble above the ring instead
+            const topPos = Math.max(8, ringTop - bubbleH - 12);
+            bubble.style.bottom = "";
+            bubble.style.top = topPos + "px";
+        }
+        // else: leave it at the bottom — plenty of space
     }
 }
 
